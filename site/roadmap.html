@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>خارطة البناء · Smart Irrigation System</title>
+<link rel="icon" href="design/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  color-scheme:dark;
+  --bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327; --border-strong:#34343A;
+  --text:#F2F2F3; --soft:#C4C4C8; --muted:#8E8E94;
+  --primary:#0B5FE8; --primary-text:#3D86FF;
+  --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;
+  --radius:14px; --bar:56px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--primary-text);text-underline-offset:3px}
+code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--raised);border:1px solid var(--border);padding:0 6px;border-radius:6px}
+pre{direction:ltr;text-align:left;overflow-x:auto;background:#09090B;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.7}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+:focus-visible{outline:2px solid var(--primary-text);outline-offset:2px;border-radius:6px}
+
+/* progress */
+.progress{position:fixed;inset:0 0 auto 0;height:2px;z-index:30;pointer-events:none}
+.progress i{display:block;height:100%;background:var(--primary-text);transform-origin:right;transform:scaleX(0)}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;height:calc(var(--bar) + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:12px;
+  background:rgba(11,11,13,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--text);text-decoration:none;direction:ltr;white-space:nowrap}
+.brand b{color:var(--primary-text);font-weight:800}
+.here{color:var(--muted);font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.here::before{content:"/";margin-inline-end:10px;color:var(--border-strong)}
+.menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:grid;place-items:center;flex:none}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:18px;height:2px;border-radius:2px;background:var(--text);position:relative;transition:transform .2s,background .2s}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;inset-inline-start:0}
+.menu-btn span::before{top:-6px}.menu-btn span::after{top:6px}
+.nav-open .menu-btn span{background:transparent}
+.nav-open .menu-btn span::before{transform:translateY(6px) rotate(45deg)}
+.nav-open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* side nav (drawer on mobile, sidebar on desktop) */
+.side{position:fixed;z-index:19;top:calc(var(--bar) + env(safe-area-inset-top,0px));bottom:0;right:0;width:min(300px,86vw);
+  background:var(--card);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
+  transform:translateX(100%);transition:transform .22s ease,visibility .22s;visibility:hidden}
+.nav-open .side{transform:none;visibility:visible}
+.scrim{position:fixed;inset:0;z-index:18;background:rgba(0,0,0,.55)}
+.side .grp{margin:14px 10px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.2px}
+.side .grp:first-child{margin-top:4px}
+.side a{display:flex;align-items:center;gap:10px;color:var(--soft);text-decoration:none;padding:9px 12px;border-radius:10px;font-size:15px}
+.side a::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
+.side a span{margin-inline-start:auto;color:var(--muted);font-size:13px}
+.side a:hover{background:var(--raised);color:var(--text)}
+.side a[aria-current]{background:var(--raised);color:var(--text);font-weight:700}
+
+/* page */
+.page{max-width:720px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));min-width:0}
+h1{font-size:30px;font-weight:800;line-height:1.35;margin:0 0 12px;letter-spacing:-.2px}
+h1::before{content:"";display:block;width:36px;height:4px;border-radius:4px;background:var(--accent);margin-bottom:14px}
+h1 code{background:none;border:0;padding:0;font-size:1em;font-family:inherit}
+.lead{color:var(--soft);font-size:17px;line-height:1.85;margin-bottom:18px}
+.lead p{margin:0}
+.content{min-width:0}
+.content h2{font-size:22px;font-weight:800;margin:44px 0 12px;padding-top:18px;border-top:1px solid var(--border)}
+.content>h2:first-child{margin-top:12px;border-top:0;padding-top:0}
+.content h3{font-size:17px;font-weight:700;margin:24px 0 8px}
+.content p{margin:12px 0}
+.content ul,.content ol{padding-inline-start:22px;margin:10px 0;display:grid;gap:8px}
+.content li::marker{color:var(--muted)}
+.content li p{margin:0}
+.content strong{color:var(--text);font-weight:700}
+.content hr{border:0;border-top:1px solid var(--border);margin:28px 0}
+h2.sec{font-size:18px;font-weight:800;margin:30px 0 10px}
+
+/* home */
+.docs{display:grid;gap:10px;margin:0 0 8px}
+.doc{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;text-decoration:none;color:var(--text);
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;transition:border-color .15s,background .15s}
+.doc:hover{border-color:var(--border-strong);background:#17171A}
+.doc .n{grid-row:span 2;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--c);
+  background:color-mix(in srgb,var(--c) 14%,transparent);direction:ltr}
+.doc b{font-size:16px}
+.doc .d{color:var(--muted);font-size:14px;line-height:1.6}
+.now{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:4px 0 6px;display:grid;gap:12px}
+.now-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.now-h b{font-size:16px}
+.now-h span{color:var(--muted);font-size:14px}
+.strip{display:grid;grid-template-columns:repeat(17,1fr);gap:3px}
+.strip i{height:10px;border-radius:3px;background:var(--raised)}
+.strip i.s-done{background:var(--ok)} .strip i.s-doing{background:var(--primary-text)} .strip i.s-next{background:var(--warn)}
+.now-r{display:flex;justify-content:space-between;gap:12px;font-size:15px;border-top:1px solid var(--border);padding-top:10px}
+.now-r span{color:var(--muted);flex:none}
+.now-r b{text-align:end;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 12px;font-size:13px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-inline-end:6px}
+
+/* toc */
+.toc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:12px 0 8px}
+.toc summary{cursor:pointer;padding:12px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.toc summary::-webkit-details-marker{display:none}
+.toc summary::after{content:"";width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s}
+.toc[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.toc nav{display:grid;padding:0 8px 10px}
+.toc nav a{color:var(--soft);text-decoration:none;padding:7px 10px;border-radius:8px;font-size:15px}
+.toc nav a:hover{background:var(--raised);color:var(--text)}
+
+/* tables */
+.scroll{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:var(--card)}
+th,td{padding:10px 12px;text-align:start;vertical-align:top;border-bottom:1px solid var(--border);min-width:100px}
+th{background:var(--raised);font-weight:700;white-space:nowrap;color:var(--soft);font-size:13.5px}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#17171A}
+
+/* callouts */
+.callout{border-radius:12px;padding:12px 16px;margin:14px 0;background:color-mix(in srgb,var(--c,var(--primary-text)) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c,var(--primary-text)) 28%,transparent);font-size:15px}
+.callout p{margin:0}
+.callout>p+p{margin-top:6px}
+.callout strong:first-child{color:var(--c,var(--primary-text))}
+.callout.rule{--c:var(--ok)} .callout.research{--c:var(--warn)} .callout.proposal{--c:var(--other)} .callout.note{--c:var(--primary-text)}
+
+/* collapsible cards */
+.tools{display:flex;gap:8px;margin:16px 0 6px}
+.tools button{font:inherit;font-size:14px;font-weight:600;color:var(--soft);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px 14px;cursor:pointer}
+.tools button:hover{color:var(--text);border-color:var(--border-strong)}
+details.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;transition:border-color .15s}
+details.card[open]{border-color:var(--border-strong)}
+details.card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:52px}
+details.card summary::-webkit-details-marker{display:none}
+details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:7px;padding:1px 8px;font-size:13.5px;flex:none}
+details.card .t{font-weight:700;flex:1;line-height:1.5}
+details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
+details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
+.st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
+.st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.st.s-doing{background:color-mix(in srgb,var(--primary-text) 18%,transparent);color:var(--primary-text)}
+.st.s-next{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.done{color:var(--ok);font-size:14px;font-weight:700}
+.done::before{content:"✓ "}
+
+/* pager + footer */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:44px}
+.pager a{display:grid;gap:2px;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-weight:700}
+.pager a:hover{border-color:var(--border-strong)}
+.pager a small{color:var(--muted);font-weight:400;font-size:13px}
+.pager a.next{text-align:end}
+footer{margin-top:26px;color:var(--muted);font-size:13px}
+
+.standalone .menu-btn,.standalone .side,.standalone .pager,.standalone footer{display:none}
+@media (min-width:720px){
+  h1{font-size:36px}
+  .docs{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1080px){
+  .menu-btn{display:none}
+  .layout{display:grid;grid-template-columns:260px minmax(0,1fr)}
+  .side{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));height:calc(100vh - var(--bar));width:auto;transform:none;visibility:visible;
+    background:transparent;border-left:1px solid var(--border)}
+  .scrim{display:none}
+  .standalone .layout{display:block}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}</style>
+</head>
+<body class="" style="--accent:var(--ok)">
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+<header class="bar">
+  <a class="brand" href="index.html"><img src="design/logo-mark-white.png" alt="" width="26" height="26"><span>Smart <b>Irrigation</b></span></a>
+  <span class="here">خارطة البناء</span>
+  <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
+</header>
+<div class="layout">
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" aria-current="page" style="--c:var(--ok)">خارطة البناء</a><a href="architecture.html" style="--c:var(--other)">التصميم التقني</a><a href="domain.html" style="--c:var(--rain)">علم الري</a><a href="market.html" style="--c:var(--warn)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--ok)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--rain)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<div class="scrim" hidden></div>
+<main class="page">
+  <h1>خارطة البناء</h1>
+  
+  
+  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#طريقة-العمل-في-كل-إصدار">طريقة العمل في كل إصدار</a><a href="#مراحل-المنتج">مراحل المنتج</a><a href="#الإصدارات">الإصدارات</a></nav></details>
+  <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>
+  <article class="content"><!-- collapse-h3 -->
+<!-- status: V0=next  (القيم: done تم | doing شغال | next الجاي | غير كده = لسه) -->
+
+
+<div class="callout lead"><p>بنبني بأي ترتيب، وخطوات كل إصدار، وإمتى نعتبر كل خطوة خلصت. الترتيب منطقي مش زمني.</p></div>
+<h2 id="طريقة-العمل-في-كل-إصدار">طريقة العمل في كل إصدار</h2>
+<ol>
+<li><strong>نفهم الميزة:</strong> المستخدم، والمشكلة، والمدخلات والمخرجات، والمعادلات من <a href="domain.html">علم الري</a>، وإمتى المنصة ماتطلعش توصية.</li>
+<li><strong>ننفذ بأقل تعقيد:</strong> أبسط حل يحقق المطلوب، من غير موديولات فاضية.</li>
+<li><strong>نختبر ونراجع:</strong> حالات مرجعية، واختبارات وحدة وتكامل، ومراجعة هندسية، وتجربة الميزة من أولها لآخرها.</li>
+<li><strong>نوثق وننتقل:</strong> نسجل القرارات والمشاكل في <a href="journey.html">رحلة المشروع</a>، ونحدد الإصدار الجاي.</li>
+</ol>
+<div class="callout rule"><p><strong>قاعدة:</strong> الإصدار يعتبر خالص لما رحلة المستخدم بتاعته شغالة، والوحدات والافتراضات موثقة، واختبارات الحالات المرجعية ناجحة. والتحكم في معدات حقيقية محتاج اختبارات أمان مستقلة الأول.</p></div>
+<h2 id="مراحل-المنتج">مراحل المنتج</h2>
+<div class="callout proposal"><p><strong>مقترح:</strong> تجميع الإصدارات في خمس مراحل، كل مرحلة منتج يتجرب لوحده. الترتيب ده اتغير بعد دراسة المنافسين: الأقمار الصناعية جت بدري، والتوصيل بالكنترولرات بقى أولوية.</p></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>فيها إيه</th>
+<th>الإصدارات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مساعد المهندس</td>
+<td>المزرعة، والطقس، ومياه التربة، والتوصية بسببها وثقتها، وسجل الري</td>
+<td><code>V0</code> لحد <code>V5</code></td>
+</tr>
+<tr>
+<td>الدقة والإثبات</td>
+<td>الأقمار الصناعية، والمقارنة بالمراجع، ومحاكاة المواسم</td>
+<td><code>V6</code> والأقمار الصناعية</td>
+</tr>
+<tr>
+<td>الحقل</td>
+<td>ربط الحساسات، والمراقبة، وكشف الأعطال</td>
+<td><code>V7</code> لحد <code>V9</code></td>
+</tr>
+<tr>
+<td>الأوتوميشن</td>
+<td>ربط الكنترولرات، والتشغيل الآلي الآمن</td>
+<td><code>V10</code></td>
+</tr>
+<tr>
+<td>أدوات المهندس المتقدمة</td>
+<td>تصميم الشبكات، والتوأم الرقمي، وجودة المياه، والطاقة، والتنبؤ</td>
+<td><code>V11</code> لحد <code>V16</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="الإصدارات">الإصدارات</h2>
+<details class="card" id="v0-محرك-الحسابات-الهندسية"><summary><span class="tag">V0</span><span class="t">محرك الحسابات الهندسية</span><span class="st s-next">الجاي</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> حساب احتياج المحصول والحجم ومدة التعويض من مدخلات يدوية، باختبارات تتعاد في أي وقت.</li>
+<li><strong>النطاق:</strong> مكتبة وبرنامج سطر أوامر، من غير مستخدمين ولا أجهزة.</li>
+<li><strong>يعتمد على:</strong> لا شيء.</li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V0.1 الوحدات والمدخلات:</strong> وحدة كل قيمة، ونماذج المدخلات، ورفض القيم غير المنطقية. <br><span class="done">خالصة لما:</span> اختبارات الوحدات والقيم الصفرية والسالبة ناجحة.</li>
+<li><strong>V0.2 القيمة ومصدرها:</strong> كل مدخل معاه مصدره (مقاس، مقدر، افتراضي، إدخال مستخدم) ودرجة ثقته، والنتيجة بتورث الثقة. <br><span class="done">خالصة لما:</span> نتيجة مبنية على قيمة افتراضية بتظهر ثقتها أقل ومعاها السبب.</li>
+<li><strong>V0.3 البخر نتح المرجعي:</strong> إدخال يدوي الأول، ومكان جاهز لحسابه بمعادلة الفاو. <br><span class="done">خالصة لما:</span> مثال مشروح وحالة مرجعية موثقين.</li>
+<li><strong>V0.4 معامل المحصول واحتياجه:</strong> محصول تجريبي ومراحل نموه، والاستيفاء بين المراحل. <br><span class="done">خالصة لما:</span> اختبارات على حدود المراحل ومنتصفها من غير قفزات.</li>
+<li><strong>V0.5 قالب طريقة الري:</strong> المحرك بيطلع عمق، وقالب التنقيط بيحوله لحجم ومدة. <br><span class="done">خالصة لما:</span> إضافة قالب جديد مابتلمسش المحرك.</li>
+<li><strong>V0.6 الاختبارات والتوثيق:</strong> اختبارات وحدة من ملفات <a href="reference-cases.html">الحالات المرجعية</a>. <br><span class="done">خالصة لما:</span> الاختبارات بتشتغل آليًا، وأي فرق عن المرجع متفسر.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث قبل البدء:</strong> المحصول والتربة ونظام الري للحالة المرجعية الأولى، والمعادلات من مراجعها في <a href="domain.html">علم الري</a>.</p></div>
+<ul>
+<li><strong>الناتج:</strong> مكتبة مستقلة، وتجربة سطر أوامر، وتقرير اختبارات.</li>
+<li><strong>معيار القبول:</strong> حسابات صحيحة قابلة للاختبار على حالة واحدة، من غير ادعاء جدولة ري.</li>
+</ul>
+</div></details><details class="card" id="v1-الويب-وإدارة-المزارع"><summary><span class="tag">V1</span><span class="t">الويب وإدارة المزارع</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> تحويل المحرك لتطبيق ويب بيحفظ المزرعة ويرجع للحسابات.</li>
+<li><strong>النطاق:</strong> واجهة برمجية، وقاعدة بيانات، وواجهة موبايل أولًا.</li>
+<li><strong>يعتمد على:</strong> <code>V0</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V1.1 الهيكل:</strong> موديول الأساس وموديول الري بطبقات واضحة. <br><span class="done">خالصة لما:</span> المحرك يتختبر من غير ويب ولا قاعدة بيانات.</li>
+<li><strong>V1.2 الحسابات والصلاحيات:</strong> دخول آمن، وأدوار، وكل حاجة مربوطة بمنظمة. <br><span class="done">خالصة لما:</span> مستخدم مايوصلش لمزرعة مش بتاعته.</li>
+<li><strong>V1.3 المزارع والحقول والقطاعات:</strong> الهيكل الكامل للمزرعة، والمحاصيل وتواريخ الزراعة. <br><span class="done">خالصة لما:</span> البيانات تتحفظ وترجع من غير إعادة إدخال.</li>
+<li><strong>V1.4 الأرض كخريطة:</strong> حدود كل حقل وقطاع بشكلها الحقيقي، والعوائق، ومكان المخارج لو معروف. <br><span class="done">خالصة لما:</span> المهندس يرسم حقل على الخريطة، والمساحة تتحسب منه.</li>
+<li><strong>V1.5 مواصفات الري:</strong> طريقة الري والكفاءة والتصرف، ومصدر كل قيمة. <br><span class="done">خالصة لما:</span> مدة التشغيل ماتتحسبش لو التصرف مجهول، وتظهر رسالة واضحة.</li>
+<li>
+<p><strong>V1.6 الشاشات:</strong> المزارع، والقطاع، والحاسبة، وشرح الحساب. <br><span class="done">خالصة لما:</span> من الموبايل: إنشاء قطاع ثم نتيجة محفوظة ومشروحة.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> نسخة ويب فيها مزارع وحسابات ومستخدمين.</p>
+</li>
+<li><strong>معيار القبول:</strong> رحلة المستخدم شغالة من أولها لآخرها، مع عزل البيانات.</li>
+</ul>
+</div></details><details class="card" id="v2-الطقس-والاحتياج-المتغير"><summary><span class="tag">V2</span><span class="t">الطقس والاحتياج المتغير</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> ربط كل حقل بمصدر طقس وبيانات مؤرخة.</li>
+<li><strong>النطاق:</strong> موصل طقس قابل للاستبدال، وأرشيف مناخي.</li>
+<li><strong>يعتمد على:</strong> <code>V1</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V2.1 موصل الطقس:</strong> ربط بالإحداثيات والتوقيت المحلي، واحترام حدود الطلبات. <br><span class="done">خالصة لما:</span> كل نتيجة معاها موقعها وتوقيتها ومصدرها.</li>
+<li><strong>V2.2 البخر نتح المرجعي:</strong> فصل الطقس الخام عن القيمة المحسوبة، وتوضيح مين حسبها. <br><span class="done">خالصة لما:</span> لكل يوم تظهر طريقة الحساب والمصدر.</li>
+<li><strong>V2.3 المرصود والمتوقع:</strong> سجلات منفصلة، وتوضيح التحديث والتأخير. <br><span class="done">خالصة لما:</span> نتيجة يوم قديم ماتتغيرش لما التوقعات تتحدث.</li>
+<li><strong>V2.4 انقطاع البيانات:</strong> إدخال يدوي احتياطي، وعلامة جودة، وتحذيرات. <br><span class="done">خالصة لما:</span> وقوع المزود مايطلعش توصية مؤكدة ببيانات مجهولة.</li>
+<li><strong>V2.5 تراخيص البيانات:</strong> شروط الاستخدام التجاري والبدائل. <br><span class="done">خالصة لما:</span> خطة موثقة لمزود تجربة ومزود تجاري.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> مزود الطقس المناسب لمصر ودقته وشروطه التجارية.</p></div>
+<ul>
+<li><strong>الناتج:</strong> احتياج يومي مؤرخ مصدره الطقس.</li>
+<li><strong>معيار القبول:</strong> نتايج متكررة ومتسقة، والمستخدم يفرق بين المرصود والمتوقع.</li>
+</ul>
+</div></details><details class="card" id="v3-مياه-التربة"><summary><span class="tag">V3</span><span class="t">مياه التربة</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> تقدير مياه التربة يوم بيوم، علشان القرار يتبني على حالتها.</li>
+<li><strong>النطاق:</strong> حسابات يومية من غير حساسات، بافتراض بداية معلن.</li>
+<li><strong>يعتمد على:</strong> <code>V2</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V3.1 التربة والجذور:</strong> خصائص التربة، وعمق الجذور، ونسبة الاستنزاف المسموح. <br><span class="done">خالصة لما:</span> المياه المتاحة وحد الاستنزاف مختبرين على حالات مرجعية.</li>
+<li><strong>V3.2 الحالة الابتدائية:</strong> الحقل بدأ بعد رية مشبعة ولا بتقدير تاني، ودرجة الثقة. <br><span class="done">خالصة لما:</span> كل توصية بتظهر طريقة تقدير البداية.</li>
+<li><strong>V3.3 الحساب اليومي:</strong> الاستنزاف بالفاقد والمطر الفعال والري المنفذ والتسرب العميق. <br><span class="done">خالصة لما:</span> مفيش قيم مستحيلة من غير توضيح.</li>
+<li><strong>V3.4 الإجهاد ونقص البيانات:</strong> تمييز الاقتراب من الحد وتجاوزه، وأثر البيانات الناقصة على الثقة. <br><span class="done">خالصة لما:</span> تغير حالة الحقل بيغير التفسير.</li>
+<li><strong>V3.5 حالات واقعية:</strong> يوم مطر، ويوم ري، ويوم من غير ري، وتغير الجذور. <br><span class="done">خالصة لما:</span> حزمة اختبارات ترجع القيم المرجعية آليًا.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> طريقة المطر الفعال، وتمثيل نمو الجذور، ومصدر خصائص التربة المحلية.</p></div>
+<ul>
+<li><strong>الناتج:</strong> رصيد مائي يومي مقدر ومشروح لكل قطاع.</li>
+<li><strong>معيار القبول:</strong> سجل يومي متماسك بافتراضات واضحة.</li>
+</ul>
+</div></details><details class="card" id="v4-التوصية-والجدولة"><summary><span class="tag">V4</span><span class="t">التوصية والجدولة</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> قرار مفهوم: نروي ولا لأ، وقد إيه، ومدة قد إيه، وإمتى.</li>
+<li><strong>النطاق:</strong> توصية يراجعها المهندس، مش تشغيل آلي.</li>
+<li><strong>يعتمد على:</strong> <code>V3</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V4.1 شرط بدء الري:</strong> من حد الاستنزاف وقيود المحصول والتربة. <br><span class="done">خالصة لما:</span> قطاعين بنفس الطقس وتربة مختلفة ممكن ياخدوا قرارين مختلفين.</li>
+<li><strong>V4.2 العمق والحجم والمدة:</strong> من خلال قالب طريقة الري والتصرف الموثوق. <br><span class="done">خالصة لما:</span> كل توصية بتكشف خطواتها ووحداتها ومراجعها.</li>
+<li><strong>V4.3 خطة الأيام الجاية:</strong> من توقعات الطقس، وبتتحدث مع أي تغيير. <br><span class="done">خالصة لما:</span> المستخدم فاهم إنها توقعات مش التزامات.</li>
+<li><strong>V4.4 قيود التشغيل:</strong> أقصى مدة، وسعة الطلمبات، وأوقات توفر المياه، وتعاقب القطاعات. <br><span class="done">خالصة لما:</span> مفيش اقتراح يتعدى السعة.</li>
+<li>
+<p><strong>V4.5 التفسير والتحكم:</strong> الأسباب والتحذيرات، وتعديل المهندس مع حفظ سببه. <br><span class="done">خالصة لما:</span> كل تعديل محفوظ وظاهر.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> شاشة "النهارده"، وخطة الأيام الجاية، وتوصية مشروحة.</p>
+</li>
+<li><strong>معيار القبول:</strong> اختبارات سيناريوهات بتأكد التوقيت والكمية والقيود.</li>
+</ul>
+</div></details><details class="card" id="v5-سجل-التشغيل"><summary><span class="tag">V5</span><span class="t">سجل التشغيل</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> معرفة اللي حصل فعلًا في كل قطاع.</li>
+<li><strong>النطاق:</strong> تسجيل يدوي أو استيراد بسيط.</li>
+<li><strong>يعتمد على:</strong> <code>V4</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V5.1 تسجيل رية:</strong> الوقت والقطاع والمدة والحجم وطريقة تقديره. <br><span class="done">خالصة لما:</span> العملية متسجلة بمصدر، وتتعدل بسجل مراجعة.</li>
+<li><strong>V5.2 المخطط والمنفذ:</strong> المقترح والمنفذ والمتأخر والملغي وأسبابهم. <br><span class="done">خالصة لما:</span> القايمة واضحة من غير لبس.</li>
+<li><strong>V5.3 تحديث مياه التربة:</strong> المحرك يستخدم المنفذ بدل المخطط. <br><span class="done">خالصة لما:</span> تعديل رية بيعيد حساب الأيام المتأثرة.</li>
+<li><strong>V5.4 التقارير:</strong> المياه والمدة وأيام التوقف لكل قطاع. <br><span class="done">خالصة لما:</span> تقرير أسبوعي وشهري، وكل مؤشر معرف.</li>
+<li>
+<p><strong>V5.5 تنبيهات:</strong> عدم تأكيد التشغيل، أو تعارض السجل مع البيانات. <br><span class="done">خالصة لما:</span> كل تنبيه مربوط بفعل واضح.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> دفتر ري رقمي بيربط التوصيات بالتنفيذ.</p>
+</li>
+<li><strong>معيار القبول:</strong> أي رقم في تقرير يتتبع لمصدره.</li>
+</ul>
+</div></details><details class="card" id="v6-التحقق-العلمي-والأقمار-الصناعية"><summary><span class="tag">V6</span><span class="t">التحقق العلمي والأقمار الصناعية</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> إثبات صحة الحسابات، ومقارنة طرق الري، وإضافة الأقمار الصناعية كمصدر بيانات.</li>
+<li><strong>النطاق:</strong> بيانات تاريخية موثقة ومراجعة هندسية.</li>
+<li><strong>يعتمد على:</strong> <code>V4</code>، والتجربة الميدانية محتاجة <code>V5</code>.</li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V6.1 المقارنة مع <code>CROPWAT</code>:</strong> نفس المدخلات والإعدادات، وتفسير الفروق. <br><span class="done">خالصة لما:</span> جدول موثق بالمدخلات ونسبة الانحراف.</li>
+<li><strong>V6.2 خط أساس عادل:</strong> جدول ثابت، ومقارنة بالفاقد بس، وجدولة بمياه التربة، بنفس الطقس. <br><span class="done">خالصة لما:</span> المقارنة بتوضح اختلاف الافتراضات.</li>
+<li><strong>V6.3 مؤشرات الأداء:</strong> المياه الزايدة، وأيام الإجهاد، والري الناقص، والتسرب العميق. <br><span class="done">خالصة لما:</span> مفيش "نسبة توفير" لوحدها من غير الإجهاد.</li>
+<li><strong>V6.4 اختبار الحساسية:</strong> أثر أخطاء المدخلات على القرار. <br><span class="done">خالصة لما:</span> تقرير بأكتر الافتراضات تأثيرًا.</li>
+<li><strong>V6.5 الأقمار الصناعية:</strong> مصدر بيانات جنب الطقس، بموصل قابل للاستبدال. <br><span class="done">خالصة لما:</span> القيمة من القمر الصناعي بتدخل بمصدرها وثقتها، وبتتقارن بالحساب.</li>
+<li><strong>V6.6 تجربة ميدانية لو متاحة:</strong> توصيات مقابل تشغيل حقيقي. <br><span class="done">خالصة لما:</span> النتايج موسومة: محاكاة أو ميداني.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> مصدر بيانات الطقس التاريخية، وإصدار <code>CROPWAT</code> وإعداداته، ومزودي بيانات الأقمار الصناعية ودقتهم وتكلفتهم.</p></div>
+<ul>
+<li><strong>الناتج:</strong> ملف تحقق علمي برسوم ومقارنات.</li>
+<li><strong>معيار القبول:</strong> النتايج بتتتبع لبياناتها، والشكوك موضحة.</li>
+</ul>
+</div></details><details class="card" id="v7-أصول-وقطاعات-الشبكة"><summary><span class="tag">V7</span><span class="t">أصول وقطاعات الشبكة</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> سجل رقمي لمكونات الشبكة وعلاقتها بالقطاعات.</li>
+<li><strong>النطاق:</strong> إدخال يدوي من غير أجهزة.</li>
+<li><strong>يعتمد على:</strong> <code>V1</code> و <code>V5</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V7.1 المصادر والطلمبات:</strong> المصدر والطلمبات والخطوط وسعاتها. <br><span class="done">خالصة لما:</span> كل قطاع مربوط بمصدر وطلمبة وخط.</li>
+<li><strong>V7.2 الخطوط والمحابس والنقاطات:</strong> لكل قطاع. <br><span class="done">خالصة لما:</span> مخطط ارتباط منطقي يتراجع.</li>
+<li><strong>V7.3 الخريطة:</strong> حدود القطاعات وحالتها. <br><span class="done">خالصة لما:</span> اختيار قطاع بيفتح بياناته.</li>
+<li>
+<p><strong>V7.4 الصيانة:</strong> المواصفات والصور والملاحظات لكل أصل. <br><span class="done">خالصة لما:</span> الفني يلاقي تاريخ أي أصل بسرعة.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> نموذج بيانات للشبكة.</p>
+</li>
+<li><strong>معيار القبول:</strong> كل قطعة رئيسية ليها تعريف وعلاقة.</li>
+</ul>
+</div></details><details class="card" id="v8-المراقبة-والحساسات"><summary><span class="tag">V8</span><span class="t">المراقبة والحساسات</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> استقبال قراءات التربة والضغط والتصرف وحالة الطلمبة.</li>
+<li><strong>النطاق:</strong> محاكي بيانات الأول، ثم حساسات حقيقية.</li>
+<li><strong>يعتمد على:</strong> <code>V7</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V8.1 شكل رسالة القياس:</strong> الجهاز والقطاع والتاريخ والوحدة والقيمة والجودة. <br><span class="done">خالصة لما:</span> الخادم يقبل المحاكاة ويرفض الرسائل الغلط.</li>
+<li><strong>V8.2 بوابة الاستقبال:</strong> إعادة المحاولة وعزل الأجهزة. <br><span class="done">خالصة لما:</span> القياسات ماتضيعش لما الشبكة تقطع مؤقتًا.</li>
+<li><strong>V8.3 موصلات الحساسات:</strong> موصل لكل نوع، ومعايرة كل حساس. <br><span class="done">خالصة لما:</span> كل قراءة ليها وحدة وتاريخ وملف معايرة.</li>
+<li><strong>V8.4 جودة البيانات:</strong> القراءات المستحيلة والقديمة والمقطوعة. <br><span class="done">خالصة لما:</span> انقطاع الاتصال بيظهر بدل آخر قراءة.</li>
+<li><strong>V8.5 لوحة المراقبة:</strong> رسوم لكل قطاع وحدود قابلة للضبط. <br><span class="done">خالصة لما:</span> المقاس واضح الفرق عن المحسوب.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> الحساسات والبروتوكولات المنتشرة في مصر، وطرق معايرة حساس الرطوبة.</p></div>
+<ul>
+<li><strong>الناتج:</strong> لوحة مراقبة مع تخزين القياسات.</li>
+<li><strong>معيار القبول:</strong> المحاكاة شغالة كاملة، والحساس الحقيقي بيتثبت دقته.</li>
+</ul>
+</div></details><details class="card" id="v9-كشف-الأعطال"><summary><span class="tag">V9</span><span class="t">كشف الأعطال</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> اكتشاف التشغيل غير الطبيعي، ومساعدة الفني يحدد السبب.</li>
+<li><strong>النطاق:</strong> قواعد هندسية مفهومة قبل أي تعلم آلي.</li>
+<li><strong>يعتمد على:</strong> <code>V8</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V9.1 السلوك الطبيعي:</strong> الضغط والتصرف حسب القطاع والطلمبة والمحابس. <br><span class="done">خالصة لما:</span> كل تنبيه ليه سياق تشغيل.</li>
+<li><strong>V9.2 تسريب محتمل:</strong> ضغط أقل وتصرف أعلى، مع استثناء تغير القطاعات المفتوحة. <br><span class="done">خالصة لما:</span> الإنذارات الصحيحة والكاذبة موثقة.</li>
+<li><strong>V9.3 انسداد أو عطل حساس:</strong> أكتر من سبب محتمل بدل تشخيص قاطع. <br><span class="done">خالصة لما:</span> التحذير بيذكر الاحتمالات وخطوة الفحص.</li>
+<li><strong>V9.4 الأولوية:</strong> تصنيف الخطورة وتقليل التكرار. <br><span class="done">خالصة لما:</span> كل إنذار بيظهر مصدره ومدته والمسؤول.</li>
+<li><strong>V9.5 أوامر الصيانة:</strong> مربوطة بالقياسات والإغلاق والسبب. <br><span class="done">خالصة لما:</span> نقدر نقيس زمن الاستجابة والإنذارات الكاذبة.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> حدود التنبيه لكل عطل، وأثر النقاطات المعوضة للضغط على كشف الانسداد.</p></div>
+<ul>
+<li><strong>الناتج:</strong> وحدة صحة الشبكة.</li>
+<li><strong>معيار القبول:</strong> كل تشخيص قابل للتفسير ومختبر.</li>
+</ul>
+</div></details><details class="card" id="v10-الأوتوميشن-والتحكم-الآمن"><summary><span class="tag">V10</span><span class="t">الأوتوميشن والتحكم الآمن</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> تحويل خريطة الاحتياج لتشغيل آلي آمن، بأدق مستوى تحكم الأجهزة تسمح بيه، حسب قرار رقم 4.</li>
+<li><strong>النطاق:</strong> محاكاة الأول، ثم أجهزة حقيقية بعد مراجعة المخاطر.</li>
+<li><strong>يعتمد على:</strong> <code>V8</code> و <code>V9</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V10.1 موصلات الأجهزة وقدراتها:</strong> موصل لكل نوع منتشر، وكل جهاز بيعلن قدراته. <br><span class="done">خالصة لما:</span> إضافة نوع جديد مابتلمسش باقي المنصة.</li>
+<li><strong>V10.2 الأمر منفصل عن التوصية:</strong> طلب، ثم سماح، ثم أمر، ثم تأكيد. <br><span class="done">خالصة لما:</span> الشاشة لوحدها ماتقدرش تشغل طلمبة.</li>
+<li><strong>V10.3 مخطط التشغيل:</strong> بيحول خريطة الاحتياج لأوامر في حدود قدرات الأجهزة، بالتدريج ومن غير ما يكسر توزيع الضغط. <br><span class="done">خالصة لما:</span> نفس الخريطة بتطلع أوامر صحيحة لمزرعة بمحبس واحد ولمزرعة بتحكم في كل مخرج.</li>
+<li><strong>V10.4 القطاع والطلمبة:</strong> تشغيل وإيقاف القطاعات، والتحكم في ضغط الشبكة. <br><span class="done">خالصة لما:</span> مختبر على المحاكاة ثم على جهاز حقيقي.</li>
+<li><strong>V10.5 الري المتقطع حسب التربة:</strong> كامل القوة لما الأرض بتشرب، وتهدية أو تقطيع لما تقرب من التشبع. <br><span class="done">خالصة لما:</span> الجريان على السطح بيقل في التجربة.</li>
+<li><strong>V10.6 داخل القطاع والمخرج الواحد:</strong> أجزاء القطاع وكل مخرج لوحده لو الأجهزة بتسمح. <br><span class="done">خالصة لما:</span> كل جزء بياخد كميته من الخريطة.</li>
+<li><strong>V10.7 المدى حسب الزاوية:</strong> تقليل الضغط عند العوائق زي الحيطان، وزيادته بعدها، مع ظبط سرعة الدوران. <br><span class="done">خالصة لما:</span> مختبر على أي جهاز بيدعم الخاصية دي.</li>
+<li><strong>V10.8 الأمان في الحقل:</strong> الجهاز ينفذ الجدول لوحده ويوقف عند الحدود لو النت قطع، وقفل المحابس بالتدريج. <br><span class="done">خالصة لما:</span> اختبارات حقن أعطال بترجع لحالة آمنة.</li>
+<li><strong>V10.9 مستوى الأوتوميشن والتحكم اليدوي:</strong> يدوي، أو موافقة، أو آلي، والمشغل يقدر يوقف محليًا دايمًا. <br><span class="done">خالصة لما:</span> انقطاع الإنترنت مابيلغيش الحماية.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> الكنترولرات المنتشرة في مصر وهل بتسمح بالربط، وأنظمة الري المحوري بمعدل متغير المتاحة، وأي أجهزة بتدعم المدى حسب الزاوية.</p></div>
+<ul>
+<li><strong>الناتج:</strong> تشغيل آلي مضبوط الصلاحيات بسجل أوامر.</li>
+<li><strong>معيار القبول:</strong> سلامة التشغيل شرط للإطلاق.</li>
+</ul>
+</div></details><details class="card" id="v11-تصميم-الشبكات"><summary><span class="tag">V11</span><span class="t">تصميم الشبكات</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> مساعدة المهندس يصمم أو يقيم شبكة، والتصميم يبقى تعريف المزرعة.</li>
+<li><strong>النطاق:</strong> تصميم أولي قابل للتحقق، مش بديل عن اعتماد مختص.</li>
+<li><strong>يعتمد على:</strong> <code>V7</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V11.1 المدخلات:</strong> المساحة والتضاريس والمصدر والتصرف وطريقة الري والمسارات. <br><span class="done">خالصة لما:</span> المشروع بيحفظ المدخلات والفرضيات.</li>
+<li><strong>V11.2 التصرفات والمواسير:</strong> طلب القطاعات والسرعات والأقطار. <br><span class="done">خالصة لما:</span> النتايج بتحقق حدود السرعة المتفق عليها.</li>
+<li><strong>V11.3 الفواقد والضغط:</strong> الاحتكاك والارتفاعات والضغط المتاح. <br><span class="done">خالصة لما:</span> مقارنة بحسابات مرجعية.</li>
+<li><strong>V11.4 الطلمبات والانتظامية:</strong> نقطة التشغيل والانتظامية. <br><span class="done">خالصة لما:</span> تنبيه لما التصميم يخرج عن الحدود.</li>
+<li><strong>V11.5 المخرجات:</strong> جدول مكونات ومخطط وتقرير. <br><span class="done">خالصة لما:</span> نفس المدخلات بتطلع نفس الحسابات.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> معادلة فاقد الاحتكاك المعتمدة، وحدود السرعة، ومقاييس الانتظامية.</p></div>
+<ul>
+<li><strong>الناتج:</strong> أداة تصميم مبدئي موثقة.</li>
+<li><strong>معيار القبول:</strong> متقارنة بمراجع هندسية.</li>
+</ul>
+</div></details><details class="card" id="v12-التوأم-الرقمي"><summary><span class="tag">V12</span><span class="t">التوأم الرقمي</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> نموذج للشبكة مربوط بحالتها الحقيقية وسيناريوهات "ماذا لو".</li>
+<li><strong>النطاق:</strong> مخطط، ثم اتصال بيانات، ثم نموذج سلوك متحقق منه.</li>
+<li><strong>يعتمد على:</strong> <code>V7</code> و <code>V8</code> و <code>V11</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V12.1 النموذج المرئي:</strong> العقد والخطوط والمحابس والطلمبات. <br><span class="done">خالصة لما:</span> تغيير أي أصل بيظهر.</li>
+<li><strong>V12.2 الحالة المربوطة:</strong> المقاس والمقدر وغير المتصل وآخر تحديث. <br><span class="done">خالصة لما:</span> الأصل غير المتصل مابيظهرش شغال.</li>
+<li><strong>V12.3 ماذا لو:</strong> تغيير وعرض أثره من غير ما يلمس الحقيقة. <br><span class="done">خالصة لما:</span> السيناريو مابيغيرش الشبكة الحقيقية.</li>
+<li><strong>V12.4 إعادة الماضي:</strong> عرض البيانات التاريخية بالتسلسل. <br><span class="done">خالصة لما:</span> المستخدم يرجع لأي لحظة.</li>
+<li>
+<p><strong>V12.5 المعايرة:</strong> مقارنة توقعات النموذج بالقياسات. <br><span class="done">خالصة لما:</span> لكل نتيجة هامش خطأ مفسر.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> توأم رقمي تفاعلي.</p>
+</li>
+<li><strong>معيار القبول:</strong> نموذج متحقق من سلوك حقيقي، مش رسم.</li>
+</ul>
+</div></details><details class="card" id="v13-جودة-المياه-والتسميد"><summary><span class="tag">V13</span><span class="t">جودة المياه والتسميد</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> جودة مصدر المياه والملوحة والتسميد المرتبط بالري.</li>
+<li><strong>النطاق:</strong> استشارة الأول، والجرعات محتاجة مختص وتحاليل.</li>
+<li><strong>يعتمد على:</strong> <code>V3</code> و <code>V7</code> و <code>V8</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V13.1 مؤشرات الجودة:</strong> التحاليل لكل مصدر وصلاحيتها. <br><span class="done">خالصة لما:</span> مفيش توصية على تحليل منتهي.</li>
+<li><strong>V13.2 الملوحة:</strong> الاعتبارات الملحية ومتطلبات الغسيل. <br><span class="done">خالصة لما:</span> كل افتراض معلن.</li>
+<li><strong>V13.3 التسميد مع الري:</strong> جدولة الحقن والتوافق. <br><span class="done">خالصة لما:</span> فصل واضح بين توصية الري وتصميم الجرعات.</li>
+<li><strong>V13.4 حواجز الأمان:</strong> مفيش حقن آلي من غير تأكيد بشري. <br><span class="done">خالصة لما:</span> الحقن مايتفعلش آليًا من غير تحقق.</li>
+</ul>
+<div class="callout research"><p><strong>للبحث:</strong> طريقة متطلبات الغسيل، وحدود تحمل المحاصيل للملوحة.</p></div>
+<ul>
+<li><strong>الناتج:</strong> وحدة جودة المياه والحقن.</li>
+<li><strong>معيار القبول:</strong> مفيش جرعات تخمينية.</li>
+</ul>
+</div></details><details class="card" id="v14-المياه-والطاقة"><summary><span class="tag">V14</span><span class="t">المياه والطاقة</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> مصادر المياه وسعات الضخ والطاقة وتكلفة الري.</li>
+<li><strong>النطاق:</strong> مؤشرات الري بس.</li>
+<li><strong>يعتمد على:</strong> <code>V5</code> و <code>V7</code> و <code>V10</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V14.1 المصادر والحصص:</strong> الآبار والخزانات وأوقات الإتاحة. <br><span class="done">خالصة لما:</span> تقرير الطلب مقابل المتاح.</li>
+<li><strong>V14.2 الطاقة:</strong> الاستهلاك المقاس أو المقدر. <br><span class="done">خالصة لما:</span> فصل المقاس عن المقدر.</li>
+<li><strong>V14.3 التكلفة:</strong> الطاقة والمياه لكل قطاع وفترة. <br><span class="done">خالصة لما:</span> كل تكلفة مربوطة بتعريفة ومصدر.</li>
+<li>
+<p><strong>V14.4 جدولة بالموارد:</strong> من غير ما نتعدى قدرة الضخ وأحمال الكهربا. <br><span class="done">خالصة لما:</span> خطة من غير تعارضات.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> رؤية موحدة للمياه والطاقة.</p>
+</li>
+<li><strong>معيار القبول:</strong> متقارنة بالفواتير والعدادات.</li>
+</ul>
+</div></details><details class="card" id="v15-التنبؤ-والذكاء"><summary><span class="tag">V15</span><span class="t">التنبؤ والذكاء</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> تنبؤ مبكر مع الحفاظ على قرارات قابلة للتفسير.</li>
+<li><strong>النطاق:</strong> مش بديل عن المحرك العلمي قبل وجود بيانات كفاية.</li>
+<li><strong>يعتمد على:</strong> <code>V6</code> و <code>V8</code> و <code>V12</code></li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V15.1 خط أساس:</strong> أداء الحساب الهندسي قبل أي نموذج. <br><span class="done">خالصة لما:</span> أي نموذج بيتقارن بيه.</li>
+<li><strong>V15.2 بيانات تدريب سليمة:</strong> مؤرخة ومن غير تسريب بين التدريب والاختبار. <br><span class="done">خالصة لما:</span> التقييم زمني مش عشوائي بس.</li>
+<li><strong>V15.3 تنبؤ الاستنزاف والمخاطر:</strong> مع نطاق عدم يقين. <br><span class="done">خالصة لما:</span> تحسن مثبت قبل العرض.</li>
+<li>
+<p><strong>V15.4 اعتماد القرار:</strong> المهندس يقبل أو يرفض، والرجوع الآمن للقواعد. <br><span class="done">خالصة لما:</span> مراقبة تراجع أداء النموذج.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> طبقة تنبؤ فوق حسابات قابلة للتحقق.</p>
+</li>
+<li><strong>معيار القبول:</strong> تحسن موثق وعدم يقين معلن.</li>
+</ul>
+</div></details><details class="card" id="v16-المنتج-التجاري"><summary><span class="tag">V16</span><span class="t">المنتج التجاري</span><span class="st s-todo">لسه</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>الهدف:</strong> منصة تخدم مزارع وشركات كتير بدعم مستمر.</li>
+<li><strong>النطاق:</strong> خدمة سحابية متعددة العملاء.</li>
+<li><strong>يعتمد على:</strong> نضج الإصدارات الأساسية والتجارب الميدانية.</li>
+</ul>
+<p><strong>الخطوات:</strong></p>
+<ul>
+<li><strong>V16.1 حسابات المؤسسات:</strong> عزل العملاء والفرق والصلاحيات. <br><span class="done">خالصة لما:</span> مفيش تسرب بيانات بين مؤسستين.</li>
+<li><strong>V16.2 الاعتمادية:</strong> نسخ احتياطي واستعادة ومراقبة. <br><span class="done">خالصة لما:</span> اختبارات استعادة ناجحة.</li>
+<li><strong>V16.3 التكامل:</strong> واجهات برمجية ثابتة لأي مورد. <br><span class="done">خالصة لما:</span> تغيير مورد مابيلمسش المحرك.</li>
+<li>
+<p><strong>V16.4 تجربة عميل مدفوعة:</strong> قيمة حقيقية واستعداد للدفع. <br><span class="done">خالصة لما:</span> استخدام متكرر مثبت.</p>
+</li>
+<li>
+<p><strong>الناتج:</strong> منتج متخصص في الري قابل للانتشار.</p>
+</li>
+<li><strong>معيار القبول:</strong> طلب حقيقي مثبت وتحسين مستمر.</li>
+</ul></div></details></article>
+  <nav class="pager"><a href="product.html"><small>السابق</small>المنتج</a><a class="next" href="architecture.html"><small>التالي</small>التصميم التقني</a></nav>
+  <footer>اتعملت من <code>docs/ROADMAP.md</code> · 2026-10-18</footer>
+</main>
+</div>
+<script>
+const nav=document.getElementById('nav'),btn=document.querySelector('.menu-btn'),scrim=document.querySelector('.scrim');
+function setNav(o){document.body.classList.toggle('nav-open',o);btn.setAttribute('aria-expanded',o);scrim.hidden=!o;}
+btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-open')));
+scrim.addEventListener('click',()=>setNav(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setNav(false)});
+document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+}));
+function openHash(){const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
+  if(el){const d=el.closest('details');if(d)d.open=true;}}
+window.addEventListener('hashchange',openHash);openHash();
+document.querySelectorAll('.toc a').forEach(a=>a.addEventListener('click',()=>{const d=a.closest('details');if(d)d.open=false;}));
+const pr=document.getElementById('progress');
+function prog(){const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;pr.style.transform='scaleX('+(m>0?h.scrollTop/m:0)+')';}
+document.addEventListener('scroll',prog,{passive:true});prog();
+</script>
+</body>
+</html>

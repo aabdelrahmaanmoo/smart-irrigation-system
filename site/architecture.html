@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>التصميم التقني · Smart Irrigation System</title>
+<link rel="icon" href="design/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  color-scheme:dark;
+  --bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327; --border-strong:#34343A;
+  --text:#F2F2F3; --soft:#C4C4C8; --muted:#8E8E94;
+  --primary:#0B5FE8; --primary-text:#3D86FF;
+  --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;
+  --radius:14px; --bar:56px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--primary-text);text-underline-offset:3px}
+code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--raised);border:1px solid var(--border);padding:0 6px;border-radius:6px}
+pre{direction:ltr;text-align:left;overflow-x:auto;background:#09090B;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.7}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+:focus-visible{outline:2px solid var(--primary-text);outline-offset:2px;border-radius:6px}
+
+/* progress */
+.progress{position:fixed;inset:0 0 auto 0;height:2px;z-index:30;pointer-events:none}
+.progress i{display:block;height:100%;background:var(--primary-text);transform-origin:right;transform:scaleX(0)}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;height:calc(var(--bar) + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:12px;
+  background:rgba(11,11,13,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--text);text-decoration:none;direction:ltr;white-space:nowrap}
+.brand b{color:var(--primary-text);font-weight:800}
+.here{color:var(--muted);font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.here::before{content:"/";margin-inline-end:10px;color:var(--border-strong)}
+.menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:grid;place-items:center;flex:none}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:18px;height:2px;border-radius:2px;background:var(--text);position:relative;transition:transform .2s,background .2s}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;inset-inline-start:0}
+.menu-btn span::before{top:-6px}.menu-btn span::after{top:6px}
+.nav-open .menu-btn span{background:transparent}
+.nav-open .menu-btn span::before{transform:translateY(6px) rotate(45deg)}
+.nav-open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* side nav (drawer on mobile, sidebar on desktop) */
+.side{position:fixed;z-index:19;top:calc(var(--bar) + env(safe-area-inset-top,0px));bottom:0;right:0;width:min(300px,86vw);
+  background:var(--card);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
+  transform:translateX(100%);transition:transform .22s ease,visibility .22s;visibility:hidden}
+.nav-open .side{transform:none;visibility:visible}
+.scrim{position:fixed;inset:0;z-index:18;background:rgba(0,0,0,.55)}
+.side .grp{margin:14px 10px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.2px}
+.side .grp:first-child{margin-top:4px}
+.side a{display:flex;align-items:center;gap:10px;color:var(--soft);text-decoration:none;padding:9px 12px;border-radius:10px;font-size:15px}
+.side a::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
+.side a span{margin-inline-start:auto;color:var(--muted);font-size:13px}
+.side a:hover{background:var(--raised);color:var(--text)}
+.side a[aria-current]{background:var(--raised);color:var(--text);font-weight:700}
+
+/* page */
+.page{max-width:720px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));min-width:0}
+h1{font-size:30px;font-weight:800;line-height:1.35;margin:0 0 12px;letter-spacing:-.2px}
+h1::before{content:"";display:block;width:36px;height:4px;border-radius:4px;background:var(--accent);margin-bottom:14px}
+h1 code{background:none;border:0;padding:0;font-size:1em;font-family:inherit}
+.lead{color:var(--soft);font-size:17px;line-height:1.85;margin-bottom:18px}
+.lead p{margin:0}
+.content{min-width:0}
+.content h2{font-size:22px;font-weight:800;margin:44px 0 12px;padding-top:18px;border-top:1px solid var(--border)}
+.content>h2:first-child{margin-top:12px;border-top:0;padding-top:0}
+.content h3{font-size:17px;font-weight:700;margin:24px 0 8px}
+.content p{margin:12px 0}
+.content ul,.content ol{padding-inline-start:22px;margin:10px 0;display:grid;gap:8px}
+.content li::marker{color:var(--muted)}
+.content li p{margin:0}
+.content strong{color:var(--text);font-weight:700}
+.content hr{border:0;border-top:1px solid var(--border);margin:28px 0}
+h2.sec{font-size:18px;font-weight:800;margin:30px 0 10px}
+
+/* home */
+.docs{display:grid;gap:10px;margin:0 0 8px}
+.doc{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;text-decoration:none;color:var(--text);
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;transition:border-color .15s,background .15s}
+.doc:hover{border-color:var(--border-strong);background:#17171A}
+.doc .n{grid-row:span 2;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--c);
+  background:color-mix(in srgb,var(--c) 14%,transparent);direction:ltr}
+.doc b{font-size:16px}
+.doc .d{color:var(--muted);font-size:14px;line-height:1.6}
+.now{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:4px 0 6px;display:grid;gap:12px}
+.now-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.now-h b{font-size:16px}
+.now-h span{color:var(--muted);font-size:14px}
+.strip{display:grid;grid-template-columns:repeat(17,1fr);gap:3px}
+.strip i{height:10px;border-radius:3px;background:var(--raised)}
+.strip i.s-done{background:var(--ok)} .strip i.s-doing{background:var(--primary-text)} .strip i.s-next{background:var(--warn)}
+.now-r{display:flex;justify-content:space-between;gap:12px;font-size:15px;border-top:1px solid var(--border);padding-top:10px}
+.now-r span{color:var(--muted);flex:none}
+.now-r b{text-align:end;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 12px;font-size:13px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-inline-end:6px}
+
+/* toc */
+.toc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:12px 0 8px}
+.toc summary{cursor:pointer;padding:12px 16px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.toc summary::-webkit-details-marker{display:none}
+.toc summary::after{content:"";width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s}
+.toc[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.toc nav{display:grid;padding:0 8px 10px}
+.toc nav a{color:var(--soft);text-decoration:none;padding:7px 10px;border-radius:8px;font-size:15px}
+.toc nav a:hover{background:var(--raised);color:var(--text)}
+
+/* tables */
+.scroll{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:var(--card)}
+th,td{padding:10px 12px;text-align:start;vertical-align:top;border-bottom:1px solid var(--border);min-width:100px}
+th{background:var(--raised);font-weight:700;white-space:nowrap;color:var(--soft);font-size:13.5px}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#17171A}
+
+/* callouts */
+.callout{border-radius:12px;padding:12px 16px;margin:14px 0;background:color-mix(in srgb,var(--c,var(--primary-text)) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c,var(--primary-text)) 28%,transparent);font-size:15px}
+.callout p{margin:0}
+.callout>p+p{margin-top:6px}
+.callout strong:first-child{color:var(--c,var(--primary-text))}
+.callout.rule{--c:var(--ok)} .callout.research{--c:var(--warn)} .callout.proposal{--c:var(--other)} .callout.note{--c:var(--primary-text)}
+
+/* collapsible cards */
+.tools{display:flex;gap:8px;margin:16px 0 6px}
+.tools button{font:inherit;font-size:14px;font-weight:600;color:var(--soft);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px 14px;cursor:pointer}
+.tools button:hover{color:var(--text);border-color:var(--border-strong)}
+details.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;transition:border-color .15s}
+details.card[open]{border-color:var(--border-strong)}
+details.card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:52px}
+details.card summary::-webkit-details-marker{display:none}
+details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:7px;padding:1px 8px;font-size:13.5px;flex:none}
+details.card .t{font-weight:700;flex:1;line-height:1.5}
+details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
+details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
+.st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
+.st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.st.s-doing{background:color-mix(in srgb,var(--primary-text) 18%,transparent);color:var(--primary-text)}
+.st.s-next{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.done{color:var(--ok);font-size:14px;font-weight:700}
+.done::before{content:"✓ "}
+
+/* pager + footer */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:44px}
+.pager a{display:grid;gap:2px;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-weight:700}
+.pager a:hover{border-color:var(--border-strong)}
+.pager a small{color:var(--muted);font-weight:400;font-size:13px}
+.pager a.next{text-align:end}
+footer{margin-top:26px;color:var(--muted);font-size:13px}
+
+.standalone .menu-btn,.standalone .side,.standalone .pager,.standalone footer{display:none}
+@media (min-width:720px){
+  h1{font-size:36px}
+  .docs{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1080px){
+  .menu-btn{display:none}
+  .layout{display:grid;grid-template-columns:260px minmax(0,1fr)}
+  .side{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));height:calc(100vh - var(--bar));width:auto;transform:none;visibility:visible;
+    background:transparent;border-left:1px solid var(--border)}
+  .scrim{display:none}
+  .standalone .layout{display:block}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}</style>
+</head>
+<body class="" style="--accent:var(--other)">
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+<header class="bar">
+  <a class="brand" href="index.html"><img src="design/logo-mark-white.png" alt="" width="26" height="26"><span>Smart <b>Irrigation</b></span></a>
+  <span class="here">التصميم التقني</span>
+  <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
+</header>
+<div class="layout">
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--ok)">خارطة البناء</a><a href="architecture.html" aria-current="page" style="--c:var(--other)">التصميم التقني</a><a href="domain.html" style="--c:var(--rain)">علم الري</a><a href="market.html" style="--c:var(--warn)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--ok)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--rain)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<div class="scrim" hidden></div>
+<main class="page">
+  <h1>التصميم التقني</h1>
+  <div class="lead"><p>بنبني المنصة إزاي. قبل أي كود جديد، اتأكد إنه مش بيكسر حاجة هنا. وأي تغيير هنا يتسجل كقرار في <a href="journey.html">رحلة المشروع</a>.</p></div>
+  
+  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#الحالة">الحالة</a><a href="#طريقة-البناء">طريقة البناء</a><a href="#الأدوات-والتقنيات">الأدوات والتقنيات</a><a href="#قرارات-الأساس">قرارات الأساس</a><a href="#سلم-التحكم">سلم التحكم</a><a href="#نموذج-البيانات">نموذج البيانات</a><a href="#السلامة-والأمان">السلامة والأمان</a><a href="#شكل-الفولدرات">شكل الفولدرات</a></nav></details>
+  
+  <article class="content">
+<h2 id="الحالة">الحالة</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>البند</th>
+<th>الحالة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>طريقة البناء: موديولات وطبقات</td>
+<td>معتمد، قرار رقم 1</td>
+</tr>
+<tr>
+<td>اللغة <code>C#</code> و <code>.NET</code></td>
+<td>معتمد، قرار رقم 5</td>
+</tr>
+<tr>
+<td>قاعدة البيانات والواجهة</td>
+<td>مقترح، محتاج اعتماد</td>
+</tr>
+<tr>
+<td>العقل مش الهاردوير، والتحكم لأدق مستوى</td>
+<td>معتمد، قرار رقم 4</td>
+</tr>
+<tr>
+<td>باقي قرارات الأساس</td>
+<td>مقترح، محتاج اعتماد</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="طريقة-البناء">طريقة البناء</h2>
+<p>برنامج واحد مقسوم لموديولات بحدود واضحة <code>Modular Monolith</code>، وجوه كل موديول تلات طبقات:</p>
+<pre dir="ltr"><code class="language-text">routes  ←  services  ←  database
+</code></pre>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>الطبقة</th>
+<th>مسؤولة عن</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الروابط <code>routes</code></td>
+<td>استقبال الطلب والرد عليه، من غير منطق</td>
+</tr>
+<tr>
+<td>المنطق <code>services</code></td>
+<td>الحسابات والقواعد والقرارات</td>
+</tr>
+<tr>
+<td>البيانات <code>database</code></td>
+<td>القراءة والكتابة في قاعدة البيانات</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>القواعد:</strong></p>
+<ol>
+<li>في موديول أساس <code>Core</code>، وكل الموديولات بتعتمد عليه.</li>
+<li>الموديول مايقراش جداول موديول تاني، بس من خلال دوال عامة في طبقة المنطق.</li>
+<li>كل موديول ليه جداوله وشاشاته وروابطه في فولدر واحد.</li>
+<li>كل طبقة بتكلم اللي تحتها بس.</li>
+<li>محرك الحسابات يتختبر من غير ويب ولا قاعدة بيانات.</li>
+<li>مفيش موديول جديد إلا لما اللي قبله يبقى شغال ومختبر.</li>
+</ol>
+<h2 id="الأدوات-والتقنيات">الأدوات والتقنيات</h2>
+<div class="callout note"><p><strong>ملحوظة:</strong> اللغة معتمدة في قرار رقم 5. باقي الجدول مقترح.</p></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>الجزء</th>
+<th>الاختيار</th>
+<th>من إمتى</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>اللغة والمحرك</td>
+<td><code>C#</code> و <code>.NET</code> مع <code>xUnit</code></td>
+<td><code>V0</code></td>
+</tr>
+<tr>
+<td>الخادم</td>
+<td><code>ASP.NET Core Web API</code></td>
+<td><code>V1</code></td>
+</tr>
+<tr>
+<td>قاعدة البيانات</td>
+<td><code>PostgreSQL</code> مع <code>Entity Framework Core</code></td>
+<td><code>V1</code></td>
+</tr>
+<tr>
+<td>الواجهة</td>
+<td><code>React</code> مع <code>TypeScript</code>، وموبايل أولًا</td>
+<td><code>V1</code></td>
+</tr>
+<tr>
+<td>الطقس</td>
+<td>موصل قابل للاستبدال مع تخزين مؤقت</td>
+<td><code>V2</code></td>
+</tr>
+<tr>
+<td>الأجهزة</td>
+<td>محاكاة، ثم موصلات للحساسات والكنترولرات</td>
+<td><code>V8</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout research"><p><strong>للبحث:</strong> إصدار <code>.NET</code> طويل الدعم وقت البدء.</p></div>
+<h2 id="قرارات-الأساس">قرارات الأساس</h2>
+<div class="callout proposal"><p><strong>مقترح:</strong> القرارات دي، ماعدا اللي مكتوب جنبه معتمد، هي اللي بتخلي المنصة تقدر تغطي أي طريقة ري وأي حجم مزرعة وأي جهاز، من غير ما نعيد البناء بعدين.</p></div>
+<h3 id="هيكل-مزرعة-واحد-لأي-حجم">هيكل مزرعة واحد لأي حجم</h3>
+<ul>
+<li>منظمة ← مزرعة ← حقل ← قطاع ري ← خطوط ونقاطات أو رشاشات.</li>
+<li>مزرعة صغيرة وشركة كبيرة نفس الهيكل، الفرق في العدد.</li>
+<li>كل سجل مربوط بمنظمة من أول يوم، لأن إضافتها بعدين مكلفة جدًا.</li>
+</ul>
+<h3 id="طريقة-الري-قالب">طريقة الري قالب</h3>
+<ul>
+<li>المحرك بيحسب عمق المياه المطلوب بس، ومايعرفش حاجة عن الري.</li>
+<li>كل طريقة ري ليها قالب بيحول العمق لتشغيل: معدل الإضافة والكفاءة والقيود.</li>
+<li>طريقة جديدة = قالب جديد، والمحرك مايتلمسش.</li>
+</ul>
+<h3 id="كل-قيمة-معاها-مصدرها-وثقتها">كل قيمة معاها مصدرها وثقتها</h3>
+<ul>
+<li>أي قيمة بتتسجل بمصدرها: مقاس، أو مقدر، أو افتراضي، أو إدخال مستخدم، وتاريخها.</li>
+<li>المحرك بينقل الثقة للنتيجة، وبيقول ليه الثقة قليلة.</li>
+<li>ده اللي بيخلي المنصة تشتغل من غير أجهزة، وتتحسن لما تتضاف.</li>
+</ul>
+<h3 id="الأجهزة-ورا-طبقة-وسيطة">الأجهزة ورا طبقة وسيطة</h3>
+<ul>
+<li>قلب المنصة يعرف "قراءة رطوبة" و"محبس"، ومايعرفش الشركة ولا البروتوكول.</li>
+<li>كل نوع جهاز ليه موصل لوحده، وإضافة موصل مابتلمسش باقي المنصة.</li>
+</ul>
+<h3 id="القرار-غير-الأمر-غير-التنفيذ">القرار غير الأمر غير التنفيذ</h3>
+<ul>
+<li>التوصية: المنصة اقترحت إيه.</li>
+<li>الأمر: حد وافق وبعت تشغيل.</li>
+<li>التنفيذ: اللي حصل فعلًا في الحقل.</li>
+<li>التلاتة متسجلين منفصلين، ومستوى الأوتوميشن إعداد لكل مزرعة.</li>
+</ul>
+<h3 id="الأمان-في-الحقل-مش-في-السحابة">الأمان في الحقل مش في السحابة</h3>
+<ul>
+<li>المنصة بتبعت جدول للكنترولر، والكنترولر بينفذ لوحده لو النت قطع.</li>
+<li>حدود الأمان جوه الكنترولر نفسه.</li>
+</ul>
+<h3 id="إحنا-العقل-مش-الهاردوير">إحنا العقل مش الهاردوير</h3>
+<ul>
+<li>مانصنعش أجهزة. بنتوصل باللي في السوق. ده معتمد في قرار رقم 4.</li>
+</ul>
+<h3 id="الأرض-خريطة-مش-قايمة-قطاعات">الأرض خريطة مش قايمة قطاعات</h3>
+<ul>
+<li>كل حقل متسجل بحدوده الحقيقية، ومعاه العوائق زي الحيطان والطرق، ومكان كل رشاش أو مخرج مياه.</li>
+<li>العقل بيطلع <strong>خريطة احتياج</strong>: كل حتة في الأرض محتاجة كام مياه وإمتى.</li>
+<li>ده شرط للتحكم الدقيق في قرار رقم 4، ولازم يبقى من أول <code>V1</code> لأن إضافته بعدين مكلفة جدًا.</li>
+</ul>
+<h3 id="الأجهزة-بتعلن-قدراتها،-ومخطط-التشغيل-منفصل-عن-العقل">الأجهزة بتعلن قدراتها، ومخطط التشغيل منفصل عن العقل</h3>
+<ul>
+<li>كل جهاز بيعلن هو يقدر يعمل إيه: تشغيل وإيقاف، أو فتح بنسبة، أو ضغط، أو مدى حسب الزاوية، أو تحكم في كل مخرج.</li>
+<li><strong>مخطط التشغيل</strong> بياخد خريطة الاحتياج، ويحولها لأوامر في حدود قدرات الأجهزة المتاحة، من غير ما يكسر حدود الأمان: التدريج في قفل المحابس، وتوزيع الضغط على الشبكة.</li>
+<li>كده نفس المنصة تشتغل مع مزرعة فيها محبس واحد، ومع مزرعة فيها تحكم في كل رشاش.</li>
+</ul>
+<h2 id="سلم-التحكم">سلم التحكم</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>المستوى</th>
+<th>بنتحكم في إيه</th>
+<th>محتاج إيه في الحقل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>القطاع</td>
+<td>تشغيل وإيقاف كل قطاع ومدته</td>
+<td>محبس لكل قطاع وكنترولر</td>
+</tr>
+<tr>
+<td>الطلمبة والضغط</td>
+<td>ضغط الشبكة والكمية الكلية</td>
+<td>مغير سرعة للطلمبة وحساس ضغط</td>
+</tr>
+<tr>
+<td>الري المتقطع</td>
+<td>الكمية في الدقيقة بالتشغيل والإيقاف المتكرر</td>
+<td>نفس محابس القطاعات</td>
+</tr>
+<tr>
+<td>داخل القطاع</td>
+<td>أجزاء من القطاع كل واحد بكميته</td>
+<td>محابس أكتر</td>
+</tr>
+<tr>
+<td>المخرج الواحد</td>
+<td>كل رشاش أو مخرج لوحده</td>
+<td>محبس لكل مخرج</td>
+</tr>
+<tr>
+<td>المدى والزاوية</td>
+<td>الضغط والمدى بيتغيروا مع زاوية الرشاش</td>
+<td>محبس ضغط سريع وحساس زاوية لكل رشاش</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout note"><p><strong>ملحوظة:</strong> آخر مستوى نادر كمنتج جاهز. المنصة بتتصمم جاهزة ليه، وبتشتغل بأي مستوى الأجهزة تسمح بيه.</p></div>
+<h3 id="عربي-ومحلي-من-الأساس">عربي ومحلي من الأساس</h3>
+<ul>
+<li>اللغة واتجاه الكتابة، ووحدات زي الفدان والقيراط، والمحاصيل والتربة المصرية، من أول يوم.</li>
+</ul>
+<h2 id="نموذج-البيانات">نموذج البيانات</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>المجموعة</th>
+<th>أمثلة</th>
+<th>ليه</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المستخدمين</td>
+<td>المنظمات، والمستخدمين، والأدوار، وسجلات التدقيق</td>
+<td>الصلاحيات وعزل البيانات</td>
+</tr>
+<tr>
+<td>المزرعة</td>
+<td>المزارع، والحقول، والقطاعات، والمحاصيل، والمواسم، والتربة</td>
+<td>تعريف كل قطاع</td>
+</tr>
+<tr>
+<td>الشبكة</td>
+<td>المصادر، والطلمبات، والمواسير، والمحابس، والنقاطات</td>
+<td>تحويل المياه لتشغيل</td>
+</tr>
+<tr>
+<td>الطقس والتربة</td>
+<td>الطقس، والتوقعات، وحالة مياه التربة</td>
+<td>التغير اليومي</td>
+</tr>
+<tr>
+<td>القرار والتنفيذ</td>
+<td>التوصيات، والأوامر، وعمليات الري، وتعديلات المهندس</td>
+<td>الفرق بين المخطط والمنفذ</td>
+</tr>
+<tr>
+<td>الأجهزة</td>
+<td>الأجهزة، والقراءات، والإنذارات، وعلامات الجودة</td>
+<td>مقارنة المتوقع بالمقاس</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>كل قيمة مهمة بتتخزن ومعاها:</strong> المصدر، والتاريخ، والوحدة، ودرجة الثقة. وكل توصية بتحفظ مدخلاتها ونسخة الخوارزمية اللي حسبتها، علشان أي نتيجة قديمة تتعاد.</p>
+<h2 id="السلامة-والأمان">السلامة والأمان</h2>
+<ul>
+<li><strong>الحسابات:</strong> رفض القيم غير الصالحة، وتوحيد الوحدات، وإيقاف التوصية لو البيانات مش كفاية.</li>
+<li><strong>التحكم:</strong> صلاحية صريحة، وحد للمدة، وإيقاف يدوي، وإيقاف الأوامر الآلية لو الحساس فشل.</li>
+<li><strong>الخصوصية:</strong> عزل بيانات العملاء، وتشفير الاتصال، وحماية الأسرار، ونسخ احتياطي.</li>
+<li><strong>جودة البيانات:</strong> مراقبة الشذوذ والانقطاع، وإظهار حالة الاتصال.</li>
+</ul>
+<h2 id="شكل-الفولدرات">شكل الفولدرات</h2>
+<pre dir="ltr"><code class="language-text">IrrigationPlatform/
+  src/
+    Core/          # organizations, farms, fields, zones, users
+    Irrigation/    # engine, water balance, method templates, scheduling
+    Weather/       # weather and satellite adapters
+    Operations/    # commands, irrigation events, reports
+    Network/       # assets and hydraulics (later)
+    Devices/       # sensor and controller adapters (later)
+    WebApi/        # HTTP endpoints
+  tests/           # unit, integration, reference cases
+</code></pre>
+<div class="callout note"><p><strong>ملحوظة:</strong> ده شكل النهاية. بداية <code>V0</code> مشروع واحد بسيط.</p></div></article>
+  <nav class="pager"><a href="roadmap.html"><small>السابق</small>خارطة البناء</a><a class="next" href="domain.html"><small>التالي</small>علم الري</a></nav>
+  <footer>اتعملت من <code>docs/ARCHITECTURE.md</code> · 2026-10-18</footer>
+</main>
+</div>
+<script>
+const nav=document.getElementById('nav'),btn=document.querySelector('.menu-btn'),scrim=document.querySelector('.scrim');
+function setNav(o){document.body.classList.toggle('nav-open',o);btn.setAttribute('aria-expanded',o);scrim.hidden=!o;}
+btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-open')));
+scrim.addEventListener('click',()=>setNav(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setNav(false)});
+document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+}));
+function openHash(){const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
+  if(el){const d=el.closest('details');if(d)d.open=true;}}
+window.addEventListener('hashchange',openHash);openHash();
+document.querySelectorAll('.toc a').forEach(a=>a.addEventListener('click',()=>{const d=a.closest('details');if(d)d.open=false;}));
+const pr=document.getElementById('progress');
+function prog(){const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;pr.style.transform='scaleX('+(m>0?h.scrollTop/m:0)+')';}
+document.addEventListener('scroll',prog,{passive:true});prog();
+</script>
+</body>
+</html>

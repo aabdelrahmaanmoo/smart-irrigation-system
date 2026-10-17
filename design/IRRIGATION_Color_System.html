@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Irrigation — نظام الألوان v5</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327;
+  --text:#F2F2F3; --muted:#8E8E94;
+  --primary:#0B5FE8; --primary-text:#3D86FF;
+  --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E;
+  --chart-plan:#2F6FC4; --chart-applied:#2E8E61; --chart-sun:#B98A27; --chart-rain:#1FA3B8; --chart-other:#9646EF;
+  --grid:#26262A; --code:#0F0F11;
+}
+[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F6F8FC; --card:#FFFFFF; --raised:#EEF2F9; --border:#D9E0EC;
+  --text:#12161F; --muted:#5A6577;
+  --primary:#0B5FE8; --primary-text:#0B5FE8;
+  --ok:#1E8A5A; --warn:#B7791F; --danger:#D14343;
+  --chart-plan:#2664B3; --chart-applied:#2E8E61; --chart-sun:#B8841F; --chart-rain:#1B9DB5; --chart-other:#7B3FE4;
+  --grid:#E3E8F1; --code:#EEF2F9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.8 Cairo,Tahoma,Arial,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(26px,4vw,36px);font-weight:800;line-height:1.4}
+h2{font-size:20px;font-weight:800;margin-bottom:4px}
+h3{font-size:15px;font-weight:700}
+.lead{color:var(--muted);margin-top:8px;max-width:62ch}
+section{margin-top:40px}
+.hint{color:var(--muted);font-size:13px;margin-bottom:14px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;direction:ltr}
+.brand img{width:34px;height:34px}
+.brand b{color:var(--primary-text)}
+.tog{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card)}
+.tog button{font:inherit;font-size:14px;font-weight:700;padding:6px 16px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tog button[aria-pressed="true"]{background:var(--primary);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sw{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;text-align:start;color:inherit;font:inherit;cursor:pointer;min-width:0}
+.sw:hover{border-color:var(--muted)}
+.sw:focus-visible,.tog button:focus-visible,.btn:focus-visible{outline:2px solid var(--primary-text);outline-offset:2px}
+.chip{height:64px;border-radius:8px;background:var(--c);border:1px solid var(--border)}
+.sw b{display:block;font-size:13px;margin-top:8px}
+.sw small{display:block;color:var(--muted);font-size:12px}
+.hex{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted)}
+.preview{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;display:grid;gap:18px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.top p{color:var(--muted);font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--raised);border-radius:10px;padding:12px 14px}
+.stat small{color:var(--muted);font-size:12px;display:block}
+.stat strong{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-size:14px;font-weight:700;border-radius:9px;padding:8px 16px;cursor:pointer;border:1px solid transparent}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.ghost{background:transparent;color:var(--primary-text);border-color:var(--border)}
+.alerts{display:grid;gap:8px}
+.alert{display:flex;gap:10px;align-items:center;background:var(--raised);border-radius:10px;padding:10px 14px;font-size:14px;border-inline-start:3px solid var(--c)}
+.alert>span:last-child{color:var(--muted);font-size:13px;margin-inline-start:auto}
+.chart{overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:460px;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-inline-end:6px;vertical-align:middle}
+.rules{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.rules li{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--muted)}
+.rules b{color:var(--text)}
+.codehead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+pre{direction:ltr;text-align:left;margin:0;overflow:auto;background:var(--code);border:1px solid var(--border);border-radius:10px;padding:16px;font:12.5px/1.8 ui-monospace,Consolas,monospace;color:var(--muted)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,80px);background:var(--raised);color:var(--text);border:1px solid var(--border);padding:8px 16px;border-radius:9px;opacity:0;transition:.2s;pointer-events:none}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:40px;color:var(--muted);font-size:12px}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar">
+  <div class="brand"><img id="logo" src="logo-mark-white.png" alt="" width="34" height="34"><span>Smart <b>Irrigation</b></span></div>
+  <div class="tog" role="group" aria-label="الوضع"><button type="button" data-t="dark" aria-pressed="true">داكن</button><button type="button" data-t="light" aria-pressed="false">فاتح</button></div>
+</div>
+
+<header>
+  <h1>نظام ألوان المنصة</h1>
+  <p class="lead">وضعين: داكن وفاتح. الأزرق من اللوجو للتفاعل، وألوان الحالة للتنبيهات بس، وللرسوم البيانية خمس ألوان ثابتة المعنى. اضغط على أي لون علشان تنسخ كوده.</p>
+</header>
+
+<section><h2>ألوان الواجهة</h2><p class="hint">ثمانية ألوان لكل الواجهة.</p><div class="grid" id="ui"></div></section>
+<section><h2>ألوان الحالة</h2><p class="hint">للتنبيهات والمؤشرات فقط، ودايمًا معاها كلمة أو أيقونة.</p><div class="grid" id="status"></div></section>
+<section><h2>ألوان الرسوم البيانية</h2><p class="hint">كل لون مربوط بمعنى ثابت في الري، والمستخدم يفهم الرسم من غير ما يبص على المفتاح. اتفحصت بأداة التحقق على خلفية كل وضع.</p><div class="grid" id="charts"></div></section>
+
+<section>
+  <h2>شكلها في الواجهة</h2>
+  <p class="hint">مثال لكارت حقل في لوحة التحكم، بأرقام توضيحية.</p>
+  <div class="preview">
+    <div class="top">
+      <div><h3>حقل الطماطم ١</h3><p>رملية طميية · تنقيط · منتصف الموسم</p></div>
+      <span class="pill" style="--c:var(--warn)">يحتاج ري النهارده</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><small>الاحتياج النهارده</small><strong>21.7 م³</strong></div>
+      <div class="stat"><small>مدة التشغيل</small><strong>87 دقيقة</strong></div>
+      <div class="stat"><small>رطوبة التربة</small><strong>62%</strong></div>
+    </div>
+    <div class="btns"><button class="btn primary" type="button">اعتماد التوصية</button><button class="btn ghost" type="button">تفاصيل الحساب</button></div>
+    <div class="alerts">
+      <div class="alert" style="--c:var(--ok)"><span class="pill" style="--c:var(--ok)">طبيعي</span><span>القطاع الأول شغال طبيعي</span><span>منذ ٥ دقائق</span></div>
+      <div class="alert" style="--c:var(--warn)"><span class="pill" style="--c:var(--warn)">تنبيه</span><span>الاستنزاف قرب من الحد المسموح</span><span>منذ ساعة</span></div>
+      <div class="alert" style="--c:var(--danger)"><span class="pill" style="--c:var(--danger)">خطر</span><span>انخفاض ضغط في القطاع التاني</span><span>منذ ٣ ساعات</span></div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:8px">المياه خلال الأسبوع</h3>
+      <div class="chart"><svg id="bars" viewBox="0 0 560 200" role="img" aria-label="أعمدة المياه الموصى بها والمنفذة والمطر لمدة سبعة أيام"></svg></div>
+      <div class="legend"><span><i style="--c:var(--chart-plan)"></i>الموصى بيه</span><span><i style="--c:var(--chart-applied)"></i>المنفذ فعلًا</span><span><i style="--c:var(--chart-rain)"></i>المطر</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>القواعد</h2>
+  <ul class="rules">
+    <li><b>الخلفيات محايدة.</b> المساحات الكبيرة سودا (داكن) أو بيضا مزرقة (فاتح)، ومفيش كارت ملون بالكامل.</li>
+    <li><b>الأزرق للتفاعل بس.</b> الأزرار والروابط والاختيار، وهو نفس أزرق اللوجو.</li>
+    <li><b>ألوان الحالة ليها معنى ثابت.</b> الأخضر طبيعي، والأصفر تنبيه، والأحمر خطر. ومعاها كلمة، مش اللون لوحده.</li>
+    <li><b>لون الرسم ليه معنى.</b> المطر دايمًا سماوي، والبخر والحرارة دايمًا أصفر، والمنفذ أخضر، والموصى به أزرق. البنفسجي لسلسلة تانية بس.</li>
+    <li><b>خمس ألوان حد أقصى في الرسم.</b> أكتر من كده: قسّم الرسم أو اجمع الباقي تحت "أخرى".</li>
+    <li><b>الأخضر والأصفر مايتحطوش جنب بعض في الرسم من غير فاصل.</b> قريبين على مرضى عمى الألوان، فحط مسافة بينهم ومفتاح ألوان وجدول أرقام.</li>
+    <li><b>النص أبيض أو رمادي (داكن)، وأسود أو رمادي (فاتح).</b> مفيش فقرات ملونة.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="codehead"><h2>الأكواد الجاهزة</h2><button class="btn ghost" type="button" id="copyAll">نسخ الكل</button></div>
+  <pre id="code"></pre>
+</section>
+<footer>نظام الألوان · الإصدار الخامس · الاسم واللوجو: قرار رقم 6</footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+const T={
+dark:{ui:[['الخلفية','--bg','#0B0B0D','خلفية الصفحة'],['الكارت','--card','#141416','الكروت والقائمة الجانبية'],['المرتفع','--raised','#1C1C1F','عناصر جوه الكارت'],['الحدود','--border','#232327','الخطوط والفواصل'],['النص','--text','#F2F2F3','النص الأساسي'],['النص الثانوي','--muted','#8E8E94','الشرح والتواريخ'],['الأزرق','--primary','#0B5FE8','الأزرار'],['الأزرق للنص','--primary-text','#3D86FF','الروابط والنص الأزرق']],
+ st:[['طبيعي','--ok','#34B27B','كل حاجة تمام'],['تنبيه','--warn','#E0B04A','محتاج انتباه'],['خطر','--danger','#E5706E','عطل أو مشكلة']],
+ ch:[['الموصى بيه','--chart-plan','#2F6FC4','حسابات البرنامج'],['المنفذ فعلًا','--chart-applied','#2E8E61','الري اللي اتعمل'],['البخر والحرارة','--chart-sun','#B98A27','الشمس والبخر نتح'],['المطر','--chart-rain','#1FA3B8','المطر والمياه الطبيعية'],['أي سلسلة تانية','--chart-other','#9646EF','لو محتاجين لون زيادة']],logo:'logo-mark-white.png'},
+light:{ui:[['الخلفية','--bg','#F6F8FC','خلفية الصفحة'],['الكارت','--card','#FFFFFF','الكروت والقائمة الجانبية'],['المرتفع','--raised','#EEF2F9','عناصر جوه الكارت'],['الحدود','--border','#D9E0EC','الخطوط والفواصل'],['النص','--text','#12161F','النص الأساسي'],['النص الثانوي','--muted','#5A6577','الشرح والتواريخ'],['الأزرق','--primary','#0B5FE8','الأزرار'],['الأزرق للنص','--primary-text','#0B5FE8','الروابط والنص الأزرق']],
+ st:[['طبيعي','--ok','#1E8A5A','كل حاجة تمام'],['تنبيه','--warn','#B7791F','محتاج انتباه'],['خطر','--danger','#D14343','عطل أو مشكلة']],
+ ch:[['الموصى بيه','--chart-plan','#2664B3','حسابات البرنامج'],['المنفذ فعلًا','--chart-applied','#2E8E61','الري اللي اتعمل'],['البخر والحرارة','--chart-sun','#B8841F','الشمس والبخر نتح'],['المطر','--chart-rain','#1B9DB5','المطر والمياه الطبيعية'],['أي سلسلة تانية','--chart-other','#7B3FE4','لو محتاجين لون زيادة']],logo:'logo-mark-blue.png'}};
+const $=id=>document.getElementById(id);
+const card=([n,t,h,u])=>`<button class="sw" type="button" data-copy="${h}" aria-label="نسخ ${h}"><div class="chip" style="--c:${h}"></div><b>${n}</b><small>${u}</small><span class="hex">${h}</span></button>`;
+const line=([n,t,h])=>`  ${t}: ${h};`;
+let theme='dark',code='';
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function render(){
+  const d=T[theme];
+  $('ui').innerHTML=d.ui.map(card).join('');$('status').innerHTML=d.st.map(card).join('');$('charts').innerHTML=d.ch.map(card).join('');
+  $('logo').src=d.logo;
+  const sel=theme==='dark'?':root, [data-theme="dark"]':'[data-theme="light"]';
+  code=`${sel} {\n  color-scheme: ${theme};\n\n  /* Surfaces */\n${d.ui.slice(0,4).map(line).join('\n')}\n\n  /* Text */\n${d.ui.slice(4,6).map(line).join('\n')}\n\n  /* Interactive */\n${d.ui.slice(6).map(line).join('\n')}\n\n  /* Status */\n${d.st.map(line).join('\n')}\n\n  /* Charts (fixed meaning) */\n${d.ch.map(line).join('\n')}\n}`;
+  $('code').textContent=code;
+  document.querySelectorAll('.tog button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===theme));
+  bars();
+}
+function setTheme(t){theme=t;document.documentElement.dataset.theme=t;try{localStorage.setItem('si-theme',t)}catch(e){}render()}
+document.querySelectorAll('.tog button').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.t)));
+let t0;function toast(m){const el=$('toast');el.textContent=m;el.classList.add('show');clearTimeout(t0);t0=setTimeout(()=>el.classList.remove('show'),1600)}
+async function copy(v){try{await navigator.clipboard.writeText(v);toast('اتنسخ: '+(v.length<10?v:'كل الأكواد'))}catch(e){toast('انسخ الكود يدويًا')}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(b)copy(b.dataset.copy)});
+$('copyAll').addEventListener('click',()=>copy(code));
+function bars(){
+  const svg=$('bars'),W=560,H=210,L=34,B=30,T0=26,max=30;
+  const days=['سبت','أحد','اتنين','تلات','أربع','خميس','جمعة'];
+  const rec=[22,21,0,23,24,0,22],act=[21,22,0,20,24,0,0],rain=[0,0,6,0,0,9,0];
+  const y=v=>H-B-(H-B-T0)*v/max,gw=(W-L-10)/7,bw=14,mu=css('--muted'),gr=css('--grid');
+  let s='';
+  [0,10,20,30].forEach(v=>{s+=`<line x1="${L}" x2="${W-10}" y1="${y(v)}" y2="${y(v)}" stroke="${gr}"/><text x="${L-8}" y="${y(v)+4}" fill="${mu}" font-size="11" text-anchor="end" font-family="Cairo">${v}</text>`});
+  days.forEach((d,i)=>{
+    const x0=W-10-gw*(i+1)+gw/2-bw*1.5-2;
+    [[rec[i],'--chart-plan'],[act[i],'--chart-applied'],[rain[i],'--chart-rain']].forEach(([v,c],j)=>{if(v>0)s+=`<rect x="${x0+j*(bw+2)}" y="${y(v)}" width="${bw}" height="${y(0)-y(v)}" rx="3" fill="${css(c)}"/>`});
+    s+=`<text x="${W-10-gw*(i+0.5)}" y="${H-8}" fill="${mu}" font-size="11" text-anchor="middle" font-family="Cairo">${d}</text>`;
+  });
+  s+=`<text x="${L-8}" y="12" fill="${mu}" font-size="11" text-anchor="end" font-family="Cairo">م³</text>`;
+  svg.innerHTML=s;
+}
+let saved=null;try{saved=localStorage.getItem('si-theme')}catch(e){}
+setTheme(saved||'dark');
+</script>
+</body>
+</html>
