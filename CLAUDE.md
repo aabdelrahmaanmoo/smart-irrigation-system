@@ -40,6 +40,12 @@ After every decision or anything built, update the docs in the same turn:
 - Use the current date for every entry.
 - Update existing sections instead of duplicating information. Link instead of copying.
 
+## Git Push (Mandatory)
+- Every change to any file in the repo is committed and pushed to `origin main` in the same turn, right after the docs update and `python tools/build_docs.py`.
+- Never end a turn with uncommitted or unpushed changes.
+- Commit message: short, says what changed. Never force-push.
+- If the push fails, say so in the reply. Don't claim it is on GitHub.
+
 ## HTML Pages
 - Every doc has a mobile-first HTML page generated into `site/`.
 - After editing any `.md` file, run `python tools/build_docs.py`.
