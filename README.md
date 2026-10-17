@@ -17,6 +17,11 @@
 | [رحلة المشروع](docs/JOURNEY.md) | إيه اللي اتقرر وحصل؟ | تسأل "ليه عملنا كده؟" أو تجهز عرض |
 | [الحالات المرجعية](reference-cases/README.md) | الحسابات صح؟ | تضيف أو تختبر حساب |
 
+## روابط
+
+- **صفحات المشروع:** https://aabdelrahmaanmoo.github.io/smart-irrigation-system/
+- **الريبو:** https://github.com/aabdelrahmaanmoo/smart-irrigation-system
+
 ## لو انت جديد في الفريق
 
 1. اقرا **المنتج** كله.
