@@ -7,6 +7,7 @@
 | Question | File |
 |---|---|
 | What are we building, for whom | `docs/PRODUCT.md` |
+| What the team should learn, task split | `docs/TEAM.md` |
 | Build order, version steps, done criteria | `docs/ROADMAP.md` |
 | How it is built, technical rules | `docs/ARCHITECTURE.md` |
 | Irrigation science, equations, defaults, terms | `docs/DOMAIN.md` |

@@ -25,6 +25,7 @@ SITE = ROOT / "site"
 PAGES = [
     ("README.md", "index.html", "الرئيسية", "primary-text"),
     ("docs/OVERVIEW.md", "overview.html", "في دقيقتين", "primary-text"),
+    ("docs/TEAM.md", "team.html", "دليل الفريق", "primary-text"),
     ("docs/PRODUCT.md", "product.html", "المنتج", "primary-text"),
     ("docs/ROADMAP.md", "roadmap.html", "خارطة البناء", "primary-text"),
     ("docs/ARCHITECTURE.md", "architecture.html", "التصميم التقني", "primary-text"),
@@ -44,6 +45,7 @@ EXTRA_TITLES = {
 
 DESCRIPTIONS = {
     "overview.html": "تعريف بسيط للفريق والمشرفين، ينفع يتبعت لوحده",
+    "team.html": "اللي لازم الفريق يفهمه، واللي اختياري، وتقسيم المهام",
     "product.html": "بنبني إيه ولمين وليه هيختارونا",
     "roadmap.html": "ترتيب البناء وخطوات كل إصدار",
     "architecture.html": "بنبني المنصة إزاي",
