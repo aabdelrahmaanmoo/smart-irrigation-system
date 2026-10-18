@@ -74,6 +74,19 @@ weather → ETo → × Kc → ETc → water balance → net depth → method tem
 | إدخال مستخدم | المهندس كتبه |
 | افتراضي | قيمة عامة من مرجع |
 
+## مصادر البيانات الجاهزة
+
+> **مقترح:** مصادر عامة موثوقة نغذي بيها المحرك. أي قيمة منها بتدخل بمصدرها وثقتها، ولازم تتراجع قبل ما تتكتب كقيمة افتراضية.
+
+| البيانات | المصدر الأساسي | البديل | الثقة | ملاحظات |
+|---|---|---|---|---|
+| مناخ متوسط شهري لمحطة | قاعدة `CLIMWAT 2.0` من الفاو | — | مقدر | أكتر من 5000 محطة، وبتتفتح في `CROPWAT` مباشرة، فالمقارنة عادلة |
+| طقس يومي تاريخي | خدمة `NASA POWER` | خدمة `Open-Meteo` | مقدر | بيانات محسوبة على شبكة مش محطة، فلازم تتقارن بمحطة قريبة |
+| توقعات الطقس و `ETo` اليومي | خدمة `Open-Meteo` | — | مقدر | البيانات بترخيص `CC BY 4.0` مع ذكر المصدر، والاستخدام التجاري محتاج مراجعة الأسعار |
+| معاملات المحاصيل والمراحل | جداول دليل الفاو `FAO-56` | ملفات محاصيل `CROPWAT` | افتراضي | قيم عامة، والأحسن تتعدل بأبحاث مصرية |
+| خصائص التربة لمكان معين | خدمة `SoilGrids` من `ISRIC` | تربات `CROPWAT` الثلاثة | مقدر | دقة 250 متر، والتحليل الحقلي أدق للأراضي الرملية |
+| البخر نتح الفعلي من القمر | منصة `WaPOR` من الفاو | — | مقدر | للتحقق في `V6` بس، مش للحساب اليومي |
+
 ## قايمة البحث
 
 | البند | محتاجينه في | المصدر المقترح |
@@ -100,5 +113,10 @@ weather → ETo → × Kc → ETc → water balance → net depth → method tem
 - [دليل الفاو `FAO-56`: المعادلات ومعاملات المحاصيل](https://www.fao.org/4/x0490e/x0490e00.htm)
 - [دليل الفاو `FAO-56`: الميزان المائي للتربة](https://www.fao.org/4/x0490e/x0490e0e.htm)
 - [برنامج الفاو `CROPWAT`](https://www.fao.org/land-water/resources/tools/software/cropwat/en)
+- [قاعدة الفاو `CLIMWAT`](https://www.fao.org/land-water/databases-and-software/climwat/en/)
+- [خدمة `NASA POWER`](https://power.larc.nasa.gov/docs/methodology/communities/)
+- [ترخيص `Open-Meteo`](https://open-meteo.com/en/licence)
+- [خدمة `SoilGrids`](https://www.isric.org/explore/soilgrids)
+- [منصة `WaPOR`](https://www.fao.org/in-action/wapor-uses-applications-catalogue/en/)
 
 </div>

@@ -192,7 +192,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <div class="lead"><p>الملف المشترك بين المهندسين والمبرمجين. المهندس يكتب هنا المعادلة ومرجعها، والمبرمج ينفذ من هنا بس.</p>
 <p><strong>قاعدة:</strong> مفيش معادلة ولا قيمة تتكتب في الكود من الذاكرة. لازم تكون هنا الأول، ومعاها مرجعها ورقم الفصل أو الصفحة.</p></div>
   
-  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#المفاهيم">المفاهيم</a><a href="#سلسلة-الحساب">سلسلة الحساب</a><a href="#المعادلات-المعتمدة">المعادلات المعتمدة</a><a href="#قوالب-طرق-الري">قوالب طرق الري</a><a href="#القيم-الافتراضية">القيم الافتراضية</a><a href="#درجة-الثقة">درجة الثقة</a><a href="#قايمة-البحث">قايمة البحث</a><a href="#المراجع">المراجع</a></nav></details>
+  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#المفاهيم">المفاهيم</a><a href="#سلسلة-الحساب">سلسلة الحساب</a><a href="#المعادلات-المعتمدة">المعادلات المعتمدة</a><a href="#قوالب-طرق-الري">قوالب طرق الري</a><a href="#القيم-الافتراضية">القيم الافتراضية</a><a href="#درجة-الثقة">درجة الثقة</a><a href="#مصادر-البيانات-الجاهزة">مصادر البيانات الجاهزة</a><a href="#قايمة-البحث">قايمة البحث</a><a href="#المراجع">المراجع</a></nav></details>
   <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>
   <article class="content">
 <details class="fold"><summary><h2 id="المفاهيم">المفاهيم</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
@@ -402,7 +402,64 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
-<details class="fold"><summary><h2 id="قايمة-البحث">قايمة البحث</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
+<details class="fold"><summary><h2 id="مصادر-البيانات-الجاهزة">مصادر البيانات الجاهزة</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
+<div class="callout proposal"><p><strong>مقترح:</strong> مصادر عامة موثوقة نغذي بيها المحرك. أي قيمة منها بتدخل بمصدرها وثقتها، ولازم تتراجع قبل ما تتكتب كقيمة افتراضية.</p></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>البيانات</th>
+<th>المصدر الأساسي</th>
+<th>البديل</th>
+<th>الثقة</th>
+<th>ملاحظات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مناخ متوسط شهري لمحطة</td>
+<td>قاعدة <code>CLIMWAT 2.0</code> من الفاو</td>
+<td>—</td>
+<td>مقدر</td>
+<td>أكتر من 5000 محطة، وبتتفتح في <code>CROPWAT</code> مباشرة، فالمقارنة عادلة</td>
+</tr>
+<tr>
+<td>طقس يومي تاريخي</td>
+<td>خدمة <code>NASA POWER</code></td>
+<td>خدمة <code>Open-Meteo</code></td>
+<td>مقدر</td>
+<td>بيانات محسوبة على شبكة مش محطة، فلازم تتقارن بمحطة قريبة</td>
+</tr>
+<tr>
+<td>توقعات الطقس و <code>ETo</code> اليومي</td>
+<td>خدمة <code>Open-Meteo</code></td>
+<td>—</td>
+<td>مقدر</td>
+<td>البيانات بترخيص <code>CC BY 4.0</code> مع ذكر المصدر، والاستخدام التجاري محتاج مراجعة الأسعار</td>
+</tr>
+<tr>
+<td>معاملات المحاصيل والمراحل</td>
+<td>جداول دليل الفاو <code>FAO-56</code></td>
+<td>ملفات محاصيل <code>CROPWAT</code></td>
+<td>افتراضي</td>
+<td>قيم عامة، والأحسن تتعدل بأبحاث مصرية</td>
+</tr>
+<tr>
+<td>خصائص التربة لمكان معين</td>
+<td>خدمة <code>SoilGrids</code> من <code>ISRIC</code></td>
+<td>تربات <code>CROPWAT</code> الثلاثة</td>
+<td>مقدر</td>
+<td>دقة 250 متر، والتحليل الحقلي أدق للأراضي الرملية</td>
+</tr>
+<tr>
+<td>البخر نتح الفعلي من القمر</td>
+<td>منصة <code>WaPOR</code> من الفاو</td>
+<td>—</td>
+<td>مقدر</td>
+<td>للتحقق في <code>V6</code> بس، مش للحساب اليومي</td>
+</tr>
+</tbody>
+</table></div>
+</div></details><details class="fold"><summary><h2 id="قايمة-البحث">قايمة البحث</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="scroll"><table>
 <thead>
 <tr>
@@ -499,6 +556,11 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><a href="https://www.fao.org/4/x0490e/x0490e00.htm">دليل الفاو <code>FAO-56</code>: المعادلات ومعاملات المحاصيل</a></li>
 <li><a href="https://www.fao.org/4/x0490e/x0490e0e.htm">دليل الفاو <code>FAO-56</code>: الميزان المائي للتربة</a></li>
 <li><a href="https://www.fao.org/land-water/resources/tools/software/cropwat/en">برنامج الفاو <code>CROPWAT</code></a></li>
+<li><a href="https://www.fao.org/land-water/databases-and-software/climwat/en/">قاعدة الفاو <code>CLIMWAT</code></a></li>
+<li><a href="https://power.larc.nasa.gov/docs/methodology/communities/">خدمة <code>NASA POWER</code></a></li>
+<li><a href="https://open-meteo.com/en/licence">ترخيص <code>Open-Meteo</code></a></li>
+<li><a href="https://www.isric.org/explore/soilgrids">خدمة <code>SoilGrids</code></a></li>
+<li><a href="https://www.fao.org/in-action/wapor-uses-applications-catalogue/en/">منصة <code>WaPOR</code></a></li>
 </ul></article>
   <nav class="pager"><a href="architecture.html"><small>السابق</small>التصميم التقني</a><a class="next" href="market.html"><small>التالي</small>السوق والمنافسين</a></nav>
   <footer>اتعملت من <code>docs/DOMAIN.md</code> · 2026-10-18</footer>
