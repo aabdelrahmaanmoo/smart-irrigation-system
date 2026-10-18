@@ -138,6 +138,14 @@ details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:c
 details.card .t{font-weight:700;flex:1;line-height:1.5}
 details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
 details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+details.fold{border-top:1px solid var(--border);margin-top:32px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 2px 14px;min-height:56px}
+details.fold>summary::-webkit-details-marker{display:none}
+.content details.fold>summary h2{margin:0;padding:0;border:0;flex:1}
+details.fold>summary:hover h2{color:var(--primary-text)}
+details.fold .chev{width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;flex:none}
+details.fold[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.fold-body{padding-bottom:8px}
 .card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
 .st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
 .st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
@@ -177,14 +185,14 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
 </header>
 <div class="layout">
-<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" aria-current="page" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" aria-current="page" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Maps.html" style="--c:var(--muted)">خرايط التشبع<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
 <div class="scrim" hidden></div>
 <main class="page">
   <h1>التصميم التقني</h1>
   <div class="lead"><p>بنبني المنصة إزاي. قبل أي كود جديد، اتأكد إنه مش بيكسر حاجة هنا. وأي تغيير هنا يتسجل كقرار في <a href="journey.html">رحلة المشروع</a>.</p></div>
   
   <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#الحالة">الحالة</a><a href="#طريقة-البناء">طريقة البناء</a><a href="#الأدوات-والتقنيات">الأدوات والتقنيات</a><a href="#قرارات-الأساس">قرارات الأساس</a><a href="#سلم-التحكم">سلم التحكم</a><a href="#نموذج-البيانات">نموذج البيانات</a><a href="#السلامة-والأمان">السلامة والأمان</a><a href="#شكل-الفولدرات">شكل الفولدرات</a></nav></details>
-  
+  <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>
   <article class="content">
 <h2 id="الحالة">الحالة</h2>
 <div class="scroll"><table>
@@ -217,7 +225,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
-<h2 id="طريقة-البناء">طريقة البناء</h2>
+<details class="fold"><summary><h2 id="طريقة-البناء">طريقة البناء</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <p>برنامج واحد مقسوم لموديولات بحدود واضحة <code>Modular Monolith</code>، وجوه كل موديول تلات طبقات:</p>
 <pre dir="ltr"><code class="language-text">routes  ←  services  ←  database
 </code></pre>
@@ -252,7 +260,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li>محرك الحسابات يتختبر من غير ويب ولا قاعدة بيانات.</li>
 <li>مفيش موديول جديد إلا لما اللي قبله يبقى شغال ومختبر.</li>
 </ol>
-<h2 id="الأدوات-والتقنيات">الأدوات والتقنيات</h2>
+</div></details><details class="fold"><summary><h2 id="الأدوات-والتقنيات">الأدوات والتقنيات</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="callout note"><p><strong>ملحوظة:</strong> اللغة معتمدة في قرار رقم 5. باقي الجدول مقترح.</p></div>
 <div class="scroll"><table>
 <thead>
@@ -301,7 +309,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tbody>
 </table></div>
 <div class="callout research"><p><strong>للبحث:</strong> إصدار <code>.NET</code> طويل الدعم وقت البدء.</p></div>
-<h2 id="قرارات-الأساس">قرارات الأساس</h2>
+</div></details><details class="fold"><summary><h2 id="قرارات-الأساس">قرارات الأساس</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="callout proposal"><p><strong>مقترح:</strong> القرارات دي، ماعدا اللي مكتوب جنبه معتمد، هي اللي بتخلي المنصة تقدر تغطي أي طريقة ري وأي حجم مزرعة وأي جهاز، من غير ما نعيد البناء بعدين.</p></div>
 <h3 id="هيكل-مزرعة-واحد-لأي-حجم">هيكل مزرعة واحد لأي حجم</h3>
 <ul>
@@ -354,7 +362,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>مخطط التشغيل</strong> بياخد خريطة الاحتياج، ويحولها لأوامر في حدود قدرات الأجهزة المتاحة، من غير ما يكسر حدود الأمان: التدريج في قفل المحابس، وتوزيع الضغط على الشبكة.</li>
 <li>كده نفس المنصة تشتغل مع مزرعة فيها محبس واحد، ومع مزرعة فيها تحكم في كل رشاش.</li>
 </ul>
-<h2 id="سلم-التحكم">سلم التحكم</h2>
+</div></details><details class="fold"><summary><h2 id="سلم-التحكم">سلم التحكم</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="scroll"><table>
 <thead>
 <tr>
@@ -401,7 +409,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <ul>
 <li>اللغة واتجاه الكتابة، ووحدات زي الفدان والقيراط، والمحاصيل والتربة المصرية، من أول يوم.</li>
 </ul>
-<h2 id="نموذج-البيانات">نموذج البيانات</h2>
+</div></details><details class="fold"><summary><h2 id="نموذج-البيانات">نموذج البيانات</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="scroll"><table>
 <thead>
 <tr>
@@ -444,14 +452,14 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tbody>
 </table></div>
 <p><strong>كل قيمة مهمة بتتخزن ومعاها:</strong> المصدر، والتاريخ، والوحدة، ودرجة الثقة. وكل توصية بتحفظ مدخلاتها ونسخة الخوارزمية اللي حسبتها، علشان أي نتيجة قديمة تتعاد.</p>
-<h2 id="السلامة-والأمان">السلامة والأمان</h2>
+</div></details><h2 id="السلامة-والأمان">السلامة والأمان</h2>
 <ul>
 <li><strong>الحسابات:</strong> رفض القيم غير الصالحة، وتوحيد الوحدات، وإيقاف التوصية لو البيانات مش كفاية.</li>
 <li><strong>التحكم:</strong> صلاحية صريحة، وحد للمدة، وإيقاف يدوي، وإيقاف الأوامر الآلية لو الحساس فشل.</li>
 <li><strong>الخصوصية:</strong> عزل بيانات العملاء، وتشفير الاتصال، وحماية الأسرار، ونسخ احتياطي.</li>
 <li><strong>جودة البيانات:</strong> مراقبة الشذوذ والانقطاع، وإظهار حالة الاتصال.</li>
 </ul>
-<h2 id="شكل-الفولدرات">شكل الفولدرات</h2>
+<details class="fold"><summary><h2 id="شكل-الفولدرات">شكل الفولدرات</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <pre dir="ltr"><code class="language-text">IrrigationPlatform/
   src/
     Core/          # organizations, farms, fields, zones, users
@@ -463,7 +471,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
     WebApi/        # HTTP endpoints
   tests/           # unit, integration, reference cases
 </code></pre>
-<div class="callout note"><p><strong>ملحوظة:</strong> ده شكل النهاية. بداية <code>V0</code> مشروع واحد بسيط.</p></div></article>
+<div class="callout note"><p><strong>ملحوظة:</strong> ده شكل النهاية. بداية <code>V0</code> مشروع واحد بسيط.</p></div></div></details></article>
   <nav class="pager"><a href="roadmap.html"><small>السابق</small>خارطة البناء</a><a class="next" href="domain.html"><small>التالي</small>علم الري</a></nav>
   <footer>اتعملت من <code>docs/ARCHITECTURE.md</code> · 2026-10-18</footer>
 </main>
@@ -475,7 +483,7 @@ btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-o
 scrim.addEventListener('click',()=>setNav(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setNav(false)});
 document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+  document.querySelectorAll('details.card,details.fold').forEach(d=>d.open=b.dataset.all==='1');
 }));
 function openHash(){const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
   if(el){const d=el.closest('details');if(d)d.open=true;}}

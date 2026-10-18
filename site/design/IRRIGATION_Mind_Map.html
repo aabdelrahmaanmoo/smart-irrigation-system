@@ -22,6 +22,15 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
 @media(max-width:400px){.g3{grid-template-columns:1fr}}
+.gfold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 16px}
+.gfold>summary::-webkit-details-marker{display:none}
+.gfold>summary h2{margin:0;flex:1}
+.gfold>summary:hover h2{color:var(--primary-text)}
+.gfold .hint{color:var(--muted);font-size:13px}
+.gfold[open] .hint{display:none}
+.gfold .chev{width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;flex:none}
+.gfold[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.gfold[open]>summary{margin-bottom:12px}
 .gwrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:16px}
 #g{position:relative;direction:ltr}#g svg{position:absolute;inset:0;pointer-events:none}
 .gn{position:absolute;width:190px;direction:rtl;background:var(--raised);border:1.5px solid var(--border);border-radius:10px;padding:7px 10px;font-size:14px;cursor:pointer;transition:opacity .15s}
@@ -58,11 +67,11 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
  <span class="lv l4">تحكم دقيق: تحكم في كل مخرج</span>
 </div>
 
-<h2><span class="num">١</span>الخريطة المترابطة</h2>
+<details class="gfold" id="graph"><summary><h2><span class="num">1</span>الخريطة المترابطة</h2><span class="hint">اضغط لعرضها</span><span class="chev"></span></summary>
 <div class="lead">كل حاجة متوصلة بإيه: مين بيستخدم إيه، وكل شاشة بتفتح إيه، والبيانات جاية منين. اضغط على أي مربع يظهر اللي متوصل بيه بس.</div>
-<div class="gwrap"><div id="g"><svg id="ge"></svg></div></div>
+<div class="gwrap"><div id="g"><svg id="ge"></svg></div></div></details>
 <script>
-(function(){
+function buildGraph(){
 const C=['المستخدمين','التنقل','الشاشات','المحتوى','مصادر البيانات'];
 const K=['--primary-text','--ok','--rain','--other','--warn'];
 const N=[
@@ -115,10 +124,12 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
  const on=new Set(sel?[sel,...adj(sel)]:[]);
  Object.values(nodes).forEach(n=>{n.el.classList.toggle('dim',!!sel&&!on.has(n.id));n.el.classList.toggle('on',n.id===sel)});
  paths.forEach(p=>{const hit=!sel||p.dataset.a===sel||p.dataset.b===sel;p.setAttribute('opacity',sel?(hit?1:.06):.8);p.setAttribute('stroke',sel&&hit?cs.getPropertyValue('--primary-text').trim():'#4A505C');p.setAttribute('stroke-width',sel&&hit?2.6:1.6)})});
-})();
+}
+(function(){const d=document.getElementById('graph');let built=false;
+ const go=()=>{if(d.open&&!built){built=true;buildGraph()}};d.addEventListener('toggle',go);if(location.hash==='#graph'){d.open=true}go();})();
 </script>
 
-<h2><span class="num">٢</span>الهيكل</h2>
+<h2><span class="num">2</span>الهيكل</h2>
 <div class="chain">
  <div class="box">المنظمة</div><div class="arrow">←</div>
  <div class="box">المزرعة</div><div class="arrow">←</div>
@@ -127,7 +138,7 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
 </div>
 <div class="note">فوق كل الشاشات: مبدّل المزرعة. المهندس أو شركة التركيب ينقل بين مزارع كتير من حساب واحد، أو يختار "كل المزارع".</div>
 
-<h2><span class="num">٣</span>التنقل الرئيسي: ٥ أزرار</h2>
+<h2><span class="num">3</span>التنقل الرئيسي: 5 أزرار</h2>
 <div class="grid">
  <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>النهارده</h3><ul>
   <li>كل القطاعات في شاشة واحدة، ولون لكل حالة</li>
@@ -159,13 +170,13 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
   <li>تصدير وإرسال دوري</li></ul>
   <div class="go">الشاشة الأساسية لصاحب المزرعة</div></div>
  <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>المزيد</h3><ul>
-  <li>الإعداد، تفاصيله في قسم ٤</li>
-  <li>الأدوات، تفاصيلها في قسم ٥</li>
+  <li>الإعداد، تفاصيله في قسم 4</li>
+  <li>الأدوات، تفاصيلها في قسم 5</li>
   <li>الحساب والاشتراك</li>
   <li>المساعدة والدعم بالعربي</li></ul></div>
 </div>
 
-<h2><span class="num">٤</span>شاشة القطاع</h2>
+<h2><span class="num">4</span>شاشة القطاع</h2>
 <div class="lead">بتتفتح من النهارده أو الخريطة أو التنبيهات.</div>
 <div class="grid g3">
  <div class="card"><h3>القرار</h3><ul>
@@ -196,7 +207,7 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
   <li>الأجهزة المربوطة<span class="lv l2">متابعة</span></li></ul></div>
 </div>
 
-<h2><span class="num">٥</span>الإعداد</h2>
+<h2><span class="num">5</span>الإعداد</h2>
 <div class="grid g3">
  <div class="card"><h3>المزرعة والحقول</h3><ul>
   <li>معالج إضافة حقل: الحدود، المحصول، التربة، طريقة الري، القطاعات</li>
@@ -220,14 +231,14 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
   <li>اللغة، والتنبيهات على الموبايل</li></ul></div>
 </div>
 
-<h2><span class="num">٦</span>الأدوات</h2>
+<h2><span class="num">6</span>الأدوات</h2>
 <div class="grid">
  <div class="card"><h3>الحاسبة السريعة</h3><ul><li>حساب من غير حقل محفوظ</li></ul></div>
  <div class="card"><h3>تصميم الشبكات</h3><ul><li>تصميم أو تقييم شبكة، والتصميم يبقى تعريف المزرعة</li></ul></div>
  <div class="card"><h3>ماذا لو</h3><ul><li>تجربة تغيير وشوف أثره من غير ما يلمس الحقيقة</li></ul></div>
 </div>
 
-<h2><span class="num">٧</span>كل دور بيشوف إيه</h2>
+<h2><span class="num">7</span>كل دور بيشوف إيه</h2>
 <div class="grid">
  <div class="card role"><h3>مهندس الري <small>المستخدم الأساسي</small></h3><ul>
   <li>يبدأ من: النهارده</li><li>كل الشاشات والصلاحيات في مزارعه</li></ul></div>
@@ -239,23 +250,23 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
   <li>يبدأ من: كل المزارع</li><li>مزارع عملاء كتير من حساب واحد، والأحوج للتدخل الأول</li></ul></div>
 </div>
 
-<h2><span class="num">٨</span>الدورة اليومية</h2>
+<h2><span class="num">8</span>الدورة اليومية</h2>
 <div class="flow loop">
- <div class="step"><span class="n">١</span><b>المنصة تحسب</b>الطقس والتربة والمحصول لكل قطاع</div><div class="arrow">←</div>
- <div class="step"><span class="n">٢</span><b>المهندس يراجع</b>شاشة النهارده</div><div class="arrow">←</div>
- <div class="step"><span class="n">٣</span><b>يعتمد أو يعدل</b>والتعديل بسبب</div><div class="arrow">←</div>
- <div class="step"><span class="n">٤</span><b>التنفيذ</b>المشغل يسجل، أو الكنترولر يشغّل</div><div class="arrow">←</div>
- <div class="step"><span class="n">٥</span><b>المقارنة</b>المخطط مقابل المنفذ، وتنبيه لو فيه فرق</div><div class="arrow">←</div>
- <div class="step"><span class="n">٦</span><b>التقارير</b>المياه والتكلفة</div>
+ <div class="step"><span class="n">1</span><b>المنصة تحسب</b>الطقس والتربة والمحصول لكل قطاع</div><div class="arrow">←</div>
+ <div class="step"><span class="n">2</span><b>المهندس يراجع</b>شاشة النهارده</div><div class="arrow">←</div>
+ <div class="step"><span class="n">3</span><b>يعتمد أو يعدل</b>والتعديل بسبب</div><div class="arrow">←</div>
+ <div class="step"><span class="n">4</span><b>التنفيذ</b>المشغل يسجل، أو الكنترولر يشغّل</div><div class="arrow">←</div>
+ <div class="step"><span class="n">5</span><b>المقارنة</b>المخطط مقابل المنفذ، وتنبيه لو فيه فرق</div><div class="arrow">←</div>
+ <div class="step"><span class="n">6</span><b>التقارير</b>المياه والتكلفة</div>
 </div>
 
-<h2><span class="num">٩</span>أول استخدام</h2>
+<h2><span class="num">9</span>أول استخدام</h2>
 <div class="flow">
- <div class="step"><span class="n">١</span><b>التسجيل</b>وإنشاء المنظمة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٢</span><b>أول مزرعة</b>مكانها على الخريطة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٣</span><b>أول حقل</b>بالمعالج</div><div class="arrow">←</div>
- <div class="step"><span class="n">٤</span><b>أول توصية</b>في نفس الجلسة، بثقتها</div><div class="arrow">←</div>
- <div class="step"><span class="n">٥</span><b>دعوة الفريق</b>المشغل وصاحب المزرعة</div>
+ <div class="step"><span class="n">1</span><b>التسجيل</b>وإنشاء المنظمة</div><div class="arrow">←</div>
+ <div class="step"><span class="n">2</span><b>أول مزرعة</b>مكانها على الخريطة</div><div class="arrow">←</div>
+ <div class="step"><span class="n">3</span><b>أول حقل</b>بالمعالج</div><div class="arrow">←</div>
+ <div class="step"><span class="n">4</span><b>أول توصية</b>في نفس الجلسة، بثقتها</div><div class="arrow">←</div>
+ <div class="step"><span class="n">5</span><b>دعوة الفريق</b>المشغل وصاحب المزرعة</div>
 </div>
 <div class="note">الهدف: العميل يشوف قيمة حقيقية في أول جلسة، من غير أجهزة.</div>
 </main></body>

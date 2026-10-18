@@ -138,6 +138,14 @@ details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:c
 details.card .t{font-weight:700;flex:1;line-height:1.5}
 details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
 details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+details.fold{border-top:1px solid var(--border);margin-top:32px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 2px 14px;min-height:56px}
+details.fold>summary::-webkit-details-marker{display:none}
+.content details.fold>summary h2{margin:0;padding:0;border:0;flex:1}
+details.fold>summary:hover h2{color:var(--primary-text)}
+details.fold .chev{width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;flex:none}
+details.fold[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.fold-body{padding-bottom:8px}
 .card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
 .st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
 .st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
@@ -177,18 +185,18 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
 </header>
 <div class="layout">
-<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" aria-current="page" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" aria-current="page" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Maps.html" style="--c:var(--muted)">خرايط التشبع<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
 <div class="scrim" hidden></div>
 <main class="page">
   <h1>المنتج</h1>
   <div class="lead"><p>بنبني إيه، ولمين، وليه هيختارونا. أي ميزة جديدة لازم تخدم اللي مكتوب هنا.</p></div>
   
   <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#المنتج-في-جملة">المنتج في جملة</a><a href="#المشكلة">المشكلة</a><a href="#السوق-المستهدف">السوق المستهدف</a><a href="#مين-بيستخدم-المنصة">مين بيستخدم المنصة</a><a href="#المنتج-من-جوه">المنتج من جوه</a><a href="#مستويات-الخدمة">مستويات الخدمة</a><a href="#الشاشات-الأساسية">الشاشات الأساسية</a><a href="#ليه-هيختارونا">ليه هيختارونا</a><a href="#مبادئ-المنتج">مبادئ المنتج</a><a href="#برا-المنتج">برا المنتج</a><a href="#نموذج-الربح">نموذج الربح</a></nav></details>
-  
+  <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>
   <article class="content">
 <h2 id="المنتج-في-جملة">المنتج في جملة</h2>
 <p><strong>عقل الري للمزارع الحديثة في مصر.</strong> منصة عربية بتقول لمهندس الري يروي إمتى وقد إيه ولمدة قد إيه وليه، في كل قطاعات مزارعه. بتبدأ من غير أجهزة، ولما المزرعة يبقى فيها حساسات أو كنترولرات، المنصة تتوصل بيها وتبقى أدق، لحد ما تشغّل الري بنفسها.</p>
-<h2 id="المشكلة">المشكلة</h2>
+<details class="fold"><summary><h2 id="المشكلة">المشكلة</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <ul>
 <li><strong>الري بالعادة مش بالحساب:</strong> مزارع كتير بتروي بجدول ثابت أو بالخبرة، من غير ما تراعي الطقس ولا عمر النبات ولا حالة التربة.</li>
 <li><strong>زيادة أو نقص:</strong> الري الزيادة بيضيع مياه وكهربا وسماد، والناقص بيجهد النبات ويقلل الإنتاج.</li>
@@ -196,7 +204,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>فجوة بين القرار والتنفيذ:</strong> المهندس يوصي بكمية، وتتنفذ كمية تانية، ومفيش سجل يفسر الفرق.</li>
 <li><strong>أدوات متفرقة:</strong> الحسابات في ورقة، والطقس في موقع، والتشغيل في دفتر.</li>
 </ul>
-<h2 id="السوق-المستهدف">السوق المستهدف</h2>
+</div></details><h2 id="السوق-المستهدف">السوق المستهدف</h2>
 <ul>
 <li><strong>جوه النطاق:</strong> مزارع الأراضي الجديدة اللي بتروي بالتنقيط أو الرش أو الري المحوري، غالبًا من الآبار، وأي حجم من المزرعة الصغيرة للشركة الكبيرة.</li>
 <li><strong>برا النطاق:</strong> الفلاح التقليدي في الأراضي القديمة اللي بيروي بالغمر بنظام المناوبات، لأن الإقناع صعب والفجوة كبيرة.</li>
@@ -228,7 +236,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
-<h2 id="المنتج-من-جوه">المنتج من جوه</h2>
+<details class="fold"><summary><h2 id="المنتج-من-جوه">المنتج من جوه</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <p>المنصة خمس طبقات، كل طبقة بتسلم اللي بعدها:</p>
 <ol>
 <li><strong>البيانات:</strong> الطقس، وصور الأقمار الصناعية، وإدخال المهندس، ولما تتوفر: الحساسات والكنترولرات. كل قيمة معاها مصدرها ودرجة ثقتها.</li>
@@ -238,7 +246,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>التعلم:</strong> تقارير المياه والطاقة والتكلفة، ومقارنات بين المواسم والقطاعات، ومع الوقت تنبؤ.</li>
 </ol>
 <p>وجنبهم <strong>أداة تصميم الشبكات:</strong> المهندس يصمم أو يقيم شبكة ري، والتصميم نفسه يبقى تعريف المزرعة جوه المنصة.</p>
-<h2 id="مستويات-الخدمة">مستويات الخدمة</h2>
+</div></details><h2 id="مستويات-الخدمة">مستويات الخدمة</h2>
 <p>نفس البرنامج، والدقة بتزيد كل ما البيانات تزيد:</p>
 <div class="scroll"><table>
 <thead>
@@ -306,7 +314,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
-<h2 id="ليه-هيختارونا">ليه هيختارونا</h2>
+<details class="fold"><summary><h2 id="ليه-هيختارونا">ليه هيختارونا</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <p>الميزة مش في نقطة واحدة، الميزة في الجمع بينهم. تفاصيل المنافسين في <a href="market.html">السوق والمنافسين</a>.</p>
 <ul>
 <li><strong>عربي ومحلي بالكامل:</strong> اللغة والوحدات والمحاصيل والتربة والطقس المصري، ودعم محلي.</li>
@@ -316,7 +324,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>تسعير بالجنيه:</strong> من غير تكلفة أجهزة في البداية.</li>
 <li><strong>مصمم لمهندس الري:</strong> مهندس واحد بيتابع مزارع وقطاعات كتير في شاشة واحدة.</li>
 </ul>
-<h2 id="مبادئ-المنتج">مبادئ المنتج</h2>
+</div></details><h2 id="مبادئ-المنتج">مبادئ المنتج</h2>
 <ul>
 <li><strong>كل رقم ليه مصدر:</strong> أي رقم يطلع من المنصة معاه مصدره ووحدته وافتراضاته.</li>
 <li><strong>المنصة بتقول "مش عارفة":</strong> لو البيانات مش كفاية، بتقول كده بدل رقم مضلل.</li>
@@ -342,7 +350,7 @@ btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-o
 scrim.addEventListener('click',()=>setNav(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setNav(false)});
 document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+  document.querySelectorAll('details.card,details.fold').forEach(d=>d.open=b.dataset.all==='1');
 }));
 function openHash(){const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
   if(el){const d=el.closest('details');if(d)d.open=true;}}

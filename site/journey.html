@@ -138,6 +138,14 @@ details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:c
 details.card .t{font-weight:700;flex:1;line-height:1.5}
 details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
 details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+details.fold{border-top:1px solid var(--border);margin-top:32px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 2px 14px;min-height:56px}
+details.fold>summary::-webkit-details-marker{display:none}
+.content details.fold>summary h2{margin:0;padding:0;border:0;flex:1}
+details.fold>summary:hover h2{color:var(--primary-text)}
+details.fold .chev{width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;flex:none}
+details.fold[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.fold-body{padding-bottom:8px}
 .card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
 .st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
 .st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
@@ -177,7 +185,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
 </header>
 <div class="layout">
-<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" aria-current="page" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" aria-current="page" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Maps.html" style="--c:var(--muted)">خرايط التشبع<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
 <div class="scrim" hidden></div>
 <main class="page">
   <h1>رحلة المشروع</h1>
@@ -348,6 +356,13 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>السبب:</strong> صاحب القرار اختار الطبقات دي من مرجع، لأنها أريح من الأسود.</li>
 <li><strong>البدائل المرفوضة:</strong> الخلفية شبه السودا <code>#0B0B0D</code>.</li>
 </ul>
+</div></details><details class="card" id="قرار-رقم-14-أرقام-إنجليزي،-وأقسام-بتتفتح-وتتقفل،-وصفحة-للخرايط"><summary><span class="t">قرار رقم 14: أرقام إنجليزي، وأقسام بتتفتح وتتقفل، وصفحة للخرايط</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>التاريخ:</strong> ‏2026-10-18</li>
+<li><strong>القرار:</strong> كل الأرقام في الدوكس والصفحات والصور والردود بالأرقام الإنجليزية، والكلام عربي، والمصطلحات اللي الإنجليزي فيها أوضح تفضل إنجليزي. أي قسم كلامه طويل بيتقفل ويتفتح بالضغط على عنوانه، ومعاه زرار افتح الكل واقفل الكل. الخريطة المترابطة في خريطة المنتج مخفية لحد ما تضغط على عنوانها. وصفحة جديدة لخرايط التشبع في <code>design/IRRIGATION_Maps.html</code>، وكل الصفحات بتتفتح من رابط واحد.</li>
+<li><strong>السبب:</strong> الأرقام الإنجليزي أوضح مع المصطلحات والوحدات، والأقسام المقفولة بتخلي الصفحات الطويلة أسهل في التصفح.</li>
+<li><strong>البدائل المرفوضة:</strong> الأرقام العربية، والصفحات المفتوحة بالكامل.</li>
+</ul>
 <!-- قالب قرار جديد:
 ### قرار رقم X: العنوان
 - **التاريخ:**
@@ -356,7 +371,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 - **البدائل المرفوضة:**
 -->
 
-</div></details><h2 id="مشاكل-التصميم-وحلولها">مشاكل التصميم وحلولها</h2>
+</div></details><details class="fold"><summary><h2 id="مشاكل-التصميم-وحلولها">مشاكل التصميم وحلولها</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="callout lead"><p>كل مشكلة بتتسجل أول ما نتوقعها أو نقابلها، ولما تتحل نكتب الحل وتاريخه.</p></div>
 <p>الحالات: ⬜ متوقعة · 🟨 بنحلها · ✅ اتحلت</p>
 <div class="scroll"><table>
@@ -453,7 +468,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
-<h2 id="يوميات-الرحلة">يوميات الرحلة</h2>
+</div></details><details class="fold"><summary><h2 id="يوميات-الرحلة">يوميات الرحلة</h2><span class="chev" aria-hidden="true"></span></summary><div class="fold-body">
 <div class="scroll"><table>
 <thead>
 <tr>
@@ -540,11 +555,16 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 <tr>
 <td>‏2026-10-18</td>
+<td>أرقام إنجليزي، وأقسام بتتقفل، وصفحة خرايط التشبع</td>
+<td>قرار رقم 14</td>
+</tr>
+<tr>
+<td>‏2026-10-18</td>
 <td>خريطة المنتج الكامل للبيع، مقترح، في <code>design/IRRIGATION_Mind_Map.html</code></td>
 <td>مبنية على صفحة المنتج: خريطة مترابطة تفاعلية بين المستخدمين والتنقل والشاشات والمحتوى ومصادر البيانات، ثم الهيكل، وخمس أزرار تنقل، وشاشة القطاع، والإعداد، والأدوار، والدورة اليومية، وأول استخدام، ومستويات الخدمة</td>
 </tr>
 </tbody>
-</table></div></article>
+</table></div></div></details></article>
   <nav class="pager"><a href="market.html"><small>السابق</small>السوق والمنافسين</a><a class="next" href="reference-cases.html"><small>التالي</small>الحالات المرجعية</a></nav>
   <footer>اتعملت من <code>docs/JOURNEY.md</code> · 2026-10-18</footer>
 </main>
@@ -556,7 +576,7 @@ btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-o
 scrim.addEventListener('click',()=>setNav(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setNav(false)});
 document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+  document.querySelectorAll('details.card,details.fold').forEach(d=>d.open=b.dataset.all==='1');
 }));
 function openHash(){const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
   if(el){const d=el.closest('details');if(d)d.open=true;}}

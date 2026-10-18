@@ -38,6 +38,7 @@ STANDALONE = {"overview.html"}
 EXTRA_TITLES = {
     "IRRIGATION_Competitor_Study.html": ("دراسة المنافسين", "المنافسين في مصر وبرا، بالتفصيل"),
     "IRRIGATION_Color_System.html": ("نظام الألوان", "ألوان الواجهة والرسوم وأكوادها"),
+    "IRRIGATION_Maps.html": ("خرايط التشبع", "تقسيم القطاعات وتلوين التشبع وشاشة الحقل، توضيحي"),
     "IRRIGATION_Mind_Map.html": ("خريطة المنتج", "الشاشات والأدوار والتنقل في المنتج الكامل، مقترح"),
 }  # pages meant to be shared alone: no cross-page links  # standalone HTML pages copied as-is
 
@@ -143,6 +144,21 @@ def style_steps(body: str) -> str:
     return body
 
 
+def collapse_h2(body: str, limit: int = 450) -> str:
+    """Fold long h2 sections into <details> so long pages stay scannable."""
+    parts = re.split(r"(<h2[^>]*>.*?</h2>)", body, flags=re.S)
+    out = [parts[0]]
+    for i in range(1, len(parts), 2):
+        head, content = parts[i], parts[i + 1] if i + 1 < len(parts) else ""
+        text = re.sub(r"<[^>]+>", "", content).strip()
+        if len(text) > limit and '<details class="card"' not in content:
+            out.append(f'<details class="fold"><summary>{head}<span class="chev" aria-hidden="true"></span></summary>'
+                       f'<div class="fold-body">{content}</div></details>')
+        else:
+            out.append(head + content)
+    return "".join(out)
+
+
 def wrap_tables(body: str) -> str:
     return re.sub(r"(<table>.*?</table>)", r'<div class="scroll">\1</div>', body, flags=re.S)
 
@@ -228,6 +244,8 @@ def render(src: str, out: str, title: str, accent: str, links: dict[str, str], b
                  + f'<nav class="docs" aria-label="ملفات المشروع">{items}</nav>'
                  + f'<h2 class="sec">صفحات العرض</h2><nav class="docs" aria-label="صفحات العرض">{extras}</nav>')
 
+    body = collapse_h2(body)
+
     toc_html = ""
     if len(toc) > 2:
         lis = "".join(f'<a href="#{i}">{n}</a>' for i, n in toc)
@@ -248,7 +266,7 @@ def render(src: str, out: str, title: str, accent: str, links: dict[str, str], b
     ) + '<p class="grp">صفحات العرض</p>' + "".join(
         f'<a href="{h}" style="--c:var(--muted)">{t}<span aria-hidden="true">↗</span></a>' for h, t, _ in extra_pages()
     )
-    tools = "" if collapse is False else '<div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>'
+    tools = "" if not (collapse or '<details class="fold"' in body) else '<div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>'
 
     return TEMPLATE.format(
         title=html.escape(re.sub(r"<[^>]+>", "", page_title)), page_title=page_title, short=title,
@@ -304,7 +322,7 @@ btn.addEventListener('click',()=>setNav(!document.body.classList.contains('nav-o
 scrim.addEventListener('click',()=>setNav(false));
 document.addEventListener('keydown',e=>{{if(e.key==='Escape')setNav(false)}});
 document.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click',()=>{{
-  document.querySelectorAll('details.card').forEach(d=>d.open=b.dataset.all==='1');
+  document.querySelectorAll('details.card,details.fold').forEach(d=>d.open=b.dataset.all==='1');
 }}));
 function openHash(){{const id=decodeURIComponent(location.hash.slice(1));const el=id&&document.getElementById(id);
   if(el){{const d=el.closest('details');if(d)d.open=true;}}}}
@@ -448,6 +466,14 @@ details.card .tag{direction:ltr;font-weight:800;color:var(--accent);background:c
 details.card .t{font-weight:700;flex:1;line-height:1.5}
 details.card .chev{width:8px;height:8px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;font-size:0;flex:none}
 details.card[open] .chev{transform:rotate(-135deg);margin-top:4px}
+details.fold{border-top:1px solid var(--border);margin-top:32px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 2px 14px;min-height:56px}
+details.fold>summary::-webkit-details-marker{display:none}
+.content details.fold>summary h2{margin:0;padding:0;border:0;flex:1}
+details.fold>summary:hover h2{color:var(--primary-text)}
+details.fold .chev{width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-4px;transition:transform .15s;flex:none}
+details.fold[open] .chev{transform:rotate(-135deg);margin-top:4px}
+.fold-body{padding-bottom:8px}
 .card-body{padding:2px 16px 14px;border-top:1px solid var(--border)}
 .st{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:0 9px;line-height:22px;background:var(--raised);color:var(--muted)}
 .st.s-done{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}

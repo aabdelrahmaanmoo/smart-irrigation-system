@@ -61,6 +61,8 @@ Applies to all docs and to replies in Arabic.
 - Avoid parentheses around English terms; use backticks.
 - Put commands, formulas, and code flows in separate code blocks.
 - Prefix dates in Arabic lines with an RLM mark (`‏`) so they stay in place.
+- Numbers always use English digits `0-9` and `%`, never Arabic-Indic digits, in docs, pages, images, and replies.
+- Keep technical terms in English when the English term is clearer.
 
 ## Communication
 - Be direct, concise, structured for scanning. Core answer first.
