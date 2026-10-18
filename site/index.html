@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0B0B0D">
+<meta name="theme-color" content="#151515">
 <title>Smart Irrigation System · Smart Irrigation System</title>
 <link rel="icon" href="design/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,11 +11,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>:root{
   color-scheme:dark;
-  --bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327; --border-strong:#34343A;
+  --bg:#151515; --card:#1C1C1C; --raised:#222221; --border:#292929; --border-strong:#313130;
   --text:#F2F2F3; --soft:#C4C4C8; --muted:#8E8E94;
   --primary:#0B5FE8; --primary-text:#3D86FF;
   --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;
-  --radius:14px; --bar:56px;
+  --deep:#111111; --radius:14px; --bar:56px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
@@ -32,7 +32,7 @@ pre code{background:none;border:0;padding:0;font-size:inherit}
 
 /* top bar */
 .bar{position:sticky;top:0;z-index:20;height:calc(var(--bar) + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:12px;
-  background:rgba(11,11,13,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  background:rgba(17,17,17,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
   padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--text);text-decoration:none;direction:ltr;white-space:nowrap}
 .brand b{color:var(--primary-text);font-weight:800}
@@ -48,7 +48,7 @@ pre code{background:none;border:0;padding:0;font-size:inherit}
 
 /* side nav (drawer on mobile, sidebar on desktop) */
 .side{position:fixed;z-index:19;top:calc(var(--bar) + env(safe-area-inset-top,0px));bottom:0;right:0;width:min(300px,86vw);
-  background:var(--card);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
+  background:var(--deep);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
   transform:translateX(100%);transition:transform .22s ease,visibility .22s;visibility:hidden}
 .nav-open .side{transform:none;visibility:visible}
 .scrim{position:fixed;inset:0;z-index:18;background:rgba(0,0,0,.55)}
@@ -163,7 +163,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   .menu-btn{display:none}
   .layout{display:grid;grid-template-columns:260px minmax(0,1fr)}
   .side{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));height:calc(100vh - var(--bar));width:auto;transform:none;visibility:visible;
-    background:transparent;border-left:1px solid var(--border)}
+    background:var(--deep);border-left:1px solid var(--border)}
   .scrim{display:none}
   .standalone .layout{display:block}
 }
@@ -182,7 +182,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <main class="page">
   <h1>Smart Irrigation System</h1>
   <div class="lead"><p>عقل الري للمزارع الحديثة في مصر: منصة عربية بتقول لمهندس الري يروي إمتى وقد إيه وليه، من غير أجهزة في البداية، وبتكبر مع الحساسات والكنترولرات لحد التشغيل الآلي.</p></div>
-  <section class="now"><div class="now-h"><b>وصلنا فين</b><span>0 من 17 إصدار خلصوا</span></div><div class="strip"><i class="s-next" title="V0 · الجاي"></i><i class="s-todo" title="V1 · لسه"></i><i class="s-todo" title="V2 · لسه"></i><i class="s-todo" title="V3 · لسه"></i><i class="s-todo" title="V4 · لسه"></i><i class="s-todo" title="V5 · لسه"></i><i class="s-todo" title="V6 · لسه"></i><i class="s-todo" title="V7 · لسه"></i><i class="s-todo" title="V8 · لسه"></i><i class="s-todo" title="V9 · لسه"></i><i class="s-todo" title="V10 · لسه"></i><i class="s-todo" title="V11 · لسه"></i><i class="s-todo" title="V12 · لسه"></i><i class="s-todo" title="V13 · لسه"></i><i class="s-todo" title="V14 · لسه"></i><i class="s-todo" title="V15 · لسه"></i><i class="s-todo" title="V16 · لسه"></i></div><div class="now-r"><span>الإصدار الحالي</span><b dir="ltr">V0</b></div><div class="now-r"><span>آخر قرار</span><b>قرار رقم 12: لون واحد للتمييز في الصفحات</b></div></section><h2 class="sec">ملفات المشروع</h2><nav class="docs" aria-label="ملفات المشروع"><a class="doc" href="overview.html" style="--c:var(--primary-text)"><span class="n">01</span><b>في دقيقتين</b><span class="d">تعريف بسيط للفريق والمشرفين، ينفع يتبعت لوحده</span></a><a class="doc" href="product.html" style="--c:var(--primary-text)"><span class="n">02</span><b>المنتج</b><span class="d">بنبني إيه ولمين وليه هيختارونا</span></a><a class="doc" href="roadmap.html" style="--c:var(--primary-text)"><span class="n">03</span><b>خارطة البناء</b><span class="d">ترتيب البناء وخطوات كل إصدار</span></a><a class="doc" href="architecture.html" style="--c:var(--primary-text)"><span class="n">04</span><b>التصميم التقني</b><span class="d">بنبني المنصة إزاي</span></a><a class="doc" href="domain.html" style="--c:var(--primary-text)"><span class="n">05</span><b>علم الري</b><span class="d">المفاهيم والمعادلات والمصطلحات</span></a><a class="doc" href="market.html" style="--c:var(--primary-text)"><span class="n">06</span><b>السوق والمنافسين</b><span class="d">المنافسين والعملاء والمقابلات</span></a><a class="doc" href="journey.html" style="--c:var(--primary-text)"><span class="n">07</span><b>رحلة المشروع</b><span class="d">القرارات والمشاكل واليوميات</span></a><a class="doc" href="reference-cases.html" style="--c:var(--primary-text)"><span class="n">08</span><b>الحالات المرجعية</b><span class="d">حالات اختبار الحسابات</span></a></nav><h2 class="sec">صفحات العرض</h2><nav class="docs" aria-label="صفحات العرض"><a class="doc" href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)"><span class="n">↗</span><b>نظام الألوان</b><span class="d">ألوان الواجهة والرسوم وأكوادها</span></a><a class="doc" href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)"><span class="n">↗</span><b>خريطة المنتج</b><span class="d">الشاشات والأدوار والتنقل في المنتج الكامل، مقترح</span></a><a class="doc" href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)"><span class="n">↗</span><b>دراسة المنافسين</b><span class="d">المنافسين في مصر وبرا، بالتفصيل</span></a></nav>
+  <section class="now"><div class="now-h"><b>وصلنا فين</b><span>0 من 17 إصدار خلصوا</span></div><div class="strip"><i class="s-next" title="V0 · الجاي"></i><i class="s-todo" title="V1 · لسه"></i><i class="s-todo" title="V2 · لسه"></i><i class="s-todo" title="V3 · لسه"></i><i class="s-todo" title="V4 · لسه"></i><i class="s-todo" title="V5 · لسه"></i><i class="s-todo" title="V6 · لسه"></i><i class="s-todo" title="V7 · لسه"></i><i class="s-todo" title="V8 · لسه"></i><i class="s-todo" title="V9 · لسه"></i><i class="s-todo" title="V10 · لسه"></i><i class="s-todo" title="V11 · لسه"></i><i class="s-todo" title="V12 · لسه"></i><i class="s-todo" title="V13 · لسه"></i><i class="s-todo" title="V14 · لسه"></i><i class="s-todo" title="V15 · لسه"></i><i class="s-todo" title="V16 · لسه"></i></div><div class="now-r"><span>الإصدار الحالي</span><b dir="ltr">V0</b></div><div class="now-r"><span>آخر قرار</span><b>قرار رقم 13: خلفية بطبقات رمادي محايد</b></div></section><h2 class="sec">ملفات المشروع</h2><nav class="docs" aria-label="ملفات المشروع"><a class="doc" href="overview.html" style="--c:var(--primary-text)"><span class="n">01</span><b>في دقيقتين</b><span class="d">تعريف بسيط للفريق والمشرفين، ينفع يتبعت لوحده</span></a><a class="doc" href="product.html" style="--c:var(--primary-text)"><span class="n">02</span><b>المنتج</b><span class="d">بنبني إيه ولمين وليه هيختارونا</span></a><a class="doc" href="roadmap.html" style="--c:var(--primary-text)"><span class="n">03</span><b>خارطة البناء</b><span class="d">ترتيب البناء وخطوات كل إصدار</span></a><a class="doc" href="architecture.html" style="--c:var(--primary-text)"><span class="n">04</span><b>التصميم التقني</b><span class="d">بنبني المنصة إزاي</span></a><a class="doc" href="domain.html" style="--c:var(--primary-text)"><span class="n">05</span><b>علم الري</b><span class="d">المفاهيم والمعادلات والمصطلحات</span></a><a class="doc" href="market.html" style="--c:var(--primary-text)"><span class="n">06</span><b>السوق والمنافسين</b><span class="d">المنافسين والعملاء والمقابلات</span></a><a class="doc" href="journey.html" style="--c:var(--primary-text)"><span class="n">07</span><b>رحلة المشروع</b><span class="d">القرارات والمشاكل واليوميات</span></a><a class="doc" href="reference-cases.html" style="--c:var(--primary-text)"><span class="n">08</span><b>الحالات المرجعية</b><span class="d">حالات اختبار الحسابات</span></a></nav><h2 class="sec">صفحات العرض</h2><nav class="docs" aria-label="صفحات العرض"><a class="doc" href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)"><span class="n">↗</span><b>نظام الألوان</b><span class="d">ألوان الواجهة والرسوم وأكوادها</span></a><a class="doc" href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)"><span class="n">↗</span><b>خريطة المنتج</b><span class="d">الشاشات والأدوار والتنقل في المنتج الكامل، مقترح</span></a><a class="doc" href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)"><span class="n">↗</span><b>دراسة المنافسين</b><span class="d">المنافسين في مصر وبرا، بالتفصيل</span></a></nav>
   
   
   <article class="content">

@@ -268,7 +268,7 @@ TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0B0B0D">
+<meta name="theme-color" content="#151515">
 <title>{title} · Smart Irrigation System</title>
 <link rel="icon" href="design/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -321,11 +321,11 @@ document.addEventListener('scroll',prog,{{passive:true}});prog();
 CSS = """
 :root{
   color-scheme:dark;
-  --bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327; --border-strong:#34343A;
+  --bg:#151515; --card:#1C1C1C; --raised:#222221; --border:#292929; --border-strong:#313130;
   --text:#F2F2F3; --soft:#C4C4C8; --muted:#8E8E94;
   --primary:#0B5FE8; --primary-text:#3D86FF;
   --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;
-  --radius:14px; --bar:56px;
+  --deep:#111111; --radius:14px; --bar:56px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
@@ -342,7 +342,7 @@ pre code{background:none;border:0;padding:0;font-size:inherit}
 
 /* top bar */
 .bar{position:sticky;top:0;z-index:20;height:calc(var(--bar) + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:12px;
-  background:rgba(11,11,13,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+  background:rgba(17,17,17,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
   padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--text);text-decoration:none;direction:ltr;white-space:nowrap}
 .brand b{color:var(--primary-text);font-weight:800}
@@ -358,7 +358,7 @@ pre code{background:none;border:0;padding:0;font-size:inherit}
 
 /* side nav (drawer on mobile, sidebar on desktop) */
 .side{position:fixed;z-index:19;top:calc(var(--bar) + env(safe-area-inset-top,0px));bottom:0;right:0;width:min(300px,86vw);
-  background:var(--card);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
+  background:var(--deep);border-left:1px solid var(--border);padding:12px 10px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;
   transform:translateX(100%);transition:transform .22s ease,visibility .22s;visibility:hidden}
 .nav-open .side{transform:none;visibility:visible}
 .scrim{position:fixed;inset:0;z-index:18;background:rgba(0,0,0,.55)}
@@ -473,7 +473,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   .menu-btn{display:none}
   .layout{display:grid;grid-template-columns:260px minmax(0,1fr)}
   .side{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));height:calc(100vh - var(--bar));width:auto;transform:none;visibility:visible;
-    background:transparent;border-left:1px solid var(--border)}
+    background:var(--deep);border-left:1px solid var(--border)}
   .scrim{display:none}
   .standalone .layout{display:block}
 }
@@ -481,12 +481,12 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 """
 
 
-V5 = ("--bg:#0B0B0D; --card:#141416; --raised:#1C1C1F; --border:#232327;\n"
+V5 = ("--bg:#151515; --card:#1C1C1C; --raised:#222221; --border:#292929;\n"
       "  --text:#F2F2F3; --muted:#8E8E94; --soft:#C4C4C8;\n"
       "  --primary:#0B5FE8; --primary-text:#3D86FF;\n"
       "  --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;")
 BACK = ('<a href="../index.html" style="position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:16px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.45);display:inline-flex;align-items:center;gap:8px;'
-        'background:rgba(20,20,22,.9);color:#F2F2F3;border:1px solid #34343A;border-radius:12px;padding:6px 12px 6px 10px;'
+        'background:rgba(20,20,22,.9);color:#F2F2F3;border:1px solid #313130;border-radius:12px;padding:6px 12px 6px 10px;'
         'font:700 14px Cairo,Tahoma,sans-serif;text-decoration:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)">'
         '<img src="../design/logo-mark-white.png" alt="" width="18" height="18">كل الصفحات</a>')
 
