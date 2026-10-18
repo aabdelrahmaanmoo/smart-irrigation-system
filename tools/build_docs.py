@@ -566,6 +566,32 @@ def polish_extra(page: str, href: str) -> str:
     return page
 
 
+AI_HEAD = """# Smart Irrigation System: ملف تعريف المشروع للذكاء الاصطناعي
+
+> ملف واحد بيجمع كل ملفات `docs`، بيتولد تلقائي. ارفعه لأي شات ذكاء اصطناعي علشان يفهم المشروع.
+
+## تعليمات للذكاء الاصطناعي
+
+- الملفات دي هي المرجع الوحيد للمشروع. متفترضش حاجة مش مكتوبة فيها.
+- أي حاجة مكتوب جنبها "مقترح" لسه مش متقررة.
+- متكتبش معادلة ري أو قيمة افتراضية من الذاكرة. لازم تكون في قسم علم الري بمصدرها.
+- اكتب بالعامية المصرية، والأرقام بالإنجليزي، والمصطلحات اللي الإنجليزي فيها أوضح خليها إنجليزي.
+- لو مش متأكد، قول إنك مش متأكد.
+
+"""
+
+
+def build_ai_context(built: str) -> None:
+    """One Markdown file with every doc, for uploading to an AI chat."""
+    parts = [AI_HEAD + f"آخر تحديث: {built}\n"]
+    for src, _, title, _ in PAGES:
+        text = (ROOT / src).read_text(encoding="utf-8")
+        text = re.sub(r'^\s*<div dir="rtl">\s*|\s*</div>\s*$', "", text).strip()
+        parts.append(f"\n\n---\n\n<!-- {src} -->\n\n{text}\n")
+    (SITE / "project-context.md").write_text("".join(parts), encoding="utf-8")
+    print("built: site/project-context.md")
+
+
 def main() -> None:
     if SITE.exists():
         shutil.rmtree(SITE)
@@ -578,6 +604,7 @@ def main() -> None:
             continue
         (SITE / out).write_text(render(src, out, title, accent, links, built), encoding="utf-8")
         print(f"built: site/{out}")
+    build_ai_context(built)
     for d in EXTRA_DIRS:
         if (ROOT / d).exists():
             shutil.copytree(ROOT / d, SITE / d)
