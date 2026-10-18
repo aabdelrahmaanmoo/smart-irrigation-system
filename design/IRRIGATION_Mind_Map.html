@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IRRIGATION — خريطة التطبيق</title>
+<style>
+:root{--bg:#0B0B0D;--card:#141416;--raised:#1C1C1F;--border:#232327;--text:#F2F2F3;--muted:#8E8E94;--primary:#0B5FE8;--primary-text:#3D86FF;--ok:#34B27B;--warn:#E0B04A;--danger:#E5706E;--rain:#30C3D9;--other:#A97CF5}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Noto Sans Arabic","Segoe UI",Tahoma,sans-serif;line-height:1.6;padding:24px 16px 48px}
+header{max-width:1400px;margin:0 auto 16px}
+h1{font-size:26px}
+.sub{color:var(--muted);font-size:15px;margin-top:4px}
+.tag{display:inline-block;border:1px solid var(--warn);color:var(--warn);border-radius:999px;padding:0 10px;font-size:13px;margin-inline-start:8px;vertical-align:middle}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:22px;height:12px;border-radius:4px;border:1px solid var(--border);background:var(--card)}
+.legend i.later{border-style:dashed;opacity:.55}
+.wrap{max-width:1400px;margin:0 auto;overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:16px}
+#map{position:relative;direction:ltr}
+#map svg{position:absolute;inset:0;pointer-events:none}
+.n{position:absolute;direction:rtl;background:var(--raised);border:1px solid var(--border);border-radius:10px;padding:6px 10px;font-size:13.5px;width:210px}
+.n b{font-weight:700}
+.n .v{float:left;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0 5px;margin-top:2px;direction:ltr}
+.n.d0{width:170px;font-size:17px;font-weight:700;text-align:center;padding:14px 10px;background:var(--primary);border-color:var(--primary);color:#fff}
+.n.d1{font-size:15px;font-weight:700;border-width:2px}
+.n.later{border-style:dashed;opacity:.5}
+.hint{max-width:1400px;margin:10px auto 0;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>خريطة التطبيق <span class="tag">مقترح</span></h1>
+<div class="sub">كل شاشات نسخة العرض وتفرعاتها. رقم الإصدار جنب كل عنصر من خارطة الطريق.</div>
+<div class="legend"><span><i></i>جوه نسخة العرض</span><span><i class="later"></i>بعد العرض</span></div>
+</header>
+<div class="wrap"><div id="map"><svg id="edges"></svg></div></div>
+<div class="hint">على الموبايل، اسحب الخريطة يمين وشمال.</div>
+<script>
+const T={t:"Smart Irrigation",c:[
+ {t:"الرئيسية: الخريطة",k:"--primary-text",c:[
+  {t:"خريطة بصور قمر صناعي وبحث بالمكان",v:"V1.4"},
+  {t:"الحقول ملونة بالتشبع، لون لكل قطاع",v:"V3"},
+  {t:"ملخص سريع",v:"V4",c:[{t:"محتاج ري النهارده"},{t:"مشبع"},{t:"بيانات ناقصة"}]},
+  {t:"الطبقات",c:[{t:"التشبع"},{t:"المحصول"},{t:"التربة"},{t:"صور الأقمار NDVI",later:1,v:"V6"}]},
+  {t:"قايمة الحقول",c:[{t:"كارت: المحصول، والتشبع، والرية الجاية، وتنبيه الطقس"}]}]},
+ {t:"إضافة حقل",k:"--ok",c:[
+  {t:"تحديد الحدود",v:"V1.4",c:[{t:"رسم على الخريطة"},{t:"استيراد ملف KML أو GeoJSON"}]},
+  {t:"الاسم والمحصول وتاريخ الزراعة",v:"V1.3"},
+  {t:"التربة، ومصدر كل قيمة",v:"V3.1"},
+  {t:"طريقة الري",v:"V1.5",c:[{t:"التنقيط: التصرف والكفاءة"},{t:"مصدر القيمة وثقتها"}]},
+  {t:"تقسيم القطاعات",v:"V1.3"}]},
+ {t:"تفاصيل الحقل والقطاع",k:"--rain",c:[
+  {t:"التشبع الحالي، ومصدره وثقته",v:"V3"},
+  {t:"التوصية",v:"V4",c:[{t:"نروي ولا لأ"},{t:"كام ملم وكام دقيقة"},{t:"إمتى"},{t:"السبب والثقة"}]},
+  {t:"رسم الاحتياج بشريط مراحل النمو",v:"V0.4"},
+  {t:"خطة الأيام الجاية",v:"V4.3"},
+  {t:"تعديل المهندس مع السبب",v:"V4.5"},
+  {t:"سجل الري: سجّل رية",v:"V5",later:1},
+  {t:"التدرج داخل القطاع",v:"V8",later:1}]},
+ {t:"الطقس",k:"--warn",c:[
+  {t:"النهارده وكل ساعة",v:"V2"},
+  {t:"سبع أيام: مطر وحرارة وETo",v:"V2"},
+  {t:"تنبيه مطر: أجّل الري",v:"V4"},
+  {t:"المصدر وآخر تحديث",v:"V2.1"}]},
+ {t:"الحاسبة",k:"--other",c:[
+  {t:"إدخال يدوي: الاحتياج والحجم والمدة",v:"V0"},
+  {t:"شرح الحساب خطوة بخطوة",v:"V1.6"},
+  {t:"مقارنة مع CROPWAT",v:"V6.1"}]},
+ {t:"التنبيهات والحساب",k:"--danger",c:[
+  {t:"تنبيهات: ري، تشبع زيادة، بيانات ناقصة، مطر",v:"V4"},
+  {t:"الدخول والمنظمة والمزرعة",v:"V1.2"},
+  {t:"الإعدادات: الوحدات واللغة"},
+  {t:"الفريق والأدوار",v:"V1.2",later:1}]},
+ {t:"بعد العرض",k:"--muted",later:1,c:[
+  {t:"الأجهزة والحساسات",v:"V8",later:1},
+  {t:"كشف الأعطال",v:"V9",later:1},
+  {t:"التحكم الآلي",v:"V10",later:1}]}
+]};
+const COL=[180,230,230,230],GAP=10,PAD=24,GX=40;
+const map=document.getElementById('map'),svg=document.getElementById('edges');
+const css=getComputedStyle(document.documentElement);
+function mk(n,d,color,later){
+  const e=document.createElement('div');e.className='n d'+d+((n.later||later)?' later':'');
+  e.innerHTML=(n.v?'<span class="v">'+n.v+'</span>':'')+(d===1?'<b>'+n.t+'</b>':n.t);
+  if(d>0)e.style.borderColor=color; if(d===1)e.style.color=color;
+  map.appendChild(e);n.el=e;n.d=d;n.color=color;
+  (n.c||[]).forEach(ch=>mk(ch,d+1,color,n.later||later));
+}
+T.c.forEach(s=>s.col=css.getPropertyValue(s.k).trim());
+mk(T,0,null);
+T.c.forEach(s=>{s.el.style.borderColor=s.col;s.el.style.color=s.col;(function rec(n){(n.c||[]).forEach(ch=>{ch.el.style.borderColor=s.col;rec(ch)})})(s)});
+// layout: leaves stacked, parents centered
+const widths=[0];for(let i=0;i<COL.length;i++)widths.push(widths[i]+COL[i]+GX);
+const total=widths[COL.length]+PAD*2;
+let y=PAD;
+function place(n){
+  const h=n.el.offsetHeight;
+  if(!n.c||!n.c.length){n.y=y;y+=h+GAP;}
+  else{n.c.forEach(place);const f=n.c[0],l=n.c[n.c.length-1];n.y=Math.max((f.y+l.y+l.el.offsetHeight)/2-h/2, f.y);
+       if(n.d===1)y+=14;}
+  n.x=total-PAD-widths[n.d]-COL[n.d];
+  n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';
+}
+place(T);
+const H=y+PAD;map.style.width=total+'px';map.style.height=H+'px';
+svg.setAttribute('width',total);svg.setAttribute('height',H);
+function edges(n){(n.c||[]).forEach(ch=>{
+  const x1=n.x,y1=n.y+n.el.offsetHeight/2,x2=ch.x+ch.el.offsetWidth,y2=ch.y+ch.el.offsetHeight/2,mx=(x1+x2)/2;
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+  p.setAttribute('fill','none');p.setAttribute('stroke',ch.color||'#555');p.setAttribute('stroke-width',ch.d===1?2:1.4);
+  p.setAttribute('opacity',ch.el.classList.contains('later')?.35:.7);
+  if(ch.el.classList.contains('later'))p.setAttribute('stroke-dasharray','5 4');
+  svg.appendChild(p);edges(ch)})}
+T.c.forEach(s=>{s.color=s.col;(function rec(n){(n.c||[]).forEach(ch=>{ch.color=s.col;rec(ch)})})(s)});
+edges(T);
+</script>
+</body>
+</html>
