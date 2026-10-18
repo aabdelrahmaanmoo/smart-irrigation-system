@@ -16,7 +16,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
 .lead{margin-bottom:12px}
 .tag{display:inline-block;border:1px solid var(--warn);color:var(--warn);border-radius:999px;padding:0 10px;font-size:13px;margin-inline-start:8px;vertical-align:middle}
 .lv{font-size:11px;border-radius:6px;padding:0 6px;display:inline-block;margin-inline-start:6px;vertical-align:1px;border:1px solid currentColor}
-.l2{color:var(--rain)}.l3{color:var(--warn)}.l4{color:var(--other)}
+.l2,.l3,.l4{color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:13px;color:var(--muted);align-items:center}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
@@ -24,18 +24,19 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
 .gwrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:16px}
 #g{position:relative;direction:ltr}#g svg{position:absolute;inset:0;pointer-events:none}
 .gn{position:absolute;width:190px;direction:rtl;background:var(--raised);border:1.5px solid var(--border);border-radius:10px;padding:7px 10px;font-size:14px;cursor:pointer;transition:opacity .15s}
-.gn.dim{opacity:.18}.gh{position:absolute;top:12px;width:190px;direction:rtl;font-size:13px;font-weight:700}
-.card{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--c,var(--border));border-radius:14px;padding:14px 16px}
-.card h3{font-size:16px;color:var(--c,var(--text));margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.gn.dim{opacity:.18}.gn.on{border-color:var(--primary-text);color:var(--primary-text)}.gh{position:absolute;top:12px;width:190px;direction:rtl;font-size:13px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px}
+.card h3{font-size:16px;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .card ul{list-style:none;padding:0}
 .card li{font-size:14px;padding:3px 0;border-bottom:1px solid #1d1d21}
 .card li:last-child{border:0}
-.card .go{margin-top:8px;font-size:13px;color:var(--c,var(--muted))}
+.card .go{margin-top:8px;font-size:13px;color:var(--muted)}
+.card h3 .ic{color:var(--primary-text)}
 .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
 .step{flex:1 1 150px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;position:relative}
 .step b{display:block;font-size:15px}
-.step .n{position:absolute;top:-10px;inset-inline-start:10px;background:var(--c,var(--raised));color:#0B0B0D;font-weight:700;font-size:12px;border-radius:999px;padding:0 8px}
+.step .n{position:absolute;top:-10px;inset-inline-start:10px;background:var(--primary-text);color:#0B0B0D;font-weight:700;font-size:12px;border-radius:999px;padding:0 8px}
 .arrow{align-self:center;color:var(--muted);font-size:20px}
 .loop .step{border-color:var(--primary);background:#0f1a2e}
 .loop .arrow{color:var(--primary-text)}
@@ -81,10 +82,10 @@ const E=[['co','all'],['en','today'],['en','map'],['en','alerts'],['op','today']
 const g=document.getElementById('g'),sv=document.getElementById('ge'),cs=getComputedStyle(document.documentElement);
 const W=190,GX=56,PAD=20,TOP=44,GAP=10;
 const nodes={};N.forEach(([id,c,t,l])=>{const e=document.createElement('div');e.className='gn';e.dataset.id=id;
- const col=cs.getPropertyValue(K[c]).trim();e.style.borderColor=col;if(c===0)e.style.color=col;
+ const col='#4A505C';
  e.innerHTML=t+(l?' <span class="lv '+l+'">'+(l==='l2'?'متابعة':'أوتوميشن')+'</span>':'');g.appendChild(e);nodes[id]={id,c,el:e,col,h:0,y:0};});
 const total=PAD*2+5*W+4*GX;
-C.forEach((t,i)=>{const h=document.createElement('div');h.className='gh';h.textContent=t;h.style.left=(total-PAD-W-i*(W+GX))+'px';h.style.color=cs.getPropertyValue(K[i]).trim();g.appendChild(h)});
+C.forEach((t,i)=>{const h=document.createElement('div');h.className='gh';h.textContent=t;h.style.left=(total-PAD-W-i*(W+GX))+'px';h.style.color='var(--muted)';g.appendChild(h)});
 Object.values(nodes).forEach(n=>{n.h=n.el.offsetHeight;n.x=total-PAD-W-n.c*(W+GX)});
 const adj=id=>E.filter(e=>e[0]===id||e[1]===id).map(e=>e[0]===id?e[1]:e[0]);
 // column 3 sequential with group gaps
@@ -106,13 +107,13 @@ const paths=E.map(([a,b])=>{const A=nodes[a],B=nodes[b];let x1,x2;
  const y1=A.y+A.h/2,y2=B.y+B.h/2,mx=A.c===B.c?Math.min(x1,x2)-40:(x1+x2)/2;
  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
  p.setAttribute('d',A.c===B.c?`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`:`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
- p.setAttribute('fill','none');p.setAttribute('stroke',A.col);p.setAttribute('stroke-width',1.6);p.setAttribute('opacity',.55);
+ p.setAttribute('fill','none');p.setAttribute('stroke',A.col);p.setAttribute('stroke-width',1.6);p.setAttribute('opacity',.8);
  if(A.c===4)p.setAttribute('stroke-dasharray','5 4');p.dataset.a=a;p.dataset.b=b;sv.appendChild(p);return p});
 let sel=null;
 g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.dataset.id;sel=(id&&id!==sel)?id:null;
  const on=new Set(sel?[sel,...adj(sel)]:[]);
- Object.values(nodes).forEach(n=>n.el.classList.toggle('dim',!!sel&&!on.has(n.id)));
- paths.forEach(p=>{const hit=!sel||p.dataset.a===sel||p.dataset.b===sel;p.setAttribute('opacity',sel?(hit?1:.06):.55);p.setAttribute('stroke-width',sel&&hit?2.6:1.6)})});
+ Object.values(nodes).forEach(n=>{n.el.classList.toggle('dim',!!sel&&!on.has(n.id));n.el.classList.toggle('on',n.id===sel)});
+ paths.forEach(p=>{const hit=!sel||p.dataset.a===sel||p.dataset.b===sel;p.setAttribute('opacity',sel?(hit?1:.06):.8);p.setAttribute('stroke',sel&&hit?cs.getPropertyValue('--primary-text').trim():'#4A505C');p.setAttribute('stroke-width',sel&&hit?2.6:1.6)})});
 })();
 </script>
 
@@ -127,14 +128,14 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
 
 <h2><span class="num">٣</span>التنقل الرئيسي: ٥ أزرار</h2>
 <div class="grid">
- <div class="card" style="--c:var(--primary-text)"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>النهارده</h3><ul>
+ <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>النهارده</h3><ul>
   <li>كل القطاعات في شاشة واحدة، ولون لكل حالة</li>
   <li>التوصية لكل قطاع: كام ومدة قد إيه وإمتى</li>
   <li>اعتماد، أو اعتماد الكل، أو تعديل بسبب</li>
   <li>الثقة، وعلامة "البيانات مش كفاية"</li>
   <li>ترتيب: الأحوج للري الأول</li></ul>
   <div class="go">الشاشة الأساسية للمهندس</div></div>
- <div class="card" style="--c:var(--ok)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>الخريطة</h3><ul>
+ <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>الخريطة</h3><ul>
   <li>صور قمر صناعي وبحث بالمكان</li>
   <li>القطاعات ملونة بالحالة</li>
   <li>طبقات: التشبع، التوصية، المحصول، التربة</li>
@@ -142,21 +143,21 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
   <li>طبقة الأجهزة وحالتها<span class="lv l2">متابعة</span></li>
   <li>التدرج داخل القطاع<span class="lv l2">متابعة</span></li></ul>
   <div class="go">الضغط على قطاع ← شاشة القطاع</div></div>
- <div class="card" style="--c:var(--danger)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M12 3L2 21h20z"/><path d="M12 10v5M12 18v.5"/></svg>التنبيهات</h3><ul>
+ <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M12 3L2 21h20z"/><path d="M12 10v5M12 18v.5"/></svg>التنبيهات</h3><ul>
   <li>ري مستحق ومش متعمد</li>
   <li>فرق بين المخطط والمنفذ</li>
   <li>بيانات ناقصة أو قديمة، ومطر متوقع</li>
   <li>أعطال: تسريب، انسداد، ضغط<span class="lv l2">متابعة</span></li>
   <li>جهاز فاصل أو بطارية ضعيفة<span class="lv l2">متابعة</span></li></ul>
   <div class="go">كل تنبيه مربوط بفعل واضح</div></div>
- <div class="card" style="--c:var(--warn)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>التقارير</h3><ul>
+ <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>التقارير</h3><ul>
   <li>المياه لكل قطاع ومزرعة</li>
   <li>التكلفة والطاقة</li>
   <li>المخطط مقابل المنفذ</li>
   <li>مقارنة المواسم والقطاعات</li>
   <li>تصدير وإرسال دوري</li></ul>
   <div class="go">الشاشة الأساسية لصاحب المزرعة</div></div>
- <div class="card" style="--c:var(--other)"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>المزيد</h3><ul>
+ <div class="card"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>المزيد</h3><ul>
   <li>الإعداد، تفاصيله في قسم ٤</li>
   <li>الأدوات، تفاصيلها في قسم ٥</li>
   <li>الحساب والاشتراك</li>
@@ -166,29 +167,29 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
 <h2><span class="num">٤</span>شاشة القطاع</h2>
 <div class="lead">بتتفتح من النهارده أو الخريطة أو التنبيهات.</div>
 <div class="grid g3">
- <div class="card" style="--c:var(--primary-text)"><h3>القرار</h3><ul>
+ <div class="card"><h3>القرار</h3><ul>
   <li>نروي ولا لأ، وكام، ومدة قد إيه، وإمتى</li>
   <li>السبب بكلام مهندس، والثقة</li>
   <li>خطة الأيام الجاية</li>
   <li>اعتماد أو تعديل بسبب</li>
   <li>إرسال للكنترولر<span class="lv l3">أوتوميشن</span></li></ul></div>
- <div class="card" style="--c:var(--rain)"><h3>مياه التربة</h3><ul>
+ <div class="card"><h3>مياه التربة</h3><ul>
   <li>رسم الرطوبة يوم بيوم وحد الاستنزاف</li>
   <li>المصدر: تقدير أو قياس</li>
   <li>قراءات الحساسات اللحظية<span class="lv l2">متابعة</span></li></ul></div>
- <div class="card" style="--c:var(--ok)"><h3>سجل الري</h3><ul>
+ <div class="card"><h3>سجل الري</h3><ul>
   <li>المخطط والمنفذ والمتأخر والملغي</li>
   <li>تسجيل رية من الموبايل</li>
   <li>التشغيل الفعلي من الكنترولر<span class="lv l3">أوتوميشن</span></li></ul></div>
- <div class="card" style="--c:var(--warn)"><h3>الطقس</h3><ul>
+ <div class="card"><h3>الطقس</h3><ul>
   <li>دلوقتي وكل ساعة وسبع أيام</li>
   <li>المطر و ETo لكل يوم</li>
   <li>المصدر وآخر تحديث</li></ul></div>
- <div class="card" style="--c:var(--other)"><h3>الحساب</h3><ul>
+ <div class="card"><h3>الحساب</h3><ul>
   <li>رسم الاحتياج بشريط مراحل النمو</li>
   <li>الخطوات من الطقس للتوصية</li>
   <li>كل رقم بمصدره ووحدته</li></ul></div>
- <div class="card" style="--c:var(--muted)"><h3>البيانات</h3><ul>
+ <div class="card"><h3>البيانات</h3><ul>
   <li>المحصول والتربة وطريقة الري</li>
   <li>المصدر والطلمبة والخط والمحابس</li>
   <li>الأجهزة المربوطة<span class="lv l2">متابعة</span></li></ul></div>
@@ -196,49 +197,49 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
 
 <h2><span class="num">٥</span>الإعداد</h2>
 <div class="grid g3">
- <div class="card" style="--c:var(--ok)"><h3>المزرعة والحقول</h3><ul>
+ <div class="card"><h3>المزرعة والحقول</h3><ul>
   <li>معالج إضافة حقل: الحدود، المحصول، التربة، طريقة الري، القطاعات</li>
   <li>الحدود بالرسم أو ملف KML و GeoJSON</li></ul></div>
- <div class="card" style="--c:var(--rain)"><h3>الشبكة</h3><ul>
+ <div class="card"><h3>الشبكة</h3><ul>
   <li>المصادر والآبار والطلمبات وسعاتها</li>
   <li>الخطوط والمحابس والنقاطات لكل قطاع</li>
   <li>أوقات توفر المياه وقيود التشغيل</li></ul></div>
- <div class="card" style="--c:var(--warn)"><h3>الأجهزة</h3><ul>
+ <div class="card"><h3>الأجهزة</h3><ul>
   <li>ربط الحساسات<span class="lv l2">متابعة</span></li>
   <li>ربط الكنترولرات وقدراتها<span class="lv l3">أوتوميشن</span></li>
   <li>التحكم في كل مخرج<span class="lv l4">تحكم دقيق</span></li></ul></div>
- <div class="card" style="--c:var(--danger)"><h3>الأوتوميشن والأمان</h3><ul>
+ <div class="card"><h3>الأوتوميشن والأمان</h3><ul>
   <li>المستوى: يدوي، أو بموافقة، أو آلي<span class="lv l3">أوتوميشن</span></li>
   <li>حدود الأمان وقت انقطاع النت<span class="lv l3">أوتوميشن</span></li></ul></div>
- <div class="card" style="--c:var(--primary-text)"><h3>الفريق</h3><ul>
+ <div class="card"><h3>الفريق</h3><ul>
   <li>دعوة أعضاء وتحديد الأدوار</li>
   <li>مين يشوف ومين يعتمد ومين ينفذ</li></ul></div>
- <div class="card" style="--c:var(--other)"><h3>عام</h3><ul>
+ <div class="card"><h3>عام</h3><ul>
   <li>الوحدات: فدان أو هكتار، ملم أو متر مكعب</li>
   <li>اللغة، والتنبيهات على الموبايل</li></ul></div>
 </div>
 
 <h2><span class="num">٦</span>الأدوات</h2>
 <div class="grid">
- <div class="card" style="--c:var(--other)"><h3>الحاسبة السريعة</h3><ul><li>حساب من غير حقل محفوظ</li></ul></div>
- <div class="card" style="--c:var(--rain)"><h3>تصميم الشبكات</h3><ul><li>تصميم أو تقييم شبكة، والتصميم يبقى تعريف المزرعة</li></ul></div>
- <div class="card" style="--c:var(--warn)"><h3>ماذا لو</h3><ul><li>تجربة تغيير وشوف أثره من غير ما يلمس الحقيقة</li></ul></div>
+ <div class="card"><h3>الحاسبة السريعة</h3><ul><li>حساب من غير حقل محفوظ</li></ul></div>
+ <div class="card"><h3>تصميم الشبكات</h3><ul><li>تصميم أو تقييم شبكة، والتصميم يبقى تعريف المزرعة</li></ul></div>
+ <div class="card"><h3>ماذا لو</h3><ul><li>تجربة تغيير وشوف أثره من غير ما يلمس الحقيقة</li></ul></div>
 </div>
 
 <h2><span class="num">٧</span>كل دور بيشوف إيه</h2>
 <div class="grid">
- <div class="card role" style="--c:var(--primary-text)"><h3>مهندس الري <small>المستخدم الأساسي</small></h3><ul>
+ <div class="card role"><h3>مهندس الري <small>المستخدم الأساسي</small></h3><ul>
   <li>يبدأ من: النهارده</li><li>كل الشاشات والصلاحيات في مزارعه</li></ul></div>
- <div class="card role" style="--c:var(--ok)"><h3>مشغل الحقل <small>موبايل</small></h3><ul>
+ <div class="card role"><h3>مشغل الحقل <small>موبايل</small></h3><ul>
   <li>يبدأ من: جدول النهارده بس</li><li>يسجل اللي اتنفذ، ويشوف تنبيهات التشغيل</li></ul></div>
- <div class="card role" style="--c:var(--warn)"><h3>صاحب المزرعة</h3><ul>
+ <div class="card role"><h3>صاحب المزرعة</h3><ul>
   <li>يبدأ من: التقارير</li><li>المياه والتكلفة والمشاكل، من غير تفاصيل فنية</li></ul></div>
- <div class="card role" style="--c:var(--other)"><h3>شركة التركيب أو الاستشاري</h3><ul>
+ <div class="card role"><h3>شركة التركيب أو الاستشاري</h3><ul>
   <li>يبدأ من: كل المزارع</li><li>مزارع عملاء كتير من حساب واحد، والأحوج للتدخل الأول</li></ul></div>
 </div>
 
 <h2><span class="num">٨</span>الدورة اليومية</h2>
-<div class="flow loop" style="--c:var(--primary-text)">
+<div class="flow loop">
  <div class="step"><span class="n">١</span><b>المنصة تحسب</b>الطقس والتربة والمحصول لكل قطاع</div><div class="arrow">←</div>
  <div class="step"><span class="n">٢</span><b>المهندس يراجع</b>شاشة النهارده</div><div class="arrow">←</div>
  <div class="step"><span class="n">٣</span><b>يعتمد أو يعدل</b>والتعديل بسبب</div><div class="arrow">←</div>
@@ -248,7 +249,7 @@ g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.d
 </div>
 
 <h2><span class="num">٩</span>أول استخدام</h2>
-<div class="flow" style="--c:var(--ok)">
+<div class="flow">
  <div class="step"><span class="n">١</span><b>التسجيل</b>وإنشاء المنظمة</div><div class="arrow">←</div>
  <div class="step"><span class="n">٢</span><b>أول مزرعة</b>مكانها على الخريطة</div><div class="arrow">←</div>
  <div class="step"><span class="n">٣</span><b>أول حقل</b>بالمعالج</div><div class="arrow">←</div>

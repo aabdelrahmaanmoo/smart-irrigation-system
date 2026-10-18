@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
-body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--primary-text);text-underline-offset:3px}
 code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--raised);border:1px solid var(--border);padding:0 6px;border-radius:6px}
 pre{direction:ltr;text-align:left;overflow-x:auto;background:#09090B;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.7}
@@ -124,7 +124,7 @@ tbody tr:hover td{background:#17171A}
 .callout p{margin:0}
 .callout>p+p{margin-top:6px}
 .callout strong:first-child{color:var(--c,var(--primary-text))}
-.callout.rule{--c:var(--ok)} .callout.research{--c:var(--warn)} .callout.proposal{--c:var(--other)} .callout.note{--c:var(--primary-text)}
+.callout.rule{--c:var(--primary-text)} .callout.research{--c:var(--muted)} .callout.proposal{--c:var(--muted)} .callout.note{--c:var(--primary-text)}
 
 /* collapsible cards */
 .tools{display:flex;gap:8px;margin:16px 0 6px}
@@ -169,7 +169,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}</style>
 </head>
-<body class="" style="--accent:var(--ok)">
+<body class="" style="--accent:var(--primary-text)">
 <div class="progress" aria-hidden="true"><i id="progress"></i></div>
 <header class="bar">
   <a class="brand" href="index.html"><img src="design/logo-mark-white.png" alt="" width="26" height="26"><span>Smart <b>Irrigation</b></span></a>
@@ -177,7 +177,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" aria-label="كل الصفحات"><span></span></button>
 </header>
 <div class="layout">
-<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--ok)">خارطة البناء</a><a href="architecture.html" style="--c:var(--other)">التصميم التقني</a><a href="domain.html" style="--c:var(--rain)">علم الري</a><a href="market.html" style="--c:var(--warn)">السوق والمنافسين</a><a href="journey.html" aria-current="page" style="--c:var(--ok)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--rain)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
+<nav id="nav" class="side" aria-label="صفحات المشروع"><p class="grp">الملفات</p><a href="index.html" style="--c:var(--primary-text)">الرئيسية</a><a href="overview.html" style="--c:var(--primary-text)">في دقيقتين</a><a href="product.html" style="--c:var(--primary-text)">المنتج</a><a href="roadmap.html" style="--c:var(--primary-text)">خارطة البناء</a><a href="architecture.html" style="--c:var(--primary-text)">التصميم التقني</a><a href="domain.html" style="--c:var(--primary-text)">علم الري</a><a href="market.html" style="--c:var(--primary-text)">السوق والمنافسين</a><a href="journey.html" aria-current="page" style="--c:var(--primary-text)">رحلة المشروع</a><a href="reference-cases.html" style="--c:var(--primary-text)">الحالات المرجعية</a><p class="grp">صفحات العرض</p><a href="design/IRRIGATION_Color_System.html" style="--c:var(--muted)">نظام الألوان<span aria-hidden="true">↗</span></a><a href="design/IRRIGATION_Mind_Map.html" style="--c:var(--muted)">خريطة المنتج<span aria-hidden="true">↗</span></a><a href="research/IRRIGATION_Competitor_Study.html" style="--c:var(--muted)">دراسة المنافسين<span aria-hidden="true">↗</span></a></nav>
 <div class="scrim" hidden></div>
 <main class="page">
   <h1>رحلة المشروع</h1>
@@ -333,6 +333,13 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>التاريخ:</strong> ‏2026-10-18</li>
 <li><strong>القرار:</strong> الهدف إصدار يتعرض على الدكاترة في مايو 2027، والمطلوب منه إنه شغال ومفهوم وصاحب المشروع يقدر يشرحه، مش إنه كامل. النطاق التفصيلي مقترح وموجود في <a href="roadmap.html">خارطة الطريق</a>.</li>
 <li><strong>السبب:</strong> وقت المناقشة محدد، والمرحلة الأولى بس هي اللي ممكن تتختبر قبله.</li>
+</ul>
+</div></details><details class="card" id="قرار-رقم-12-لون-واحد-للتمييز-في-الصفحات"><summary><span class="t">قرار رقم 12: لون واحد للتمييز في الصفحات</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
+<ul>
+<li><strong>التاريخ:</strong> ‏2026-10-18</li>
+<li><strong>القرار:</strong> الصفحات والشاشات بتستخدم الأزرق بس للتمييز، وكل الباقي رمادي. ألوان الحالة زي خالص وجاري والجاي، وألوان الرسوم الخمسة من قرار رقم 7، بتفضل للمعنى بس، مش للزينة. والخط <code>Cairo</code> بحجم أكبر.</li>
+<li><strong>السبب:</strong> الألوان كانت كتير ومتعبة، وصاحب القرار شاف صفحة بلون واحد ورمادي ولقاها أريح.</li>
+<li><strong>البدائل المرفوضة:</strong> لون مختلف لكل صفحة ولكل كارت.</li>
 </ul>
 <!-- قالب قرار جديد:
 ### قرار رقم X: العنوان
@@ -513,6 +520,11 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <td>‏2026-10-18</td>
 <td>هدف نسخة العرض في مايو 2027</td>
 <td>قرار رقم 11</td>
+</tr>
+<tr>
+<td>‏2026-10-18</td>
+<td>تقليل الألوان: الأزرق للتمييز والرمادي للباقي</td>
+<td>قرار رقم 12</td>
 </tr>
 <tr>
 <td>‏2026-10-18</td>

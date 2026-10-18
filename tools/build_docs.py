@@ -26,12 +26,12 @@ PAGES = [
     ("README.md", "index.html", "الرئيسية", "primary-text"),
     ("docs/OVERVIEW.md", "overview.html", "في دقيقتين", "primary-text"),
     ("docs/PRODUCT.md", "product.html", "المنتج", "primary-text"),
-    ("docs/ROADMAP.md", "roadmap.html", "خارطة البناء", "ok"),
-    ("docs/ARCHITECTURE.md", "architecture.html", "التصميم التقني", "other"),
-    ("docs/DOMAIN.md", "domain.html", "علم الري", "rain"),
-    ("docs/MARKET.md", "market.html", "السوق والمنافسين", "warn"),
-    ("docs/JOURNEY.md", "journey.html", "رحلة المشروع", "ok"),
-    ("reference-cases/README.md", "reference-cases.html", "الحالات المرجعية", "rain"),
+    ("docs/ROADMAP.md", "roadmap.html", "خارطة البناء", "primary-text"),
+    ("docs/ARCHITECTURE.md", "architecture.html", "التصميم التقني", "primary-text"),
+    ("docs/DOMAIN.md", "domain.html", "علم الري", "primary-text"),
+    ("docs/MARKET.md", "market.html", "السوق والمنافسين", "primary-text"),
+    ("docs/JOURNEY.md", "journey.html", "رحلة المشروع", "primary-text"),
+    ("reference-cases/README.md", "reference-cases.html", "الحالات المرجعية", "primary-text"),
 ]
 EXTRA_DIRS = ["design", "research"]
 STANDALONE = {"overview.html"}
@@ -224,7 +224,7 @@ def render(src: str, out: str, title: str, accent: str, links: dict[str, str], b
             f'<a class="doc" href="{h}" style="--c:var(--muted)"><span class="n">↗</span><b>{t}</b><span class="d">{d}</span></a>'
             for h, t, d in extra_pages()
         )
-        cards = (progress_block() + '<h2 class="sec">ملفات المشروع</h2>' + legend_html()
+        cards = (progress_block() + '<h2 class="sec">ملفات المشروع</h2>'
                  + f'<nav class="docs" aria-label="ملفات المشروع">{items}</nav>'
                  + f'<h2 class="sec">صفحات العرض</h2><nav class="docs" aria-label="صفحات العرض">{extras}</nav>')
 
@@ -329,7 +329,7 @@ CSS = """
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--bar) + 12px)}
-body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.8 Cairo,Tahoma,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--primary-text);text-underline-offset:3px}
 code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--raised);border:1px solid var(--border);padding:0 6px;border-radius:6px}
 pre{direction:ltr;text-align:left;overflow-x:auto;background:#09090B;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.7}
@@ -434,7 +434,7 @@ tbody tr:hover td{background:#17171A}
 .callout p{margin:0}
 .callout>p+p{margin-top:6px}
 .callout strong:first-child{color:var(--c,var(--primary-text))}
-.callout.rule{--c:var(--ok)} .callout.research{--c:var(--warn)} .callout.proposal{--c:var(--other)} .callout.note{--c:var(--primary-text)}
+.callout.rule{--c:var(--primary-text)} .callout.research{--c:var(--muted)} .callout.proposal{--c:var(--muted)} .callout.note{--c:var(--primary-text)}
 
 /* collapsible cards */
 .tools{display:flex;gap:8px;margin:16px 0 6px}
