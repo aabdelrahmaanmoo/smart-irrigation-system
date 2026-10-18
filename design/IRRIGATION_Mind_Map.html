@@ -21,6 +21,10 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
 @media(max-width:400px){.g3{grid-template-columns:1fr}}
+.gwrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:16px}
+#g{position:relative;direction:ltr}#g svg{position:absolute;inset:0;pointer-events:none}
+.gn{position:absolute;width:190px;direction:rtl;background:var(--raised);border:1.5px solid var(--border);border-radius:10px;padding:7px 10px;font-size:14px;cursor:pointer;transition:opacity .15s}
+.gn.dim{opacity:.18}.gh{position:absolute;top:12px;width:190px;direction:rtl;font-size:13px;font-weight:700}
 .card{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--c,var(--border));border-radius:14px;padding:14px 16px}
 .card h3{font-size:16px;color:var(--c,var(--text));margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .card ul{list-style:none;padding:0}
@@ -52,7 +56,67 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
  <span class="lv l4">تحكم دقيق: تحكم في كل مخرج</span>
 </div>
 
-<h2><span class="num">١</span>الهيكل</h2>
+<h2><span class="num">١</span>الخريطة المترابطة</h2>
+<div class="lead">كل حاجة متوصلة بإيه: مين بيستخدم إيه، وكل شاشة بتفتح إيه، والبيانات جاية منين. اضغط على أي مربع يظهر اللي متوصل بيه بس.</div>
+<div class="gwrap"><div id="g"><svg id="ge"></svg></div></div>
+<script>
+(function(){
+const C=['المستخدمين','التنقل','الشاشات','المحتوى','مصادر البيانات'];
+const K=['--primary-text','--ok','--rain','--other','--warn'];
+const N=[
+ ['co',0,'شركة التركيب'],['en',0,'مهندس الري'],['op',0,'مشغل الحقل'],['ow',0,'صاحب المزرعة'],
+ ['all',1,'كل المزارع'],['today',1,'النهارده'],['map',1,'الخريطة'],['alerts',1,'التنبيهات'],['reports',1,'التقارير'],['more',1,'المزيد'],
+ ['sector',2,'شاشة القطاع'],['wizard',2,'معالج إضافة حقل'],['setup',2,'الإعداد'],['tools',2,'الأدوات'],
+ ['dec',3,'القرار والتوصية'],['soil',3,'مياه التربة'],['log',3,'سجل الري'],['wx',3,'الطقس'],['calc',3,'الحساب وشرحه'],['data',3,'بيانات القطاع'],
+ ['farm',3,'المزرعة والحقول'],['net',3,'الشبكة'],['dev',3,'الأجهزة','l2'],['auto',3,'الأوتوميشن والأمان','l3'],['team',3,'الفريق'],
+ ['qc',3,'الحاسبة'],['nd',3,'تصميم الشبكات'],['wi',3,'ماذا لو'],
+ ['s_wx',4,'مزود الطقس'],['s_sat',4,'الأقمار الصناعية'],['s_in',4,'إدخال المهندس'],['s_sen',4,'الحساسات','l2'],['s_ctl',4,'الكنترولرات','l3']
+];
+const E=[['co','all'],['en','today'],['en','map'],['en','alerts'],['op','today'],['ow','reports'],
+ ['all','today'],['today','sector'],['map','sector'],['map','wizard'],['alerts','sector'],['more','setup'],['more','tools'],
+ ['sector','dec'],['sector','soil'],['sector','log'],['sector','wx'],['sector','calc'],['sector','data'],
+ ['wizard','farm'],['setup','farm'],['setup','net'],['setup','dev'],['setup','auto'],['setup','team'],
+ ['tools','qc'],['tools','nd'],['tools','wi'],['nd','net'],
+ ['s_wx','wx'],['s_wx','dec'],['s_sat','soil'],['s_in','data'],['s_in','farm'],['s_sen','soil'],['s_sen','dev'],['s_ctl','log'],['s_ctl','dev'],['s_ctl','auto']];
+const g=document.getElementById('g'),sv=document.getElementById('ge'),cs=getComputedStyle(document.documentElement);
+const W=190,GX=56,PAD=20,TOP=44,GAP=10;
+const nodes={};N.forEach(([id,c,t,l])=>{const e=document.createElement('div');e.className='gn';e.dataset.id=id;
+ const col=cs.getPropertyValue(K[c]).trim();e.style.borderColor=col;if(c===0)e.style.color=col;
+ e.innerHTML=t+(l?' <span class="lv '+l+'">'+(l==='l2'?'متابعة':'أوتوميشن')+'</span>':'');g.appendChild(e);nodes[id]={id,c,el:e,col,h:0,y:0};});
+const total=PAD*2+5*W+4*GX;
+C.forEach((t,i)=>{const h=document.createElement('div');h.className='gh';h.textContent=t;h.style.left=(total-PAD-W-i*(W+GX))+'px';h.style.color=cs.getPropertyValue(K[i]).trim();g.appendChild(h)});
+Object.values(nodes).forEach(n=>{n.h=n.el.offsetHeight;n.x=total-PAD-W-n.c*(W+GX)});
+const adj=id=>E.filter(e=>e[0]===id||e[1]===id).map(e=>e[0]===id?e[1]:e[0]);
+// column 3 sequential with group gaps
+let y=TOP;const groups=[['dec','soil','log','wx','calc','data'],['farm','net','dev','auto','team'],['qc','nd','wi']];
+groups.forEach(gr=>{gr.forEach(id=>{nodes[id].y=y;y+=nodes[id].h+GAP});y+=22});
+const H=y;
+function settle(c,order,ref){const list=order.map(id=>nodes[id]);
+ list.forEach(n=>{const t=adj(n.id).map(i=>nodes[i]).filter(m=>ref.includes(m.c));n.y=t.length?t.reduce((s,m)=>s+m.y+m.h/2,0)/t.length-n.h/2:n.y});
+ for(let k=0;k<3;k++){for(let i=1;i<list.length;i++){const p=list[i-1],n=list[i];if(n.y<p.y+p.h+GAP)n.y=p.y+p.h+GAP}
+  if(list[0].y<TOP){const d=TOP-list[0].y;list.forEach(n=>n.y+=d)}}}
+settle(2,['sector','wizard','setup','tools'],[3]);
+settle(4,['s_wx','s_sat','s_in','s_sen','s_ctl'],[3]);
+settle(1,['all','today','map','alerts','reports','more'],[2,3]);
+settle(0,['co','en','op','ow'],[1,3]);
+let mh=H;Object.values(nodes).forEach(n=>{n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';mh=Math.max(mh,n.y+n.h+PAD)});
+g.style.width=total+'px';g.style.height=mh+'px';sv.setAttribute('width',total);sv.setAttribute('height',mh);
+const paths=E.map(([a,b])=>{const A=nodes[a],B=nodes[b];let x1,x2;
+ if(A.c<B.c){x1=A.x;x2=B.x+W}else if(A.c>B.c){x1=A.x+W;x2=B.x}else{x1=A.x;x2=B.x}
+ const y1=A.y+A.h/2,y2=B.y+B.h/2,mx=A.c===B.c?Math.min(x1,x2)-40:(x1+x2)/2;
+ const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+ p.setAttribute('d',A.c===B.c?`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`:`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+ p.setAttribute('fill','none');p.setAttribute('stroke',A.col);p.setAttribute('stroke-width',1.6);p.setAttribute('opacity',.55);
+ if(A.c===4)p.setAttribute('stroke-dasharray','5 4');p.dataset.a=a;p.dataset.b=b;sv.appendChild(p);return p});
+let sel=null;
+g.addEventListener('click',ev=>{const t=ev.target.closest('.gn');const id=t&&t.dataset.id;sel=(id&&id!==sel)?id:null;
+ const on=new Set(sel?[sel,...adj(sel)]:[]);
+ Object.values(nodes).forEach(n=>n.el.classList.toggle('dim',!!sel&&!on.has(n.id)));
+ paths.forEach(p=>{const hit=!sel||p.dataset.a===sel||p.dataset.b===sel;p.setAttribute('opacity',sel?(hit?1:.06):.55);p.setAttribute('stroke-width',sel&&hit?2.6:1.6)})});
+})();
+</script>
+
+<h2><span class="num">٢</span>الهيكل</h2>
 <div class="chain">
  <div class="box">المنظمة</div><div class="arrow">←</div>
  <div class="box">المزرعة</div><div class="arrow">←</div>
@@ -61,7 +125,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
 </div>
 <div class="note">فوق كل الشاشات: مبدّل المزرعة. المهندس أو شركة التركيب ينقل بين مزارع كتير من حساب واحد، أو يختار "كل المزارع".</div>
 
-<h2><span class="num">٢</span>التنقل الرئيسي: ٥ أزرار</h2>
+<h2><span class="num">٣</span>التنقل الرئيسي: ٥ أزرار</h2>
 <div class="grid">
  <div class="card" style="--c:var(--primary-text)"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>النهارده</h3><ul>
   <li>كل القطاعات في شاشة واحدة، ولون لكل حالة</li>
@@ -99,7 +163,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
   <li>المساعدة والدعم بالعربي</li></ul></div>
 </div>
 
-<h2><span class="num">٣</span>شاشة القطاع</h2>
+<h2><span class="num">٤</span>شاشة القطاع</h2>
 <div class="lead">بتتفتح من النهارده أو الخريطة أو التنبيهات.</div>
 <div class="grid g3">
  <div class="card" style="--c:var(--primary-text)"><h3>القرار</h3><ul>
@@ -130,7 +194,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
   <li>الأجهزة المربوطة<span class="lv l2">متابعة</span></li></ul></div>
 </div>
 
-<h2><span class="num">٤</span>الإعداد</h2>
+<h2><span class="num">٥</span>الإعداد</h2>
 <div class="grid g3">
  <div class="card" style="--c:var(--ok)"><h3>المزرعة والحقول</h3><ul>
   <li>معالج إضافة حقل: الحدود، المحصول، التربة، طريقة الري، القطاعات</li>
@@ -154,14 +218,14 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
   <li>اللغة، والتنبيهات على الموبايل</li></ul></div>
 </div>
 
-<h2><span class="num">٥</span>الأدوات</h2>
+<h2><span class="num">٦</span>الأدوات</h2>
 <div class="grid">
  <div class="card" style="--c:var(--other)"><h3>الحاسبة السريعة</h3><ul><li>حساب من غير حقل محفوظ</li></ul></div>
  <div class="card" style="--c:var(--rain)"><h3>تصميم الشبكات</h3><ul><li>تصميم أو تقييم شبكة، والتصميم يبقى تعريف المزرعة</li></ul></div>
  <div class="card" style="--c:var(--warn)"><h3>ماذا لو</h3><ul><li>تجربة تغيير وشوف أثره من غير ما يلمس الحقيقة</li></ul></div>
 </div>
 
-<h2><span class="num">٦</span>كل دور بيشوف إيه</h2>
+<h2><span class="num">٧</span>كل دور بيشوف إيه</h2>
 <div class="grid">
  <div class="card role" style="--c:var(--primary-text)"><h3>مهندس الري <small>المستخدم الأساسي</small></h3><ul>
   <li>يبدأ من: النهارده</li><li>كل الشاشات والصلاحيات في مزارعه</li></ul></div>
@@ -173,7 +237,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
   <li>يبدأ من: كل المزارع</li><li>مزارع عملاء كتير من حساب واحد، والأحوج للتدخل الأول</li></ul></div>
 </div>
 
-<h2><span class="num">٧</span>الدورة اليومية</h2>
+<h2><span class="num">٨</span>الدورة اليومية</h2>
 <div class="flow loop" style="--c:var(--primary-text)">
  <div class="step"><span class="n">١</span><b>المنصة تحسب</b>الطقس والتربة والمحصول لكل قطاع</div><div class="arrow">←</div>
  <div class="step"><span class="n">٢</span><b>المهندس يراجع</b>شاشة النهارده</div><div class="arrow">←</div>
@@ -183,7 +247,7 @@ h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border
  <div class="step"><span class="n">٦</span><b>التقارير</b>المياه والتكلفة</div>
 </div>
 
-<h2><span class="num">٨</span>أول استخدام</h2>
+<h2><span class="num">٩</span>أول استخدام</h2>
 <div class="flow" style="--c:var(--ok)">
  <div class="step"><span class="n">١</span><b>التسجيل</b>وإنشاء المنظمة</div><div class="arrow">←</div>
  <div class="step"><span class="n">٢</span><b>أول مزرعة</b>مكانها على الخريطة</div><div class="arrow">←</div>
