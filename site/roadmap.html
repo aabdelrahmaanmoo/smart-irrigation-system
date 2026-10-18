@@ -183,7 +183,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   <h1>خارطة البناء</h1>
   
   
-  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#طريقة-العمل-في-كل-إصدار">طريقة العمل في كل إصدار</a><a href="#مراحل-المنتج">مراحل المنتج</a><a href="#الإصدارات">الإصدارات</a></nav></details>
+  <details class="toc"><summary>في الصفحة دي</summary><nav><a href="#طريقة-العمل-في-كل-إصدار">طريقة العمل في كل إصدار</a><a href="#مراحل-المنتج">مراحل المنتج</a><a href="#نسخة-عرض-التخرج">نسخة عرض التخرج</a><a href="#الإصدارات">الإصدارات</a></nav></details>
   <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>
   <article class="content"><!-- collapse-h3 -->
 <!-- status: V0=next  (القيم: done تم | doing شغال | next الجاي | غير كده = لسه) -->
@@ -236,6 +236,31 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 </tr>
 </tbody>
 </table></div>
+<h2 id="نسخة-عرض-التخرج">نسخة عرض التخرج</h2>
+<div class="callout lead"><p><strong>القرار:</strong> الهدف إصدار يتعرض على الدكاترة في مايو 2027، قرار رقم 11.
+<strong>مقترح:</strong> النطاق ده لسه مش معتمد.</p></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>داخل النسخة</th>
+<th>خارجها، وبيتعرض كخطة أو محاكاة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>V0</code>، ثم <code>V1</code> مصغر بخريطة حقيقية، ثم <code>V3</code> و <code>V4</code></td>
+<td>الأجهزة، والحساسات الحقيقية، والتدرج داخل القطاع</td>
+</tr>
+<tr>
+<td>الطقس <code>V2</code> لو الوقت سمح</td>
+<td>الأقمار الصناعية، وكشف الأعطال، وما بعد <code>V9</code></td>
+</tr>
+<tr>
+<td>مقارنة حالة واحدة مع <code>CROPWAT</code>، من <code>V6.1</code></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="الإصدارات">الإصدارات</h2>
 <details class="card" id="v0-محرك-الحسابات-الهندسية"><summary><span class="tag">V0</span><span class="t">محرك الحسابات الهندسية</span><span class="st s-next">الجاي</span><span class="chev" aria-hidden="true">⌄</span></summary><div class="card-body">
 <ul>
@@ -268,7 +293,8 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
 <li><strong>V1.1 الهيكل:</strong> موديول الأساس وموديول الري بطبقات واضحة. <br><span class="done">خالصة لما:</span> المحرك يتختبر من غير ويب ولا قاعدة بيانات.</li>
 <li><strong>V1.2 الحسابات والصلاحيات:</strong> دخول آمن، وأدوار، وكل حاجة مربوطة بمنظمة. <br><span class="done">خالصة لما:</span> مستخدم مايوصلش لمزرعة مش بتاعته.</li>
 <li><strong>V1.3 المزارع والحقول والقطاعات:</strong> الهيكل الكامل للمزرعة، والمحاصيل وتواريخ الزراعة. <br><span class="done">خالصة لما:</span> البيانات تتحفظ وترجع من غير إعادة إدخال.</li>
-<li><strong>V1.4 الأرض كخريطة:</strong> حدود كل حقل وقطاع بشكلها الحقيقي، والعوائق، ومكان المخارج لو معروف. <br><span class="done">خالصة لما:</span> المهندس يرسم حقل على الخريطة، والمساحة تتحسب منه.</li>
+<li><strong>V1.4 الأرض على خريطة حقيقية:</strong> خريطة بصور أقمار صناعية وبحث بالمكان، وحدود كل حقل وقطاع فوق الأرض الفعلية، بالرسم على الخريطة أو باستيراد ملف <code>KML</code> أو <code>GeoJSON</code>. <br><span class="done">خالصة لما:</span> المهندس يلاقي أرضه على الخريطة ويحدد حدودها، والمساحة تتحسب منها.</li>
+<li><strong>للبحث قبل V1.4:</strong> مصدر صور الخريطة الأقمار الصناعية وتكلفته وشروط استخدامه، ومكتبة الخرائط المناسبة.</li>
 <li><strong>V1.5 مواصفات الري:</strong> طريقة الري والكفاءة والتصرف، ومصدر كل قيمة. <br><span class="done">خالصة لما:</span> مدة التشغيل ماتتحسبش لو التصرف مجهول، وتظهر رسالة واضحة.</li>
 <li>
 <p><strong>V1.6 الشاشات:</strong> المزارع، والقطاع، والحاسبة، وشرح الحساب. <br><span class="done">خالصة لما:</span> من الموبايل: إنشاء قطاع ثم نتيجة محفوظة ومشروحة.</p>
