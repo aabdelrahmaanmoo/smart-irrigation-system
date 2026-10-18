@@ -39,7 +39,30 @@ figcaption{font-size:13px;color:var(--muted);padding:8px 12px;border-top:1px sol
 code{direction:ltr;unicode-bidi:isolate;background:var(--raised);border:1px solid var(--border);padding:0 6px;border-radius:6px;font-size:.85em}
 </style>
 </head>
-<body><!-- si-back --><a href="../index.html" style="position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:16px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.45);display:inline-flex;align-items:center;gap:8px;background:rgba(20,20,22,.9);color:#F2F2F3;border:1px solid #313130;border-radius:12px;padding:6px 12px 6px 10px;font:700 14px Cairo,Tahoma,sans-serif;text-decoration:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)"><img src="../design/logo-mark-white.png" alt="" width="18" height="18">كل الصفحات</a><main>
+<body><!-- si-nav --><style>
+.si-side{position:fixed;top:0;right:0;bottom:0;width:260px;z-index:60;background:#111111;border-left:1px solid #292929;
+  padding:14px 10px 24px;overflow-y:auto;font:400 15px/1.6 Cairo,Tahoma,Arial,sans-serif;direction:rtl;
+  transform:translateX(100%);visibility:hidden;transition:transform .22s ease,visibility .22s}
+.si-open .si-side{transform:none;visibility:visible}
+.si-side .si-brand{display:flex;align-items:center;gap:8px;padding:6px 10px 14px;color:#F2F2F3;font-weight:800;text-decoration:none;direction:ltr;justify-content:flex-end}
+.si-side .si-brand b{color:#3D86FF}
+.si-side p{margin:14px 10px 4px;font-size:12px;font-weight:700;color:#8E8E94}
+.si-side a.si-l{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;color:#C4C4C8;text-decoration:none;font-size:15px}
+.si-side a.si-l:hover{background:#1C1C1C;color:#F2F2F3}
+.si-side a.si-l[aria-current]{background:#1C1C1C;color:#F2F2F3;font-weight:700}
+.si-side a.si-l::before{content:"";width:6px;height:6px;border-radius:50%;background:#4A505C;flex:none}
+.si-side a.si-l[aria-current]::before{background:#3D86FF}
+.si-btn{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:16px;z-index:61;display:inline-flex;align-items:center;gap:8px;
+  background:rgba(28,28,28,.92);color:#F2F2F3;border:1px solid #313130;border-radius:12px;padding:8px 14px;font:700 14px Cairo,Tahoma,sans-serif;cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.si-scrim{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.55);display:none}
+.si-open .si-scrim{display:block}
+@media (min-width:900px){
+  .si-side{transform:none;visibility:visible}
+  .si-btn,.si-scrim{display:none!important}
+  body{margin-right:260px!important}
+}
+</style><div class="si-scrim" onclick="document.documentElement.classList.remove('si-open')"></div><nav class="si-side" aria-label="صفحات المشروع"><a class="si-brand" href="../index.html">Smart <b>Irrigation</b><img src="../design/logo-mark-white.png" alt="" width="22" height="22"></a><p>الملفات</p><a class="si-l" href="../index.html">الرئيسية</a><a class="si-l" href="../overview.html">في دقيقتين</a><a class="si-l" href="../product.html">المنتج</a><a class="si-l" href="../roadmap.html">خارطة البناء</a><a class="si-l" href="../architecture.html">التصميم التقني</a><a class="si-l" href="../domain.html">علم الري</a><a class="si-l" href="../market.html">السوق والمنافسين</a><a class="si-l" href="../journey.html">رحلة المشروع</a><a class="si-l" href="../reference-cases.html">الحالات المرجعية</a><p>صفحات العرض</p><a class="si-l" href="../design/IRRIGATION_Color_System.html">نظام الألوان</a><a class="si-l" href="../design/IRRIGATION_Maps.html" aria-current="page">خرايط التشبع</a><a class="si-l" href="../design/IRRIGATION_Mind_Map.html">خريطة المنتج</a><a class="si-l" href="../research/IRRIGATION_Competitor_Study.html">دراسة المنافسين</a></nav><button class="si-btn" type="button" onclick="document.documentElement.classList.toggle('si-open')"><img src="../design/logo-mark-white.png" alt="" width="18" height="18">كل الصفحات</button><main>
 <h1>خرايط التشبع <span class="tag">توضيحي</span></h1>
 <div class="sub">إزاي المنصة بتقسم الأرض لقطاعات وتلوّنها حسب تشبع التربة. كل الأرقام في الصور عشوائية للشرح.</div>
 <div class="tools"><button type="button" data-all="1">افتح الكل</button><button type="button" data-all="0">اقفل الكل</button></div>

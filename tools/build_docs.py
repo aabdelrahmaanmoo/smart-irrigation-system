@@ -34,7 +34,7 @@ PAGES = [
     ("reference-cases/README.md", "reference-cases.html", "الحالات المرجعية", "primary-text"),
 ]
 EXTRA_DIRS = ["design", "research"]
-STANDALONE = {"overview.html"}
+STANDALONE: set[str] = set()  # every page shows the side menu
 EXTRA_TITLES = {
     "IRRIGATION_Competitor_Study.html": ("دراسة المنافسين", "المنافسين في مصر وبرا، بالتفصيل"),
     "IRRIGATION_Color_System.html": ("نظام الألوان", "ألوان الواجهة والرسوم وأكوادها"),
@@ -495,7 +495,7 @@ footer{margin-top:26px;color:var(--muted);font-size:13px}
   h1{font-size:36px}
   .docs{grid-template-columns:1fr 1fr}
 }
-@media (min-width:1080px){
+@media (min-width:900px){
   .menu-btn{display:none}
   .layout{display:grid;grid-template-columns:260px minmax(0,1fr)}
   .side{position:sticky;top:calc(var(--bar) + env(safe-area-inset-top,0px));height:calc(100vh - var(--bar));width:auto;transform:none;visibility:visible;
@@ -511,18 +511,54 @@ V5 = ("--bg:#151515; --card:#1C1C1C; --raised:#222221; --border:#292929;\n"
       "  --text:#F2F2F3; --muted:#8E8E94; --soft:#C4C4C8;\n"
       "  --primary:#0B5FE8; --primary-text:#3D86FF;\n"
       "  --ok:#34B27B; --warn:#E0B04A; --danger:#E5706E; --rain:#30C3D9; --other:#A97CF5;")
-BACK = ('<a href="../index.html" style="position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:16px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.45);display:inline-flex;align-items:center;gap:8px;'
-        'background:rgba(20,20,22,.9);color:#F2F2F3;border:1px solid #313130;border-radius:12px;padding:6px 12px 6px 10px;'
-        'font:700 14px Cairo,Tahoma,sans-serif;text-decoration:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)">'
-        '<img src="../design/logo-mark-white.png" alt="" width="18" height="18">كل الصفحات</a>')
+NAV_CSS = """<style>
+.si-side{position:fixed;top:0;right:0;bottom:0;width:260px;z-index:60;background:#111111;border-left:1px solid #292929;
+  padding:14px 10px 24px;overflow-y:auto;font:400 15px/1.6 Cairo,Tahoma,Arial,sans-serif;direction:rtl;
+  transform:translateX(100%);visibility:hidden;transition:transform .22s ease,visibility .22s}
+.si-open .si-side{transform:none;visibility:visible}
+.si-side .si-brand{display:flex;align-items:center;gap:8px;padding:6px 10px 14px;color:#F2F2F3;font-weight:800;text-decoration:none;direction:ltr;justify-content:flex-end}
+.si-side .si-brand b{color:#3D86FF}
+.si-side p{margin:14px 10px 4px;font-size:12px;font-weight:700;color:#8E8E94}
+.si-side a.si-l{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;color:#C4C4C8;text-decoration:none;font-size:15px}
+.si-side a.si-l:hover{background:#1C1C1C;color:#F2F2F3}
+.si-side a.si-l[aria-current]{background:#1C1C1C;color:#F2F2F3;font-weight:700}
+.si-side a.si-l::before{content:"";width:6px;height:6px;border-radius:50%;background:#4A505C;flex:none}
+.si-side a.si-l[aria-current]::before{background:#3D86FF}
+.si-btn{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:16px;z-index:61;display:inline-flex;align-items:center;gap:8px;
+  background:rgba(28,28,28,.92);color:#F2F2F3;border:1px solid #313130;border-radius:12px;padding:8px 14px;font:700 14px Cairo,Tahoma,sans-serif;cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.si-scrim{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.55);display:none}
+.si-open .si-scrim{display:block}
+@media (min-width:900px){
+  .si-side{transform:none;visibility:visible}
+  .si-btn,.si-scrim{display:none!important}
+  body{margin-right:260px!important}
+}
+</style>"""
 
 
-def polish_extra(page: str) -> str:
-    """Give copied standalone pages the v5 palette and a way back home."""
+def nav_extra(current: str) -> str:
+    """Side menu for standalone pages: always visible on wide screens, a drawer on phones."""
+    def link(href: str, title: str) -> str:
+        cur = ' aria-current="page"' if href == current else ""
+        return f'<a class="si-l" href="../{href}"{cur}>{title}</a>'
+    files = "".join(link(o, t) for _, o, t, _ in PAGES)
+    extras = "".join(link(h, t) for h, t, _ in extra_pages())
+    return (NAV_CSS + '<div class="si-scrim" onclick="document.documentElement.classList.remove(\'si-open\')"></div>'
+            '<nav class="si-side" aria-label="صفحات المشروع">'
+            '<a class="si-brand" href="../index.html">Smart <b>Irrigation</b><img src="../design/logo-mark-white.png" alt="" width="22" height="22"></a>'
+            f'<p>الملفات</p>{files}<p>صفحات العرض</p>{extras}</nav>'
+            '<button class="si-btn" type="button" onclick="document.documentElement.classList.toggle(\'si-open\')">'
+            '<img src="../design/logo-mark-white.png" alt="" width="18" height="18">كل الصفحات</button>')
+
+
+def polish_extra(page: str, href: str) -> str:
+    """Give copied standalone pages the v5 palette and the side menu."""
     page = re.sub(r"--bg:#18191B;.*?--other:#9646EF;", V5, page, count=1, flags=re.S)
     page = page.replace("IRRIGATION —", "Smart Irrigation —")
-    if "<!-- si-back -->" not in page:
-        page = re.sub(r"(<body[^>]*>)", r"\1<!-- si-back -->" + BACK.replace("\\", "\\\\"), page, count=1)
+    if "<!-- si-nav -->" not in page:
+        nav = nav_extra(href)
+        page = re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + "<!-- si-nav -->" + nav, page, count=1)
     if 'rel="icon"' not in page:
         page = page.replace("</title>", '</title>\n<link rel="icon" href="../design/favicon.png">', 1)
     return page
@@ -544,7 +580,7 @@ def main() -> None:
         if (ROOT / d).exists():
             shutil.copytree(ROOT / d, SITE / d)
             for page in (SITE / d).glob("*.html"):
-                page.write_text(polish_extra(page.read_text(encoding="utf-8")), encoding="utf-8")
+                page.write_text(polish_extra(page.read_text(encoding="utf-8"), f"{d}/{page.name}"), encoding="utf-8")
             print(f"copied: site/{d}/")
 
 
