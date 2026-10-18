@@ -38,7 +38,7 @@ STANDALONE = {"overview.html"}
 EXTRA_TITLES = {
     "IRRIGATION_Competitor_Study.html": ("دراسة المنافسين", "المنافسين في مصر وبرا، بالتفصيل"),
     "IRRIGATION_Color_System.html": ("نظام الألوان", "ألوان الواجهة والرسوم وأكوادها"),
-    "IRRIGATION_Mind_Map.html": ("خريطة التطبيق", "الشاشات والتنقل ورحلة العرض، مقترح"),
+    "IRRIGATION_Mind_Map.html": ("خريطة المنتج", "الشاشات والأدوار والتنقل في المنتج الكامل، مقترح"),
 }  # pages meant to be shared alone: no cross-page links  # standalone HTML pages copied as-is
 
 DESCRIPTIONS = {

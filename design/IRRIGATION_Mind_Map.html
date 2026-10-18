@@ -3,131 +3,194 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IRRIGATION — خريطة التطبيق</title>
+<title>IRRIGATION — خريطة المنتج</title>
 <style>
 :root{--bg:#0B0B0D;--card:#141416;--raised:#1C1C1F;--border:#232327;--text:#F2F2F3;--muted:#8E8E94;--primary:#0B5FE8;--primary-text:#3D86FF;--ok:#34B27B;--warn:#E0B04A;--danger:#E5706E;--rain:#30C3D9;--other:#A97CF5}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans Arabic","Segoe UI",Tahoma,sans-serif;line-height:1.6;padding:24px 16px 48px}
 main{max-width:1240px;margin:0 auto}
 h1{font-size:26px}
-h2{font-size:18px;margin:28px 0 4px;display:flex;align-items:center;gap:10px}
-h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+h2{font-size:18px;margin:30px 0 4px;display:flex;align-items:center;gap:10px}
+h2 .num{width:28px;height:28px;border-radius:50%;background:var(--raised);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:none}
 .sub,.lead{color:var(--muted);font-size:14.5px}
 .lead{margin-bottom:12px}
 .tag{display:inline-block;border:1px solid var(--warn);color:var(--warn);border-radius:999px;padding:0 10px;font-size:13px;margin-inline-start:8px;vertical-align:middle}
-.v{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0 5px;direction:ltr;display:inline-block;margin-inline-start:6px;vertical-align:1px}
+.lv{font-size:11px;border-radius:6px;padding:0 6px;display:inline-block;margin-inline-start:6px;vertical-align:1px;border:1px solid currentColor}
+.l2{color:var(--rain)}.l3{color:var(--warn)}.l4{color:var(--other)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:13px;color:var(--muted);align-items:center}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+@media(max-width:400px){.g3{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--c,var(--border));border-radius:14px;padding:14px 16px}
 .card h3{font-size:16px;color:var(--c,var(--text));margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .card ul{list-style:none;padding:0}
 .card li{font-size:14px;padding:3px 0;border-bottom:1px solid #1d1d21}
 .card li:last-child{border:0}
 .card .go{margin-top:8px;font-size:13px;color:var(--c,var(--muted))}
-.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
-.step{flex:1 1 150px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:14px;position:relative}
+.step{flex:1 1 150px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:14px;position:relative}
 .step b{display:block;font-size:15px}
 .step .n{position:absolute;top:-10px;inset-inline-start:10px;background:var(--c,var(--raised));color:#0B0B0D;font-weight:700;font-size:12px;border-radius:999px;padding:0 8px}
 .arrow{align-self:center;color:var(--muted);font-size:20px}
-.journey .step{border-color:var(--primary);background:#0f1a2e}
-.journey .arrow{color:var(--primary-text)}
-.later{border-style:dashed!important;opacity:.55}
-.overview{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
-.ov{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
-.box{background:var(--raised);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;font-size:14px}
-.box b{display:block;font-size:15px}
-.box.main{border-color:var(--primary);color:var(--primary-text)}
-@media(max-width:700px){.ov{grid-template-columns:1fr}.ov .arrow{transform:rotate(-90deg);justify-self:center}.arrow{width:100%;text-align:center;transform:rotate(-90deg)}}
+.loop .step{border-color:var(--primary);background:#0f1a2e}
+.loop .arrow{color:var(--primary-text)}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chain .box{background:var(--raised);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:15px;font-weight:700}
+.note{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--muted);margin-top:10px}
+.role h3 small{font-weight:400;color:var(--muted);font-size:12.5px}
+@media(max-width:700px){.arrow{width:100%;text-align:center;transform:rotate(-90deg)}}
 </style>
 </head>
 <body><main>
-<h1>خريطة التطبيق <span class="tag">مقترح</span></h1>
-<div class="sub">كل مربع هنا شاشة حقيقية أو جزء واضح منها، لنسخة العرض. رقم الإصدار من خارطة الطريق.</div>
-
-<h2><span class="num">١</span>الصورة الكبيرة</h2>
-<div class="overview"><div class="ov">
- <div class="box"><b>الشريط السفلي</b>الخريطة · الحقول · التنبيهات · الأدوات</div>
- <div class="arrow">←</div>
- <div class="box main"><b>شاشة الحقل</b>الحالة · الطقس · الحساب · البيانات</div>
- <div class="arrow">←</div>
- <div class="box"><b>التوصية</b>نروي؟ كام؟ إمتى؟ ليه؟</div>
+<h1>خريطة المنتج <span class="tag">مقترح</span></h1>
+<div class="sub">المنتج الكامل اللي هيتباع، مبني على صفحة المنتج: المستخدمين والشاشات ومستويات الخدمة.</div>
+<div class="legend">
+ <span>المتاح من غير أجهزة مالوش علامة.</span>
+ <span class="lv l2">متابعة: محتاج حساسات</span>
+ <span class="lv l3">أوتوميشن: محتاج كنترولر</span>
+ <span class="lv l4">تحكم دقيق: تحكم في كل مخرج</span>
 </div>
-<div class="sub" style="margin-top:10px">زر ＋ في الحقول يفتح معالج إضافة حقل. وصورة البروفايل فوق تفتح الحساب والإعدادات.</div></div>
 
-<h2><span class="num">٢</span>الشريط السفلي: ٤ أزرار</h2>
+<h2><span class="num">١</span>الهيكل</h2>
+<div class="chain">
+ <div class="box">المنظمة</div><div class="arrow">←</div>
+ <div class="box">المزرعة</div><div class="arrow">←</div>
+ <div class="box">الحقل</div><div class="arrow">←</div>
+ <div class="box" style="border-color:var(--primary);color:var(--primary-text)">القطاع</div>
+</div>
+<div class="note">فوق كل الشاشات: مبدّل المزرعة. المهندس أو شركة التركيب ينقل بين مزارع كتير من حساب واحد، أو يختار "كل المزارع".</div>
+
+<h2><span class="num">٢</span>التنقل الرئيسي: ٥ أزرار</h2>
 <div class="grid">
- <div class="card" style="--c:var(--primary-text)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>الخريطة</h3><ul>
-  <li>صور قمر صناعي وبحث بالمكان<span class="v">V1.4</span></li>
-  <li>الحقول ملونة بالتشبع، لون لكل قطاع<span class="v">V3</span></li>
-  <li>ملخص سريع: محتاج ري، مشبع، بيانات ناقصة<span class="v">V4</span></li>
-  <li>طبقات: التشبع، المحصول، التربة</li></ul>
-  <div class="go">الضغط على حقل ← شاشة الحقل</div></div>
- <div class="card" style="--c:var(--ok)"><h3><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M10 10v10"/></svg>الحقول</h3><ul>
-  <li>كروت: المحصول، التشبع، الرية الجاية، تنبيه الطقس</li>
-  <li>بحث وترتيب: الأحوج للري الأول</li>
-  <li>زر ＋ إضافة حقل<span class="v">V1.3</span></li></ul>
-  <div class="go">الكارت ← شاشة الحقل · ＋ ← المعالج</div></div>
+ <div class="card" style="--c:var(--primary-text)"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>النهارده</h3><ul>
+  <li>كل القطاعات في شاشة واحدة، ولون لكل حالة</li>
+  <li>التوصية لكل قطاع: كام ومدة قد إيه وإمتى</li>
+  <li>اعتماد، أو اعتماد الكل، أو تعديل بسبب</li>
+  <li>الثقة، وعلامة "البيانات مش كفاية"</li>
+  <li>ترتيب: الأحوج للري الأول</li></ul>
+  <div class="go">الشاشة الأساسية للمهندس</div></div>
+ <div class="card" style="--c:var(--ok)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>الخريطة</h3><ul>
+  <li>صور قمر صناعي وبحث بالمكان</li>
+  <li>القطاعات ملونة بالحالة</li>
+  <li>طبقات: التشبع، التوصية، المحصول، التربة</li>
+  <li>طبقة صور الأقمار NDVI</li>
+  <li>طبقة الأجهزة وحالتها<span class="lv l2">متابعة</span></li>
+  <li>التدرج داخل القطاع<span class="lv l2">متابعة</span></li></ul>
+  <div class="go">الضغط على قطاع ← شاشة القطاع</div></div>
  <div class="card" style="--c:var(--danger)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M12 3L2 21h20z"/><path d="M12 10v5M12 18v.5"/></svg>التنبيهات</h3><ul>
-  <li>محتاج ري النهارده<span class="v">V4</span></li>
-  <li>تشبع زيادة</li>
-  <li>بيانات ناقصة أو قديمة<span class="v">V2.4</span></li>
-  <li>مطر متوقع: أجّل الري</li></ul>
-  <div class="go">التنبيه ← الحقل المعني</div></div>
- <div class="card" style="--c:var(--other)"><h3><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2M16 12v4"/></svg>الأدوات</h3><ul>
-  <li>الحاسبة السريعة من غير حقل<span class="v">V0</span></li>
-  <li>مقارنة الحالة المرجعية مع CROPWAT<span class="v">V6.1</span></li></ul>
-  <div class="go">مهمة للعرض على الدكاترة</div></div>
+  <li>ري مستحق ومش متعمد</li>
+  <li>فرق بين المخطط والمنفذ</li>
+  <li>بيانات ناقصة أو قديمة، ومطر متوقع</li>
+  <li>أعطال: تسريب، انسداد، ضغط<span class="lv l2">متابعة</span></li>
+  <li>جهاز فاصل أو بطارية ضعيفة<span class="lv l2">متابعة</span></li></ul>
+  <div class="go">كل تنبيه مربوط بفعل واضح</div></div>
+ <div class="card" style="--c:var(--warn)"><h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>التقارير</h3><ul>
+  <li>المياه لكل قطاع ومزرعة</li>
+  <li>التكلفة والطاقة</li>
+  <li>المخطط مقابل المنفذ</li>
+  <li>مقارنة المواسم والقطاعات</li>
+  <li>تصدير وإرسال دوري</li></ul>
+  <div class="go">الشاشة الأساسية لصاحب المزرعة</div></div>
+ <div class="card" style="--c:var(--other)"><h3><svg class="ic" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>المزيد</h3><ul>
+  <li>الإعداد، تفاصيله في قسم ٤</li>
+  <li>الأدوات، تفاصيلها في قسم ٥</li>
+  <li>الحساب والاشتراك</li>
+  <li>المساعدة والدعم بالعربي</li></ul></div>
 </div>
 
-<h2><span class="num">٣</span>شاشة الحقل: ٤ تبويبات</h2>
-<div class="lead">بتتفتح من الخريطة أو الحقول أو التنبيهات.</div>
-<div class="grid">
- <div class="card" style="--c:var(--rain)"><h3>الحالة</h3><ul>
-  <li>التشبع لكل قطاع، ومصدره وثقته<span class="v">V3</span></li>
-  <li>التوصية: نروي؟ كام ملم وكام دقيقة؟ إمتى؟<span class="v">V4</span></li>
-  <li>السبب والثقة، وتعديل المهندس بسببه<span class="v">V4.5</span></li>
-  <li>خطة الأيام الجاية<span class="v">V4.3</span></li></ul></div>
+<h2><span class="num">٣</span>شاشة القطاع</h2>
+<div class="lead">بتتفتح من النهارده أو الخريطة أو التنبيهات.</div>
+<div class="grid g3">
+ <div class="card" style="--c:var(--primary-text)"><h3>القرار</h3><ul>
+  <li>نروي ولا لأ، وكام، ومدة قد إيه، وإمتى</li>
+  <li>السبب بكلام مهندس، والثقة</li>
+  <li>خطة الأيام الجاية</li>
+  <li>اعتماد أو تعديل بسبب</li>
+  <li>إرسال للكنترولر<span class="lv l3">أوتوميشن</span></li></ul></div>
+ <div class="card" style="--c:var(--rain)"><h3>مياه التربة</h3><ul>
+  <li>رسم الرطوبة يوم بيوم وحد الاستنزاف</li>
+  <li>المصدر: تقدير أو قياس</li>
+  <li>قراءات الحساسات اللحظية<span class="lv l2">متابعة</span></li></ul></div>
+ <div class="card" style="--c:var(--ok)"><h3>سجل الري</h3><ul>
+  <li>المخطط والمنفذ والمتأخر والملغي</li>
+  <li>تسجيل رية من الموبايل</li>
+  <li>التشغيل الفعلي من الكنترولر<span class="lv l3">أوتوميشن</span></li></ul></div>
  <div class="card" style="--c:var(--warn)"><h3>الطقس</h3><ul>
-  <li>النهارده وكل ساعة<span class="v">V2</span></li>
-  <li>سبع أيام: مطر وحرارة و ETo</li>
-  <li>المصدر وآخر تحديث<span class="v">V2.1</span></li></ul></div>
+  <li>دلوقتي وكل ساعة وسبع أيام</li>
+  <li>المطر و ETo لكل يوم</li>
+  <li>المصدر وآخر تحديث</li></ul></div>
  <div class="card" style="--c:var(--other)"><h3>الحساب</h3><ul>
-  <li>رسم الاحتياج بشريط مراحل النمو<span class="v">V0.4</span></li>
-  <li>شرح الخطوات من الطقس للتوصية<span class="v">V1.6</span></li></ul></div>
- <div class="card" style="--c:var(--ok)"><h3>البيانات</h3><ul>
-  <li>المحصول وتاريخ الزراعة<span class="v">V1.3</span></li>
-  <li>التربة وطريقة الري والتصرف<span class="v">V1.5</span></li>
-  <li>مصدر كل قيمة، وتعديل وحذف الحقل</li></ul></div>
+  <li>رسم الاحتياج بشريط مراحل النمو</li>
+  <li>الخطوات من الطقس للتوصية</li>
+  <li>كل رقم بمصدره ووحدته</li></ul></div>
+ <div class="card" style="--c:var(--muted)"><h3>البيانات</h3><ul>
+  <li>المحصول والتربة وطريقة الري</li>
+  <li>المصدر والطلمبة والخط والمحابس</li>
+  <li>الأجهزة المربوطة<span class="lv l2">متابعة</span></li></ul></div>
 </div>
 
-<h2><span class="num">٤</span>معالج إضافة حقل</h2>
-<div class="flow" style="--c:var(--ok)">
- <div class="step"><span class="n">١</span><b>الحدود</b>رسم على الخريطة أو ملف KML و GeoJSON</div><div class="arrow">←</div>
- <div class="step"><span class="n">٢</span><b>المحصول</b>النوع وتاريخ الزراعة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٣</span><b>التربة</b>النوع والخصائص ومصدرها</div><div class="arrow">←</div>
- <div class="step"><span class="n">٤</span><b>طريقة الري</b>التنقيط: التصرف والكفاءة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٥</span><b>القطاعات</b>تقسيم الحقل</div>
+<h2><span class="num">٤</span>الإعداد</h2>
+<div class="grid g3">
+ <div class="card" style="--c:var(--ok)"><h3>المزرعة والحقول</h3><ul>
+  <li>معالج إضافة حقل: الحدود، المحصول، التربة، طريقة الري، القطاعات</li>
+  <li>الحدود بالرسم أو ملف KML و GeoJSON</li></ul></div>
+ <div class="card" style="--c:var(--rain)"><h3>الشبكة</h3><ul>
+  <li>المصادر والآبار والطلمبات وسعاتها</li>
+  <li>الخطوط والمحابس والنقاطات لكل قطاع</li>
+  <li>أوقات توفر المياه وقيود التشغيل</li></ul></div>
+ <div class="card" style="--c:var(--warn)"><h3>الأجهزة</h3><ul>
+  <li>ربط الحساسات<span class="lv l2">متابعة</span></li>
+  <li>ربط الكنترولرات وقدراتها<span class="lv l3">أوتوميشن</span></li>
+  <li>التحكم في كل مخرج<span class="lv l4">تحكم دقيق</span></li></ul></div>
+ <div class="card" style="--c:var(--danger)"><h3>الأوتوميشن والأمان</h3><ul>
+  <li>المستوى: يدوي، أو بموافقة، أو آلي<span class="lv l3">أوتوميشن</span></li>
+  <li>حدود الأمان وقت انقطاع النت<span class="lv l3">أوتوميشن</span></li></ul></div>
+ <div class="card" style="--c:var(--primary-text)"><h3>الفريق</h3><ul>
+  <li>دعوة أعضاء وتحديد الأدوار</li>
+  <li>مين يشوف ومين يعتمد ومين ينفذ</li></ul></div>
+ <div class="card" style="--c:var(--other)"><h3>عام</h3><ul>
+  <li>الوحدات: فدان أو هكتار، ملم أو متر مكعب</li>
+  <li>اللغة، والتنبيهات على الموبايل</li></ul></div>
 </div>
 
-<h2><span class="num">٥</span>رحلة العرض على الدكاترة</h2>
-<div class="lead">السيناريو اللي هيتعرض من أوله لآخره. الأرقام مثال، مش حسابات حقيقية.</div>
-<div class="flow journey" style="--c:var(--primary-text)">
- <div class="step"><span class="n">١</span><b>الخريطة</b>قطاع لونه أحمر</div><div class="arrow">←</div>
- <div class="step"><span class="n">٢</span><b>شاشة الحقل</b>التشبع ٢٨٪، ثقة متوسطة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٣</span><b>التوصية</b>روي ١٢ ملم، ٤٥ دقيقة، النهارده</div><div class="arrow">←</div>
- <div class="step"><span class="n">٤</span><b>ليه؟</b>الطقس والمحصول والتربة خطوة بخطوة</div><div class="arrow">←</div>
- <div class="step"><span class="n">٥</span><b>المقارنة</b>نفس الحالة في CROPWAT</div>
-</div>
-
-<h2><span class="num">٦</span>بعد العرض</h2>
+<h2><span class="num">٥</span>الأدوات</h2>
 <div class="grid">
- <div class="card later"><h3>سجل الري<span class="v">V5</span></h3></div>
- <div class="card later"><h3>الأجهزة والحساسات<span class="v">V8</span></h3></div>
- <div class="card later"><h3>التدرج داخل القطاع<span class="v">V8</span></h3></div>
- <div class="card later"><h3>صور الأقمار NDVI<span class="v">V6</span></h3></div>
- <div class="card later"><h3>كشف الأعطال<span class="v">V9</span></h3></div>
- <div class="card later"><h3>التحكم الآلي<span class="v">V10</span></h3></div>
- <div class="card later"><h3>الفريق والأدوار<span class="v">V1.2</span></h3></div>
+ <div class="card" style="--c:var(--other)"><h3>الحاسبة السريعة</h3><ul><li>حساب من غير حقل محفوظ</li></ul></div>
+ <div class="card" style="--c:var(--rain)"><h3>تصميم الشبكات</h3><ul><li>تصميم أو تقييم شبكة، والتصميم يبقى تعريف المزرعة</li></ul></div>
+ <div class="card" style="--c:var(--warn)"><h3>ماذا لو</h3><ul><li>تجربة تغيير وشوف أثره من غير ما يلمس الحقيقة</li></ul></div>
 </div>
+
+<h2><span class="num">٦</span>كل دور بيشوف إيه</h2>
+<div class="grid">
+ <div class="card role" style="--c:var(--primary-text)"><h3>مهندس الري <small>المستخدم الأساسي</small></h3><ul>
+  <li>يبدأ من: النهارده</li><li>كل الشاشات والصلاحيات في مزارعه</li></ul></div>
+ <div class="card role" style="--c:var(--ok)"><h3>مشغل الحقل <small>موبايل</small></h3><ul>
+  <li>يبدأ من: جدول النهارده بس</li><li>يسجل اللي اتنفذ، ويشوف تنبيهات التشغيل</li></ul></div>
+ <div class="card role" style="--c:var(--warn)"><h3>صاحب المزرعة</h3><ul>
+  <li>يبدأ من: التقارير</li><li>المياه والتكلفة والمشاكل، من غير تفاصيل فنية</li></ul></div>
+ <div class="card role" style="--c:var(--other)"><h3>شركة التركيب أو الاستشاري</h3><ul>
+  <li>يبدأ من: كل المزارع</li><li>مزارع عملاء كتير من حساب واحد، والأحوج للتدخل الأول</li></ul></div>
+</div>
+
+<h2><span class="num">٧</span>الدورة اليومية</h2>
+<div class="flow loop" style="--c:var(--primary-text)">
+ <div class="step"><span class="n">١</span><b>المنصة تحسب</b>الطقس والتربة والمحصول لكل قطاع</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٢</span><b>المهندس يراجع</b>شاشة النهارده</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٣</span><b>يعتمد أو يعدل</b>والتعديل بسبب</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٤</span><b>التنفيذ</b>المشغل يسجل، أو الكنترولر يشغّل</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٥</span><b>المقارنة</b>المخطط مقابل المنفذ، وتنبيه لو فيه فرق</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٦</span><b>التقارير</b>المياه والتكلفة</div>
+</div>
+
+<h2><span class="num">٨</span>أول استخدام</h2>
+<div class="flow" style="--c:var(--ok)">
+ <div class="step"><span class="n">١</span><b>التسجيل</b>وإنشاء المنظمة</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٢</span><b>أول مزرعة</b>مكانها على الخريطة</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٣</span><b>أول حقل</b>بالمعالج</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٤</span><b>أول توصية</b>في نفس الجلسة، بثقتها</div><div class="arrow">←</div>
+ <div class="step"><span class="n">٥</span><b>دعوة الفريق</b>المشغل وصاحب المزرعة</div>
+</div>
+<div class="note">الهدف: العميل يشوف قيمة حقيقية في أول جلسة، من غير أجهزة.</div>
 </main></body>
 </html>
